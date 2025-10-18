@@ -46,6 +46,23 @@ class Habits(Base):
     streak = Column(Integer, default=0)
 
 
+class Achievement(Base):
+    __tablename__ = 'achievements'
 
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    title = Column(String, nullable=False)
+    description = Column(Text, nullable=True)
+    achieved_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    
+class Task(Base):
+    __tablename__ = 'tasks'
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    title = Column(String, nullable=False)
+    status = Column(String, default='in_progress')  # in_progress, completed
+    deadline = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    completed_at = Column(DateTime(timezone=True), nullable=True)
+
