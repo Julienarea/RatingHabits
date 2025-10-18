@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Профиль</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/style.css') }}"
+        />
+    </head>
+    <body>
+        <header class="header">
+            <h1>ПРОФИЛЬ</h1>
+        </header>
+
+        <main class="container">
+            <section class="avatar block card">
+                <img
+                    src="https://habitica.com/static/img/avatar.png"
+                    alt="Аватар"
+                    class="avatar-img"
+                />
+                <div class="nickname">{{ user.nickname }}</div>
+            </section>
+
+            <section class="rating block card">
+                <div class="rating-title">
+                    <span>Рейтинг</span>
+                </div>
+                <div class="rating-value">{{ user.rating }}</div>
+                <div class="rating-bar">
+                    <div
+                        class="rating-bar-fill"
+                        style="width: {{ user.rating }}%;"
+                    ></div>
+                </div>
+            </section>
+
+            <section class="achievements block card">
+                <div class="section-title">
+                    <img
+                        src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png"
+                        class="icon"
+                    />
+                    Достижения
+                </div>
+                <ul class="achievements-list">
+                    {% for ach in user.achievements %}
+                    <li class="achievement-item">
+                        <span class="achievement-title">{{ ach.title }}</span>
+                        <span class="achievement-desc"
+                            >{{ ach.description }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <section class="tasks block card">
+                <div class="card-head">
+                    <div class="section-title">Задачи</div>
+                    <button class="icon-btn" id="add-task-btn">
+                        <img
+                            src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png"
+                            class="icon"
+                            alt="Кнопка"
+                        />
+                    </button>
+                </div>
+                <ul class="tasks-list">
+                    {% for task in user.tasks %}
+                    <li class="task-item">
+                        <span class="task-title">{{ task.title }}</span>
+                        <span
+                            class="task-status {{ 'done' if task.status == 'выполнено' else 'in-progress' }}"
+                            >{{ task.status }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <section class="habits block card">
+                <div class="card-head">
+                    <div class="section-title">Привычки</div>
+                    <button class="icon-btn">
+                        <img
+                            src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png"
+                            class="icon"
+                            alt="Кнопка"
+                        />
+                    </button>
+                </div>
+                <ul class="habits-list">
+                    {% for habit in user.habits %}
+                    <li class="habit-item">
+                        <span class="habit-title">{{ habit.title }}</span>
+                        <div class="habit-streak-bar">
+                            <div
+                                class="habit-streak-fill"
+                                style="width: {{ habit.streak * 10 }}%;"
+                            ></div>
+                        </div>
+                        <span class="habit-streak"
+                            >Серия: {{ habit.streak }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <span>ЮНИТ.УРФУ</span>
+        </footer>
+
+        <!-- Overlay и модальные окна -->
+        <div id="modal-overlay" class="modal-overlay" style="display:none;"></div>
+        <div id="modal-task" class="modal" style="display:none;">
+            <div class="modal-content">
+                <h2>Создать задачу</h2>
+                <input type="text" id="task-title" placeholder="Название задачи" />
+                <div class="modal-actions">
+                    <button id="task-create-btn" class="modal-btn">Создать</button>
+                    <button id="task-cancel-btn" class="modal-btn cancel">Отмена</button>
+                </div>
+            </div>
+        </div>
+        <div id="modal-habit" class="modal" style="display:none;">
+            <div class="modal-content">
+                <h2>Создать привычку</h2>
+                <input type="text" id="habit-title" placeholder="Название привычки" />
+                <div class="modal-actions">
+                    <button id="habit-create-btn" class="modal-btn">Создать</button>
+                    <button id="habit-cancel-btn" class="modal-btn cancel">Отмена</button>
+                </div>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    </body>
+</html>
