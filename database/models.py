@@ -43,11 +43,9 @@ class Habits(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     title = Column(String, nullable=False)
-    description = Column(Text)
     streak = Column(Integer, default=0)
-    last_completed = Column(DateTime(timezone=True))
 
-    user = relationship("User", back_populates="habits")
+
 
 
     
