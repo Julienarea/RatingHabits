@@ -198,6 +198,7 @@ body {
   background: #f7f7fa;
   border-radius: 8px;
   padding: 10px 16px;
+  padding-bottom: 36px;
   margin-bottom: 10px;
   box-shadow: 0 1px 4px rgba(78,78,255,0.05);
   display: flex;
@@ -208,19 +209,64 @@ body {
   font-weight: 600;
   color: #4e4eff;
 }
-.task-status {
-  font-size: 15px;
-  padding: 2px 10px;
+/* Стили для чекбокса */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 45px;
+  margin-top: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  height: 34px;
+  width: 34px;
+  background-color: #fff;
+  border: 2px solid #4e4eff;
   border-radius: 6px;
-  margin-left: 12px;
+  transition: all 0.2s ease;
 }
-.task-status.done {
-  background: #4e4eff;
-  color: #fff;
+
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #f0f0ff;
 }
-.task-status.in-progress {
-  background: #eaeaea;
-  color: #4e4eff;
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #4e4eff;
+}
+
+.checkmark:after {
+  content: "";
+  display: none;    
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 8px;
+  top: 4px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 .habits {
@@ -237,33 +283,55 @@ body {
   background: #f7f7fa;
   border-radius: 8px;
   padding: 10px 16px;
+  padding-bottom: 36px  ;
   margin-bottom: 10px;
   box-shadow: 0 1px 4px rgba(78,78,255,0.05);
-}
-.habit-title {
-  font-weight: 600;
-  color: #4e4eff;
-}
-.habit-streak-bar {
-  width: 100%;
-  height: 12px;
-  background: #eaeaea;
-  border-radius: 8px;
-  overflow: hidden;
-  margin: 6px 0;
-}
-.habit-streak-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4e4eff 60%, #6a82fb 100%);
-  border-radius: 8px;
-  transition: width 0.3s;
-}
-.habit-streak {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .habit-title {
+    font-weight: 600;
+    color: #4e4eff;
+    margin-right: 8px;
+  }
+  .habit-streak {
   font-size: 15px;
   color: #555;
-  margin-left: 8px;
+    margin-left: auto;
 }
 
+/* Фильтры */
+.card-filters {
+    display: flex;
+    width: 100%;
+    justify-content: start;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.filter {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer; /* ← важный момент: курсор как у кнопки */
+  user-select: none; /* запрет выделения текста при клике */
+  transition: background-color 0.2s;
+}
+
+.filter:hover {
+  background-color: #f0f0f0;
+}
+
+.filter.active {
+  color: rgb(0, 69, 180);
+}
+
+/* Для доступности: стиль при фокусе (когда нажимаешь Tab) */
+.filter:focus {
+  outline: 2px solid #0056b3;
+  outline-offset: 2px;
+}
 /* Highlight rating block */
 .rating-highlight {
   background: #4e4eff;

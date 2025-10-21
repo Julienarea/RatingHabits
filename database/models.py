@@ -20,6 +20,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     nickname = Column(String, unique=True, index=True, nullable=False)
     username = Column(String, unique=True, index=True, nullable=False)
+    path_to_avatar = Column()
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

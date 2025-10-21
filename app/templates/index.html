@@ -36,7 +36,7 @@
                 <div class="rating-bar">
                     <div
                         class="rating-bar-fill"
-                        style="width: {{ user.rating }}%;"
+                        style="width: {{ user.rating/20 }}%;"
                     ></div>
                 </div>
             </section>
@@ -72,14 +72,22 @@
                         />
                     </button>
                 </div>
+                <div class = "card-filters">
+                    <div class="filter" data-filter="active">Активные
+                    </div>
+                    <div class="filter" data-filter="completed">Сделанные
+                    </div>
+                </div>
                 <ul class="tasks-list">
                     {% for task in user.tasks %}
                     <li class="task-item">
-                        <span class="task-title">{{ task.title }}</span>
-                        <span
-                            class="task-status {{ 'done' if task.status == 'выполнено' else 'in-progress' }}"
-                            >{{ task.status }}</span
-                        >
+                        <label class="checkbox-container">
+                            <input type="checkbox" class="task-checkbox" {% if
+                            task.status == 'выполнено' %}checked{% endif %}
+                            data-task-title="{{ task.title }}" >
+                            <span class="checkmark"></span>
+                            <span class="task-title">{{ task.title }}</span>
+                        </label>
                     </li>
                     {% endfor %}
                 </ul>
@@ -87,7 +95,7 @@
 
             <section class="habits block card">
                 <div class="card-head">
-                    <div class="section-title">Привычки</div>
+                    <div class="section-title">Ежедневные задачи</div>
                     <button class="icon-btn">
                         <img
                             src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png"
@@ -96,19 +104,33 @@
                         />
                     </button>
                 </div>
+                <div class = "card-filters">
+                    <div class="filter" data-filter="all">Все
+                    </div>
+                    <div class="filter" data-filter="active">Активные
+                    </div>
+                    <div class="filter" data-filter="completed">Сделанные
+                    </div>
+                </div>
                 <ul class="habits-list">
                     {% for habit in user.habits %}
                     <li class="habit-item">
-                        <span class="habit-title">{{ habit.title }}</span>
-                        <div class="habit-streak-bar">
-                            <div
-                                class="habit-streak-fill"
-                                style="width: {{ habit.streak * 10 }}%;"
-                            ></div>
-                        </div>
-                        <span class="habit-streak"
-                            >Серия: {{ habit.streak }}</span
-                        >
+                        <label class="checkbox-container">
+                            <input
+                                type="checkbox"
+                                class="habit-checkbox"
+                                {%
+                                if
+                                habit.streak
+                            >
+                            0 %}checked{% endif %} data-habit-title="{{
+                            habit.title }}">
+                            <span class="checkmark"></span>
+                            <span class="habit-title">{{ habit.title }}</span>
+                            <span class="habit-streak"
+                                >(Серия: {{ habit.streak }})</span
+                            >
+                        </label>
                     </li>
                     {% endfor %}
                 </ul>

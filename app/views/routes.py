@@ -5,7 +5,7 @@ from app import app
 user_data = {
     'nickname': 'Пользователь',
     'avatar': 'default_avatar.png',
-    'rating': 100,
+    'rating': 1000,
     'achievements': [
         {'title': 'Первые шаги', 'description': 'Создание аккаунта'},
         {'title': 'На старте', 'description': 'Первая выполненная задача'}
