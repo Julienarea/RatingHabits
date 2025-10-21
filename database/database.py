@@ -25,3 +25,15 @@ class Database:
 
     def get_session(self) -> Session:
         return self.SessionLocal()
+
+    def add_user(self, nickname, username, email, hashed_password):
+        continue
+
+    def add_user_rating(user_id, value):
+        continue
+
+    def add_user_task(user_id, Task):
+        continue
+
+    def add_user_habits(user_id, Habit):
+        continue
