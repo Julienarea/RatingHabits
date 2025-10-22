@@ -48,10 +48,14 @@ def register():
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
         
-        # Валидация
+        # Валидация username: только латиница, цифры, без пробелов
+        import re
+        if not re.match(r'^[A-Za-z0-9\-_]+$', username):
+            return render_template('register.html', error='Имя пользователя должно содержать только латинские буквы и цифры, без пробелов')
+
         if password != confirm_password:
             return render_template('register.html', error='Пароли не совпадают')
-        
+
         # Проверка существующих пользователей
         if db.get_user_by_username(username):
             return render_template('register.html', error='Имя пользователя уже занято')
@@ -95,6 +99,7 @@ def index():
     # path_to_avatar теперь трактуем как «имя файла» (filename), а полный URL строим через helper
     user_data = {
         'nickname': current_user.nickname,
+        'username': current_user.username,
         'avatar': avatar_url(current_user.path_to_avatar),  # возвращает полный URL к static
         'rating': user_stats.rating if user_stats else 0,
         'achievements': [

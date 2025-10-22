@@ -103,11 +103,13 @@ body {
   font-weight: 600;
   color: #4e4eff;
   margin-bottom: 0;
-}
-
-.nickname {
   grid-area: nickname;
   min-height: 50px;
+}
+
+.username {
+  font-size: 16px;
+  color: #777;
 }
 
 .rating {
