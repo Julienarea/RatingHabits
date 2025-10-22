@@ -11,16 +11,17 @@ from sqlalchemy import (
     BigInteger,
 )
 from sqlalchemy.orm import declarative_base, relationship
+from flask_login import UserMixin
 
 Base = declarative_base()
 
-class User(Base):
+class User(UserMixin, Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, index=True)
     nickname = Column(String, unique=True, index=True, nullable=False)
     username = Column(String, unique=True, index=True, nullable=False)
-    path_to_avatar = Column()
+    path_to_avatar = Column(String, default='default_avatar.png')
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -29,22 +30,24 @@ class User(Base):
     achievements = relationship("Achievement", back_populates="user", cascade="all, delete-orphan")
     stats = relationship("UserStats", uselist=False, back_populates="user", cascade="all, delete-orphan")
 
-class Stats(Base):
-    __tablename__ = 'stats'
+class UserStats(Base):
+    __tablename__ = 'user_stats'
 
     user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
-    rating = Column(Integer, default=0)
+    rating = Column(Integer, default=1000)
     total_tasks_completed = Column(Integer, default=0)
     rating_change_for_the_week = Column(Integer, default=0)
     rating_change_for_the_day = Column(Integer, default=0)
+    user = relationship("User", back_populates="stats")
 
-class Habits(Base):
+class Habit(Base):
     __tablename__ = 'habits'
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     title = Column(String, nullable=False)
     streak = Column(Integer, default=0)
+    user = relationship("User", back_populates="habits")
 
 
 class Achievement(Base):
@@ -55,6 +58,7 @@ class Achievement(Base):
     title = Column(String, nullable=False)
     description = Column(Text, nullable=True)
     achieved_at = Column(DateTime(timezone=True), server_default=func.now())
+    user = relationship("User", back_populates="achievements")
 
 class Task(Base):
     __tablename__ = 'tasks'
@@ -66,4 +70,5 @@ class Task(Base):
     deadline = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     completed_at = Column(DateTime(timezone=True), nullable=True)
+    user = relationship("User", back_populates="tasks")
 

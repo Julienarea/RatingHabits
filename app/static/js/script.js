@@ -2,22 +2,66 @@ document.addEventListener('DOMContentLoaded', function () {
     // Обработка изменения статуса задачи
     document.querySelectorAll('.task-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function () {
-            const title = this.dataset.taskTitle;
-            const status = this.checked ? 'выполнено' : 'в процессе';
+            const taskId = this.dataset.taskId;
+            const status = this.checked ? 'completed' : 'in_progress';
+            const taskItem = this.closest('.task-item');
 
             fetch('/update_task', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    title: title,
+                    task_id: taskId,
                     status: status
                 })
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (!data.success) {
+                    if (data.success) {
+                        // Обновляем data-status элемента
+                        taskItem.dataset.status = status;
+                        // Применяем активный фильтр заново
+                        const activeFilter = document.querySelector('.tasks .filter.active');
+                        if (activeFilter) {
+                            applyTaskFilter(activeFilter.dataset.filter);
+                        }
+                    } else {
                         this.checked = !this.checked; // возвращаем предыдущее состояние
                         alert('Ошибка при обновлении статуса задачи');
+                    }
+                });
+        });
+    });
+
+    // Обработка изменения статуса привычки
+    document.querySelectorAll('.habit-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const habitId = this.dataset.habitId;
+            const habitItem = this.closest('.habit-item');
+            const currentStreak = parseInt(habitItem.querySelector('.habit-streak').textContent.match(/\d+/)[0]);
+            const newStreak = this.checked ? currentStreak + 1 : Math.max(0, currentStreak - 1);
+
+            fetch('/update_habit_streak', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    habit_id: habitId,
+                    streak: newStreak
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        habitItem.querySelector('.habit-streak').textContent = `(Серия: ${newStreak})`;
+                        // Обновляем data-status (активная привычка = streak > 0)
+                        habitItem.dataset.status = newStreak > 0 ? 'completed' : 'in_progress';
+                        // Применяем активный фильтр заново
+                        const activeFilter = document.querySelector('.habits .filter.active');
+                        if (activeFilter) {
+                            applyHabitFilter(activeFilter.dataset.filter);
+                        }
+                    } else {
+                        this.checked = !this.checked;
+                        alert('Ошибка при обновлении привычки');
                     }
                 });
         });
@@ -34,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const taskCancelBtn = document.getElementById('task-cancel-btn');
     const habitCreateBtn = document.getElementById('habit-create-btn');
     const habitCancelBtn = document.getElementById('habit-cancel-btn');
+
     // Открытие модалок
     if (addTaskBtn) {
         addTaskBtn.addEventListener('click', function () {
@@ -42,32 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('task-title').focus();
         });
     }
-    // Обработка изменения статуса привычки
-    document.querySelectorAll('.habit-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            const title = this.dataset.habitTitle;
-            const currentStreak = parseInt(this.closest('.habit-item').querySelector('.habit-streak').textContent.match(/\d+/)[0]);
-            const newStreak = this.checked ? currentStreak + 1 : Math.max(0, currentStreak - 1);
 
-            fetch('/update_habit_streak', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    title: title,
-                    streak: newStreak
-                })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        this.closest('.habit-item').querySelector('.habit-streak').textContent = `(Серия: ${newStreak})`;
-                    } else {
-                        this.checked = !this.checked;
-                        alert('Ошибка при обновлении привычки');
-                    }
-                });
-        });
-    });
     if (addHabitBtn) {
         addHabitBtn.addEventListener('click', function () {
             overlay.style.display = 'block';
@@ -123,13 +143,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Фильтры
 
-    document.querySelectorAll('.filter').forEach(item => {
+    // Функция фильтрации задач
+    function applyTaskFilter(filter) {
+        const taskItems = document.querySelectorAll('.tasks .task-item');
+        taskItems.forEach(item => {
+            if (filter === 'active') {
+                item.style.display = item.dataset.status === 'in_progress' ? '' : 'none';
+            } else if (filter === 'completed') {
+                item.style.display = item.dataset.status === 'completed' ? '' : 'none';
+            }
+        });
+    }
+
+    // Функция фильтрации привычек
+    function applyHabitFilter(filter) {
+        const habitItems = document.querySelectorAll('.habits .habit-item');
+        habitItems.forEach(item => {
+            if (filter === 'all') {
+                item.style.display = '';
+            } else if (filter === 'active') {
+                item.style.display = item.dataset.status === 'in_progress' ? '' : 'none';
+            } else if (filter === 'completed') {
+                item.style.display = item.dataset.status === 'completed' ? '' : 'none';
+            }
+        });
+    }
+
+    // Обработчики кликов на фильтры задач
+    document.querySelectorAll('.tasks .filter').forEach(item => {
         item.addEventListener('click', function () {
-            // Убираем класс 'active' у всех
-            document.querySelectorAll('.filter').forEach(el => el.classList.remove('active'));
-            // Добавляем 'active' текущему
+            document.querySelectorAll('.tasks .filter').forEach(el => el.classList.remove('active'));
             this.classList.add('active');
-            console.log('Выбран фильтр:', this.textContent.trim());
+            applyTaskFilter(this.dataset.filter);
         });
     });
+
+    // Обработчики кликов на фильтры привычек
+    document.querySelectorAll('.habits .filter').forEach(item => {
+        item.addEventListener('click', function () {
+            document.querySelectorAll('.habits .filter').forEach(el => el.classList.remove('active'));
+            this.classList.add('active');
+            applyHabitFilter(this.dataset.filter);
+        });
+    });
+
+    // По умолчанию применяем фильтр "Активные" для задач и привычек
+    applyTaskFilter('active');
+    applyHabitFilter('active');
 });

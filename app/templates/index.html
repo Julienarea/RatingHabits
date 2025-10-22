@@ -16,15 +16,12 @@
     <body>
         <header class="header">
             <h1>ПРОФИЛЬ</h1>
+            <a href="{{ url_for('logout') }}" style="position: absolute; right: 24px; top: 24px; color: #fff; text-decoration: none; font-size: 14px; padding: 8px 16px; background: rgba(255,255,255,0.2); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">Выйти</a>
         </header>
 
         <main class="container">
             <section class="avatar block card">
-                <img
-                    src="https://habitica.com/static/img/avatar.png"
-                    alt="Аватар"
-                    class="avatar-img"
-                />
+                <img src="{{ user.avatar }}" alt="Аватар" class="avatar-img" />
                 <div class="nickname">{{ user.nickname }}</div>
             </section>
 
@@ -73,17 +70,16 @@
                     </button>
                 </div>
                 <div class = "card-filters">
-                    <div class="filter" data-filter="active">Активные
-                    </div>
-                    <div class="filter" data-filter="completed">Сделанные
-                    </div>
+                    <div class="filter active" data-filter="active">Активные</div>
+                    <div class="filter" data-filter="completed">Сделанные</div>
                 </div>
                 <ul class="tasks-list">
                     {% for task in user.tasks %}
-                    <li class="task-item">
+                    <li class="task-item" data-status="{{ task.status }}">
                         <label class="checkbox-container">
                             <input type="checkbox" class="task-checkbox" {% if
-                            task.status == 'выполнено' %}checked{% endif %}
+                            task.status == 'completed' %}checked{% endif %}
+                            data-task-id="{{ task.id }}" 
                             data-task-title="{{ task.title }}" >
                             <span class="checkmark"></span>
                             <span class="task-title">{{ task.title }}</span>
@@ -105,31 +101,20 @@
                     </button>
                 </div>
                 <div class = "card-filters">
-                    <div class="filter" data-filter="all">Все
-                    </div>
-                    <div class="filter" data-filter="active">Активные
-                    </div>
-                    <div class="filter" data-filter="completed">Сделанные
-                    </div>
+                    <div class="filter" data-filter="all">Все</div>
+                    <div class="filter active" data-filter="active">Активные</div>
+                    <div class="filter" data-filter="completed">Сделанные</div>
                 </div>
                 <ul class="habits-list">
                     {% for habit in user.habits %}
-                    <li class="habit-item">
+                    <li class="habit-item" data-status="{% if habit.streak > 0 %}completed{% else %}in_progress{% endif %}">
                         <label class="checkbox-container">
-                            <input
-                                type="checkbox"
-                                class="habit-checkbox"
-                                {%
-                                if
-                                habit.streak
-                            >
-                            0 %}checked{% endif %} data-habit-title="{{
-                            habit.title }}">
+                            <input type="checkbox" class="habit-checkbox" {% if habit.streak > 0 %}checked{% endif %} 
+                                data-habit-id="{{ habit.id }}"
+                                data-habit-title="{{ habit.title }}">
                             <span class="checkmark"></span>
                             <span class="habit-title">{{ habit.title }}</span>
-                            <span class="habit-streak"
-                                >(Серия: {{ habit.streak }})</span
-                            >
+                            <span class="habit-streak">(Серия: {{ habit.streak }})</span>
                         </label>
                     </li>
                     {% endfor %}
