@@ -399,6 +399,40 @@
                 </div>
             </div>
         </div>
+            <!-- Модальное окно создания привычки -->
+            <div id="modal-habit" class="modal" style="display: none">
+                <div class="modal-content habitica-modal">
+                    <div class="modal-header habitica-modal-header" style="background: linear-gradient(90deg, #7b2ff2 0%, #f357a8 100%); color: #fff; border-radius: 8px 8px 0 0; padding: 24px 32px 16px 32px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                            <h2 style="margin: 0; font-size: 24px; font-weight: 700;">Создать привычку</h2>
+                            <div style="margin-left: auto; display: flex; gap: 12px;">
+                                <button id="habit-cancel-btn" class="modal-btn-secondary cancel" style="background: transparent; color: #fff; border: none; font-size: 16px; font-weight: 600; cursor: pointer;">Отмена</button>
+                                <button id="habit-create-btn" class="modal-btn" style="background: #fff; color: #7b2ff2; border-radius: 8px; font-weight: 600; font-size: 16px; padding: 8px 24px; border: none; cursor: pointer;">Создать</button>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 18px;">
+                            <label for="habit-title" style="font-weight: 600; color: #fff;">Заголовок*</label>
+                            <input type="text" id="habit-title" required placeholder="Добавить название" class="form-input" style="margin-top: 8px; background: #fff; color: #222; border: 2px solid #fff;" />
+                        </div>
+                        <div class="form-group" style="margin-bottom: 18px;">
+                            <label for="habit-difficulty" style="font-weight: 600; color: #fff;">Сложность</label>
+                            <select id="habit-difficulty" class="form-input" style="margin-top: 8px; background: #fff; color: #222; border: 2px solid #fff;">
+                                <option value="trivial">⭐ Пустяк</option>
+                                <option value="easy" selected>⭐⭐ Легко</option>
+                                <option value="medium">⭐⭐⭐ Нормально</option>
+                                <option value="hard">⭐⭐⭐⭐ Сложно</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <label for="habit-notes" style="font-weight: 600; color: #fff;">Заметки</label>
+                                <small style="margin-left: 8px;"><a href="https://github.com/HabitRPG/habitica/wiki/Markdown-in-Habitica" target="_blank" style="color: #fff; text-decoration: underline; font-size: 13px;">Справка по форматированию</a></small>
+                            </div>
+                            <textarea id="habit-notes" placeholder="Добавить заметку" class="form-input" rows="3" style="margin-top: 8px; background: #fff; color: #222; border: 2px solid #fff;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
                                 <path fill="currentColor" fill-rule="evenodd" d="M3 14h8V4H3v10zM14 4h-1v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4H0V2h4V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4v2zm-6 8h1V6H8v6zm-3 0h1V6H5v6z"></path>
                             </svg>

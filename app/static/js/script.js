@@ -305,6 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (habitCreateBtn) habitCreateBtn.onclick = function () {
         const title = document.getElementById('habit-title').value.trim();
         const notes = document.getElementById('habit-notes').value.trim();
+        const difficulty = document.getElementById('habit-difficulty').value;
 
         if (title) {
             fetch('/add_habit', {
@@ -312,16 +313,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     title: title,
-                    notes: notes
+                    notes: notes,
+                    difficulty: difficulty
                 })
             })
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) location.reload();
-                    else alert('Ошибка при добавлении привычки');
+                    else alert('Ошибка при создании привычки');
                 });
+        } else {
+            alert('Название привычки обязательно');
         }
-        closeModals();
     };
 
     //Фильтры

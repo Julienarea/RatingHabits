@@ -47,6 +47,7 @@ class Habit(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     title = Column(String, nullable=False)
     notes = Column(Text, nullable=True)
+    difficulty = Column(String, default='easy')
     streak = Column(Integer, default=0)
     user = relationship("User", back_populates="habits")
 

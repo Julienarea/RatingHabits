@@ -232,13 +232,14 @@ def add_habit():
     if request.method == 'POST':
         title = request.json.get('title')
         notes = request.json.get('notes')
-        
+        difficulty = request.json.get('difficulty', 'easy')
         if title:
             try:
                 db.add_user_habit(
                     user_id=current_user.id,
                     title=title,
-                    notes=notes
+                    notes=notes,
+                    difficulty=difficulty
                 )
                 return jsonify({'success': True})
             except Exception as e:
