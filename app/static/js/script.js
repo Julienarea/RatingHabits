@@ -101,19 +101,33 @@ document.addEventListener('DOMContentLoaded', function () {
         modalTask.style.display = 'none';
         modalHabit.style.display = 'none';
         document.getElementById('task-title').value = '';
+        document.getElementById('task-notes').value = '';
+        document.getElementById('task-difficulty').value = 'easy';
+        document.getElementById('task-deadline').value = '';
         document.getElementById('habit-title').value = '';
+        document.getElementById('habit-notes').value = '';
     }
     overlay.addEventListener('click', closeModals);
     if (taskCancelBtn) taskCancelBtn.onclick = closeModals;
     if (habitCancelBtn) habitCancelBtn.onclick = closeModals;
+
     // Создание задачи
     if (taskCreateBtn) taskCreateBtn.onclick = function () {
         const title = document.getElementById('task-title').value.trim();
+        const notes = document.getElementById('task-notes').value.trim();
+        const difficulty = document.getElementById('task-difficulty').value;
+        const deadline = document.getElementById('task-deadline').value;
+
         if (title) {
             fetch('/add_task', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title })
+                body: JSON.stringify({
+                    title: title,
+                    notes: notes,
+                    difficulty: difficulty,
+                    deadline: deadline
+                })
             })
                 .then(res => res.json())
                 .then(data => {
@@ -123,14 +137,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         closeModals();
     };
+
     // Создание привычки
     if (habitCreateBtn) habitCreateBtn.onclick = function () {
         const title = document.getElementById('habit-title').value.trim();
+        const notes = document.getElementById('habit-notes').value.trim();
+
         if (title) {
             fetch('/add_habit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title })
+                body: JSON.stringify({
+                    title: title,
+                    notes: notes
+                })
             })
                 .then(res => res.json())
                 .then(data => {

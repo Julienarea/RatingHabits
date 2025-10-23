@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Профиль</title>
+        <title>RatingHabits</title>
         <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
             rel="stylesheet"
@@ -135,37 +135,94 @@
         ></div>
         <div id="modal-task" class="modal" style="display: none">
             <div class="modal-content">
-                <h2>Создать задачу</h2>
-                <input
-                    type="text"
-                    id="task-title"
-                    placeholder="Название задачи"
-                />
-                <div class="modal-actions">
-                    <button id="task-create-btn" class="modal-btn">
-                        Создать
-                    </button>
-                    <button id="task-cancel-btn" class="modal-btn cancel">
-                        Отмена
-                    </button>
+                <div class="modal-header">
+                    <h2>Создать задачу</h2>
+                    <div class="modal-header-actions">
+                        <button id="task-cancel-btn" class="modal-btn-secondary cancel">
+                            Отмена
+                        </button>
+                        <button id="task-create-btn" class="modal-btn">
+                            Создать
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="task-title">Заголовок*</label>
+                        <input
+                            type="text"
+                            id="task-title"
+                            placeholder="Добавить название"
+                            class="form-input"
+                            required
+                        />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-notes">Заметки</label>
+                        <textarea
+                            id="task-notes"
+                            placeholder="Добавить заметку"
+                            class="form-input"
+                            rows="3"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="task-difficulty">Сложность</label>
+                        <select id="task-difficulty" class="form-input">
+                            <option value="trivial">⭐ Пустяк</option>
+                            <option value="easy" selected>⭐⭐ Легко</option>
+                            <option value="medium">⭐⭐⭐ Нормально</option>
+                            <option value="hard">⭐⭐⭐⭐ Сложно</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="task-deadline">Выполнить до</label>
+                        <input
+                            type="date"
+                            id="task-deadline"
+                            class="form-input"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
         <div id="modal-habit" class="modal" style="display: none">
             <div class="modal-content">
-                <h2>Создать привычку</h2>
-                <input
-                    type="text"
-                    id="habit-title"
-                    placeholder="Название привычки"
-                />
-                <div class="modal-actions">
-                    <button id="habit-create-btn" class="modal-btn">
-                        Создать
-                    </button>
-                    <button id="habit-cancel-btn" class="modal-btn cancel">
-                        Отмена
-                    </button>
+                <div class="modal-header">
+                    <h2>Создать привычку</h2>
+                    <div class="modal-header-actions">
+                        <button id="habit-cancel-btn" class="modal-btn-secondary cancel">
+                            Отмена
+                        </button>
+                        <button id="habit-create-btn" class="modal-btn">
+                            Создать
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="habit-title">Заголовок*</label>
+                        <input
+                            type="text"
+                            id="habit-title"
+                            placeholder="Добавить название"
+                            class="form-input"
+                            required
+                        />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="habit-notes">Заметки</label>
+                        <textarea
+                            id="habit-notes"
+                            placeholder="Добавить заметку"
+                            class="form-input"
+                            rows="3"
+                        ></textarea>
+                    </div>
                 </div>
             </div>
         </div>

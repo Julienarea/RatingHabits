@@ -48,10 +48,10 @@ def register():
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
         
-        # Валидация username: только латиница, цифры, без пробелов
+        # Валидация username: только латиница, цифры, дефис, подчёркивание
         import re
-        if not re.match(r'^[A-Za-z0-9\-_]+$', username):
-            return render_template('register.html', error='Имя пользователя должно содержать только латинские буквы и цифры, без пробелов')
+        if not re.match(r'^[A-Za-z0-9_-]+$', username):
+            return render_template('register.html', error='Имя пользователя должно содержать только латинские буквы, цифры, дефис и подчёркивание')
 
         if password != confirm_password:
             return render_template('register.html', error='Пароли не совпадают')
@@ -152,9 +152,19 @@ def add_task():
     """Добавление новой задачи"""
     if request.method == 'POST':
         title = request.json.get('title')
+        notes = request.json.get('notes')
+        difficulty = request.json.get('difficulty', 'easy')
+        deadline = request.json.get('deadline')
+        
         if title:
             try:
-                db.add_user_task(current_user.id, title)
+                db.add_user_task(
+                    user_id=current_user.id,
+                    title=title,
+                    notes=notes,
+                    difficulty=difficulty,
+                    deadline=deadline
+                )
                 return jsonify({'success': True})
             except Exception as e:
                 return jsonify({'success': False, 'error': str(e)}), 400
@@ -181,9 +191,15 @@ def add_habit():
     """Добавление новой привычки"""
     if request.method == 'POST':
         title = request.json.get('title')
+        notes = request.json.get('notes')
+        
         if title:
             try:
-                db.add_user_habit(current_user.id, title)
+                db.add_user_habit(
+                    user_id=current_user.id,
+                    title=title,
+                    notes=notes
+                )
                 return jsonify({'success': True})
             except Exception as e:
                 return jsonify({'success': False, 'error': str(e)}), 400

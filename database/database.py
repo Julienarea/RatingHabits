@@ -161,13 +161,15 @@ class Database:
 
     # ==================== TASK METHODS ====================
     
-    def add_user_task(self, user_id: int, title: str, deadline=None) -> Task:
+    def add_user_task(self, user_id: int, title: str, notes: str = None, difficulty: str = 'easy', deadline=None) -> Task:
         """
         Добавить задачу пользователю.
         
         Args:
             user_id: ID пользователя
             title: Название задачи
+            notes: Заметки к задаче (опционально)
+            difficulty: Сложность задачи (trivial, easy, medium, hard)
             deadline: Крайний срок (опционально)
             
         Returns:
@@ -178,6 +180,8 @@ class Database:
             new_task = Task(
                 user_id=user_id,
                 title=title,
+                notes=notes,
+                difficulty=difficulty,
                 deadline=deadline
             )
             session.add(new_task)
@@ -245,13 +249,14 @@ class Database:
 
     # ==================== HABIT METHODS ====================
     
-    def add_user_habit(self, user_id: int, title: str) -> Habit:
+    def add_user_habit(self, user_id: int, title: str, notes: str = None) -> Habit:
         """
         Добавить привычку пользователю.
         
         Args:
             user_id: ID пользователя
             title: Название привычки
+            notes: Заметки к привычке (опционально)
             
         Returns:
             Habit: Созданная привычка
@@ -261,6 +266,7 @@ class Database:
             new_habit = Habit(
                 user_id=user_id,
                 title=title,
+                notes=notes,
                 streak=0
             )
             session.add(new_habit)

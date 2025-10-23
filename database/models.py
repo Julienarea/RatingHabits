@@ -46,6 +46,7 @@ class Habit(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     title = Column(String, nullable=False)
+    notes = Column(Text, nullable=True)
     streak = Column(Integer, default=0)
     user = relationship("User", back_populates="habits")
 
@@ -66,7 +67,9 @@ class Task(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     title = Column(String, nullable=False)
+    notes = Column(Text, nullable=True)
     status = Column(String, default='in_progress')  # in_progress, completed
+    difficulty = Column(String, default='easy')  # trivial, easy, medium, hard
     deadline = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     completed_at = Column(DateTime(timezone=True), nullable=True)
