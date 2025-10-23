@@ -197,20 +197,122 @@ body {
   margin: 0;
 }
 .task-item {
+  background: #fff;
+  border: 2px solid #edecee;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.task-item:hover {
+  border-color: #4e4eff;
+  box-shadow: 0 2px 8px rgba(78,78,255,0.15);
+}
+
+.task-wrapper {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px;
+  gap: 12px;
+}
+
+.task-left-control {
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.task-content {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.task-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #4e4a57;
+  margin: 0 0 6px 0;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.task-notes {
+  font-size: 13px;
+  color: #878190;
+  margin: 6px 0;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.task-meta {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.task-difficulty,
+.task-deadline {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
   background: #f7f7fa;
+  color: #686274;
+}
+
+.task-difficulty-trivial { background: #e8f5e9; color: #2e7d32; }
+.task-difficulty-easy { background: #e3f2fd; color: #1565c0; }
+.task-difficulty-medium { background: #fff3e0; color: #e65100; }
+.task-difficulty-hard { background: #fce4ec; color: #c2185b; }
+
+.task-actions {
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.task-item:hover .task-actions {
+  opacity: 1;
+}
+
+.task-menu-btn {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-menu-btn:hover {
+  background: #f0f0f5;
+}
+
+.btn-delete {
+  width: 100%;
+  background: #fff;
+  color: #dc3545;
+  border: 2px solid #dc3545;
   border-radius: 8px;
   padding: 10px 16px;
-  padding-bottom: 36px;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 4px rgba(78,78,255,0.05);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.task-title {
+  font-size: 14px;
   font-weight: 600;
-  color: #4e4eff;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
+
+.btn-delete:hover {
+  background: #dc3545;
+  color: #fff;
+}
+
 /* Стили для чекбокса */
 .checkbox-container {
   display: flex;

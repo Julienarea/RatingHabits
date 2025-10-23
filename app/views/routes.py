@@ -107,7 +107,14 @@ def index():
             for ach in user_achievements
         ],
         'tasks': [
-            {'id': task.id, 'title': task.title, 'status': task.status}
+            {
+                'id': task.id, 
+                'title': task.title, 
+                'status': task.status,
+                'notes': task.notes,
+                'difficulty': task.difficulty,
+                'deadline': task.deadline.strftime('%Y-%m-%d') if task.deadline else None
+            }
             for task in user_tasks
         ],
         'habits': [
@@ -180,6 +187,39 @@ def update_task():
         if task_id and status:
             try:
                 db.update_task_status(task_id, status)
+                return jsonify({'success': True})
+            except Exception as e:
+                return jsonify({'success': False, 'error': str(e)}), 400
+    return jsonify({'success': False}), 400
+
+@app.route('/update_task_details', methods=['POST'])
+@login_required
+def update_task_details():
+    """Обновление полной информации о задаче"""
+    if request.method == 'POST':
+        task_id = request.json.get('task_id')
+        title = request.json.get('title')
+        notes = request.json.get('notes')
+        difficulty = request.json.get('difficulty')
+        deadline = request.json.get('deadline')
+        
+        if task_id and title:
+            try:
+                db.update_task_details(task_id, title, notes, difficulty, deadline)
+                return jsonify({'success': True})
+            except Exception as e:
+                return jsonify({'success': False, 'error': str(e)}), 400
+    return jsonify({'success': False}), 400
+
+@app.route('/delete_task', methods=['POST'])
+@login_required
+def delete_task_route():
+    """Удаление задачи"""
+    if request.method == 'POST':
+        task_id = request.json.get('task_id')
+        if task_id:
+            try:
+                db.delete_task(task_id)
                 return jsonify({'success': True})
             except Exception as e:
                 return jsonify({'success': False, 'error': str(e)}), 400

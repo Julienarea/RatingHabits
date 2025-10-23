@@ -76,15 +76,45 @@
                 </div>
                 <ul class="tasks-list">
                     {% for task in user.tasks %}
-                    <li class="task-item" data-status="{{ task.status }}">
-                        <label class="checkbox-container">
-                            <input type="checkbox" class="task-checkbox" {% if
-                            task.status == 'completed' %}checked{% endif %}
-                            data-task-id="{{ task.id }}" 
-                            data-task-title="{{ task.title }}" >
-                            <span class="checkmark"></span>
-                            <span class="task-title">{{ task.title }}</span>
-                        </label>
+                    <li class="task-item" data-status="{{ task.status }}" data-task-id="{{ task.id }}">
+                        <div class="task-wrapper">
+                            <div class="task-left-control">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" class="task-checkbox" {% if
+                                    task.status == 'completed' %}checked{% endif %}
+                                    data-task-id="{{ task.id }}" 
+                                    data-task-title="{{ task.title }}" >
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="task-content" data-task-id="{{ task.id }}">
+                                <h3 class="task-title">{{ task.title }}</h3>
+                                {% if task.notes %}
+                                <div class="task-notes">{{ task.notes }}</div>
+                                {% endif %}
+                                <div class="task-meta">
+                                    {% if task.difficulty %}
+                                    <span class="task-difficulty task-difficulty-{{ task.difficulty }}">
+                                        {% if task.difficulty == 'trivial' %}⭐ Пустяк
+                                        {% elif task.difficulty == 'easy' %}⭐⭐ Легко
+                                        {% elif task.difficulty == 'medium' %}⭐⭐⭐ Нормально
+                                        {% elif task.difficulty == 'hard' %}⭐⭐⭐⭐ Сложно
+                                        {% endif %}
+                                    </span>
+                                    {% endif %}
+                                    {% if task.deadline %}
+                                    <span class="task-deadline">📅 {{ task.deadline }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="task-actions">
+                                <button class="task-menu-btn" data-task-id="{{ task.id }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 16" width="16" height="16">
+                                        <path fill="#686274" fill-rule="evenodd" d="M2 4a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                     </li>
                     {% endfor %}
                 </ul>
@@ -226,6 +256,76 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Модальное окно редактирования задачи -->
+        <div id="modal-task-edit" class="modal" style="display: none">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Редактировать задачу</h2>
+                    <div class="modal-header-actions">
+                        <button id="task-edit-cancel-btn" class="modal-btn-secondary cancel">
+                            Отмена
+                        </button>
+                        <button id="task-edit-save-btn" class="modal-btn">
+                            Сохранить
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="task-edit-id">
+                    
+                    <div class="form-group">
+                        <label for="task-edit-title">Заголовок*</label>
+                        <input
+                            type="text"
+                            id="task-edit-title"
+                            placeholder="Добавить название"
+                            class="form-input"
+                            required
+                        />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-edit-notes">Заметки</label>
+                        <textarea
+                            id="task-edit-notes"
+                            placeholder="Добавить заметку"
+                            class="form-input"
+                            rows="3"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="task-edit-difficulty">Сложность</label>
+                        <select id="task-edit-difficulty" class="form-input">
+                            <option value="trivial">⭐ Пустяк</option>
+                            <option value="easy">⭐⭐ Легко</option>
+                            <option value="medium">⭐⭐⭐ Нормально</option>
+                            <option value="hard">⭐⭐⭐⭐ Сложно</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="task-edit-deadline">Выполнить до</label>
+                        <input
+                            type="date"
+                            id="task-edit-deadline"
+                            class="form-input"
+                        />
+                    </div>
+                    
+                    <div class="form-group">
+                        <button id="task-delete-btn" class="btn-delete">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 16" width="14" height="16">
+                                <path fill="currentColor" fill-rule="evenodd" d="M3 14h8V4H3v10zM14 4h-1v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4H0V2h4V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4v2zm-6 8h1V6H8v6zm-3 0h1V6H5v6z"></path>
+                            </svg>
+                            Удалить задачу
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     </body>
 </html>

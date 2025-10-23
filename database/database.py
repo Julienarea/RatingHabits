@@ -235,6 +235,27 @@ class Database:
         finally:
             session.close()
 
+    def update_task_details(self, task_id: int, title: str, notes: str = None, difficulty: str = 'easy', deadline=None):
+        """Обновить полную информацию о задаче"""
+        session = self.get_session()
+        try:
+            task = session.query(Task).filter(Task.id == task_id).first()
+            if task:
+                task.title = title
+                task.notes = notes
+                task.difficulty = difficulty
+                if deadline:
+                    from datetime import datetime
+                    task.deadline = datetime.fromisoformat(deadline)
+                else:
+                    task.deadline = None
+                session.commit()
+        except Exception as e:
+            session.rollback()
+            raise e
+        finally:
+            session.close()
+
     def delete_task(self, task_id: int):
         """Удалить задачу"""
         session = self.get_session()

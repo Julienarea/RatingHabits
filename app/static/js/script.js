@@ -71,6 +71,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const overlay = document.getElementById('modal-overlay');
     const modalTask = document.getElementById('modal-task');
     const modalHabit = document.getElementById('modal-habit');
+    const modalTaskEdit = document.getElementById('modal-task-edit');
+
     // Кнопки
     const addTaskBtn = document.querySelector('.tasks .icon-btn');
     const addHabitBtn = document.querySelector('.habits .icon-btn');
@@ -78,6 +80,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const taskCancelBtn = document.getElementById('task-cancel-btn');
     const habitCreateBtn = document.getElementById('habit-create-btn');
     const habitCancelBtn = document.getElementById('habit-cancel-btn');
+
+    const taskEditSaveBtn = document.getElementById('task-edit-save-btn');
+    const taskEditCancelBtn = document.getElementById('task-edit-cancel-btn');
+    const taskDeleteBtn = document.getElementById('task-delete-btn');
 
     // Открытие модалок
     if (addTaskBtn) {
@@ -100,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
         overlay.style.display = 'none';
         modalTask.style.display = 'none';
         modalHabit.style.display = 'none';
+        modalTaskEdit.style.display = 'none';
         document.getElementById('task-title').value = '';
         document.getElementById('task-notes').value = '';
         document.getElementById('task-difficulty').value = 'easy';
@@ -107,6 +114,38 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('habit-title').value = '';
         document.getElementById('habit-notes').value = '';
     }
+    overlay.addEventListener('click', closeModals);
+    if (taskCancelBtn) taskCancelBtn.onclick = closeModals;
+    if (habitCancelBtn) habitCancelBtn.onclick = closeModals;
+    if (taskEditCancelBtn) taskEditCancelBtn.onclick = closeModals;
+
+    // Открыть модальное окно редактирования задачи
+    document.querySelectorAll('.task-content').forEach(taskContent => {
+        taskContent.addEventListener('click', function (e) {
+            const taskItem = this.closest('.task-item');
+            const taskId = taskItem.dataset.taskId;
+
+            // Получаем данные задачи из DOM
+            const title = taskItem.querySelector('.task-title').textContent;
+            const notesEl = taskItem.querySelector('.task-notes');
+            const notes = notesEl ? notesEl.textContent : '';
+            const difficultyEl = taskItem.querySelector('[class*="task-difficulty-"]');
+            const difficulty = difficultyEl ? difficultyEl.className.split('task-difficulty-')[1].split(' ')[0] : 'easy';
+            const deadlineEl = taskItem.querySelector('.task-deadline');
+            const deadline = deadlineEl ? deadlineEl.textContent.replace('📅 ', '') : '';
+
+            // Заполняем форму редактирования
+            document.getElementById('task-edit-id').value = taskId;
+            document.getElementById('task-edit-title').value = title;
+            document.getElementById('task-edit-notes').value = notes;
+            document.getElementById('task-edit-difficulty').value = difficulty;
+            document.getElementById('task-edit-deadline').value = deadline;
+
+            // Показываем модальное окно
+            overlay.style.display = 'block';
+            modalTaskEdit.style.display = 'flex';
+        });
+    });
     overlay.addEventListener('click', closeModals);
     if (taskCancelBtn) taskCancelBtn.onclick = closeModals;
     if (habitCancelBtn) habitCancelBtn.onclick = closeModals;
@@ -136,6 +175,53 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         }
         closeModals();
+    };
+
+    // Сохранение изменений задачи
+    if (taskEditSaveBtn) taskEditSaveBtn.onclick = function () {
+        const taskId = document.getElementById('task-edit-id').value;
+        const title = document.getElementById('task-edit-title').value.trim();
+        const notes = document.getElementById('task-edit-notes').value.trim();
+        const difficulty = document.getElementById('task-edit-difficulty').value;
+        const deadline = document.getElementById('task-edit-deadline').value;
+
+        if (title && taskId) {
+            fetch('/update_task_details', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    task_id: taskId,
+                    title: title,
+                    notes: notes,
+                    difficulty: difficulty,
+                    deadline: deadline
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) location.reload();
+                    else alert('Ошибка при обновлении задачи');
+                });
+        }
+        closeModals();
+    };
+
+    // Удаление задачи
+    if (taskDeleteBtn) taskDeleteBtn.onclick = function () {
+        const taskId = document.getElementById('task-edit-id').value;
+
+        if (confirm('Вы уверены, что хотите удалить эту задачу?') && taskId) {
+            fetch('/delete_task', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task_id: taskId })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) location.reload();
+                    else alert('Ошибка при удалении задачи');
+                });
+        }
     };
 
     // Создание привычки
