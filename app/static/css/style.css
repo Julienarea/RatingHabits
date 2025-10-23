@@ -291,6 +291,99 @@ body {
   background: #f0f0f5;
 }
 
+/* Стили для привычек (аналогично задачам) */
+.habits-list {
+  list-style: none;
+  padding: 0;
+}
+
+.habit-item {
+  background: #fff;
+  border: 2px solid #edecee;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.habit-item:hover {
+  border-color: #4e4eff;
+  box-shadow: 0 2px 8px rgba(78, 78, 255, 0.15);
+}
+
+.habit-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.habit-left-control {
+  flex-shrink: 0;
+}
+
+.habit-content {
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.habit-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 6px 0;
+  line-height: 1.4;
+}
+
+.habit-notes {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.habit-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.habit-streak-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.habit-actions {
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.habit-item:hover .habit-actions {
+  opacity: 1;
+}
+
+.habit-menu-btn {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.habit-menu-btn:hover {
+  background: #f0f0f5;
+}
+
 .btn-delete {
   width: 100%;
   background: #fff;

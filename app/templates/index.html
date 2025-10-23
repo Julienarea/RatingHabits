@@ -138,15 +138,28 @@
                 </div>
                 <ul class="habits-list">
                     {% for habit in user.habits %}
-                    <li class="habit-item" data-status="{% if habit.streak > 0 %}completed{% else %}in_progress{% endif %}">
-                        <label class="checkbox-container">
-                            <input type="checkbox" class="habit-checkbox" {% if habit.streak > 0 %}checked{% endif %} 
-                                data-habit-id="{{ habit.id }}"
-                                data-habit-title="{{ habit.title }}">
-                            <span class="checkmark"></span>
-                            <span class="habit-title">{{ habit.title }}</span>
-                            <span class="habit-streak">(Серия: {{ habit.streak }})</span>
-                        </label>
+                    <li class="habit-item" data-habit-id="{{ habit.id }}" data-status="{% if habit.streak > 0 %}completed{% else %}in_progress{% endif %}">
+                        <div class="habit-wrapper">
+                            <div class="habit-left-control">
+                                <label>
+                                    <input type="checkbox" class="habit-checkbox" {% if habit.streak > 0 %}checked{% endif %} 
+                                        data-habit-id="{{ habit.id }}"
+                                        data-habit-title="{{ habit.title }}">
+                                </label>
+                            </div>
+                            <div class="habit-content" data-habit-id="{{ habit.id }}">
+                                <h3 class="habit-title">{{ habit.title }}</h3>
+                                {% if habit.notes %}
+                                <div class="habit-notes">{{ habit.notes }}</div>
+                                {% endif %}
+                                <div class="habit-meta">
+                                    <span class="habit-streak-badge">🔥 Серия: {{ habit.streak }}</span>
+                                </div>
+                            </div>
+                            <div class="habit-actions">
+                                <button class="habit-menu-btn">⋮</button>
+                            </div>
+                        </div>
                     </li>
                     {% endfor %}
                 </ul>
@@ -317,6 +330,76 @@
                     <div class="form-group">
                         <button id="task-delete-btn" class="btn-delete">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 16" width="14" height="16">
+                                <path fill-rule="evenodd" d="M3 14h8V4H3v10zM14 4h-1v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4H0V2h4V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4v2zm-6 8h1V6H8v6zm-3 0h1V6H5v6z"></path>
+                            </svg>
+                            Удалить задачу
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно редактирования привычки -->
+        <div id="modal-habit-edit" class="modal" style="display: none">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Редактировать привычку</h2>
+                    <div class="modal-header-actions">
+                        <button id="habit-edit-cancel-btn" class="modal-btn-secondary cancel">
+                            Отмена
+                        </button>
+                        <button id="habit-edit-save-btn" class="modal-btn">
+                            Сохранить
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="habit-edit-id">
+                    
+                    <div class="form-group">
+                        <label for="habit-edit-title">Заголовок*</label>
+                        <input
+                            type="text"
+                            id="habit-edit-title"
+                            placeholder="Добавить название"
+                            class="form-input"
+                            required
+                        />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="habit-edit-notes">Заметки</label>
+                        <textarea
+                            id="habit-edit-notes"
+                            placeholder="Добавить заметку"
+                            class="form-input"
+                            rows="3"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="habit-edit-streak">Серия</label>
+                        <input
+                            type="number"
+                            id="habit-edit-streak"
+                            placeholder="0"
+                            class="form-input"
+                            min="0"
+                        />
+                    </div>
+                    
+                    <div class="form-group">
+                        <button id="habit-delete-btn" class="btn-delete">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 16" width="14" height="16">
+                                <path fill-rule="evenodd" d="M3 14h8V4H3v10zM14 4h-1v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4H0V2h4V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4v2zm-6 8h1V6H8v6zm-3 0h1V6H5v6z"></path>
+                            </svg>
+                            Удалить привычку
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
                                 <path fill="currentColor" fill-rule="evenodd" d="M3 14h8V4H3v10zM14 4h-1v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4H0V2h4V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h4v2zm-6 8h1V6H8v6zm-3 0h1V6H5v6z"></path>
                             </svg>
                             Удалить задачу

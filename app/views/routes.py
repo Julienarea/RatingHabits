@@ -245,6 +245,38 @@ def add_habit():
                 return jsonify({'success': False, 'error': str(e)}), 400
     return jsonify({'success': False}), 400
 
+@app.route('/update_habit_details', methods=['POST'])
+@login_required
+def update_habit_details():
+    """Обновление деталей привычки (title, notes, streak)"""
+    if request.method == 'POST':
+        habit_id = request.json.get('habit_id')
+        title = request.json.get('title')
+        notes = request.json.get('notes')
+        streak = request.json.get('streak')
+        
+        if habit_id and title:
+            try:
+                db.update_habit_details(habit_id, title, notes, streak)
+                return jsonify({'success': True})
+            except Exception as e:
+                return jsonify({'success': False, 'error': str(e)}), 400
+    return jsonify({'success': False}), 400
+
+@app.route('/delete_habit', methods=['POST'])
+@login_required
+def delete_habit_route():
+    """Удаление привычки"""
+    if request.method == 'POST':
+        habit_id = request.json.get('habit_id')
+        if habit_id:
+            try:
+                db.delete_habit(habit_id)
+                return jsonify({'success': True})
+            except Exception as e:
+                return jsonify({'success': False, 'error': str(e)}), 400
+    return jsonify({'success': False}), 400
+
 @app.route('/update_habit_streak', methods=['POST'])
 @login_required
 def update_habit_streak():

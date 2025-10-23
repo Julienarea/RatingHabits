@@ -313,6 +313,22 @@ class Database:
         finally:
             session.close()
 
+    def update_habit_details(self, habit_id: int, title: str, notes: str = None, streak: int = 0):
+        """Обновить детали привычки (title, notes, streak)"""
+        session = self.get_session()
+        try:
+            habit = session.query(Habit).filter(Habit.id == habit_id).first()
+            if habit:
+                habit.title = title
+                habit.notes = notes
+                habit.streak = streak
+                session.commit()
+        except Exception as e:
+            session.rollback()
+            raise e
+        finally:
+            session.close()
+
     def update_habit_streak(self, habit_id: int, streak: int):
         """Обновить серию привычки"""
         session = self.get_session()

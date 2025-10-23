@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalTask = document.getElementById('modal-task');
     const modalHabit = document.getElementById('modal-habit');
     const modalTaskEdit = document.getElementById('modal-task-edit');
+    const modalHabitEdit = document.getElementById('modal-habit-edit');
 
     // Кнопки
     const addTaskBtn = document.querySelector('.tasks .icon-btn');
@@ -84,6 +85,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const taskEditSaveBtn = document.getElementById('task-edit-save-btn');
     const taskEditCancelBtn = document.getElementById('task-edit-cancel-btn');
     const taskDeleteBtn = document.getElementById('task-delete-btn');
+
+    const habitEditSaveBtn = document.getElementById('habit-edit-save-btn');
+    const habitEditCancelBtn = document.getElementById('habit-edit-cancel-btn');
+    const habitDeleteBtn = document.getElementById('habit-delete-btn');
 
     // Открытие модалок
     if (addTaskBtn) {
@@ -107,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
         modalTask.style.display = 'none';
         modalHabit.style.display = 'none';
         modalTaskEdit.style.display = 'none';
+        modalHabitEdit.style.display = 'none';
         document.getElementById('task-title').value = '';
         document.getElementById('task-notes').value = '';
         document.getElementById('task-difficulty').value = 'easy';
@@ -118,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (taskCancelBtn) taskCancelBtn.onclick = closeModals;
     if (habitCancelBtn) habitCancelBtn.onclick = closeModals;
     if (taskEditCancelBtn) taskEditCancelBtn.onclick = closeModals;
+    if (habitEditCancelBtn) habitEditCancelBtn.onclick = closeModals;
 
     // Открыть модальное окно редактирования задачи
     document.querySelectorAll('.task-content').forEach(taskContent => {
@@ -220,6 +227,76 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(data => {
                     if (data.success) location.reload();
                     else alert('Ошибка при удалении задачи');
+                });
+        }
+    };
+
+    // Открыть модальное окно редактирования привычки
+    document.querySelectorAll('.habit-content').forEach(habitContent => {
+        habitContent.addEventListener('click', function (e) {
+            const habitItem = this.closest('.habit-item');
+            const habitId = habitItem.dataset.habitId;
+
+            // Получаем данные привычки из DOM
+            const title = habitItem.querySelector('.habit-title').textContent;
+            const notesEl = habitItem.querySelector('.habit-notes');
+            const notes = notesEl ? notesEl.textContent : '';
+            const streakEl = habitItem.querySelector('.habit-streak-badge');
+            const streak = streakEl ? streakEl.textContent.replace('🔥 Серия: ', '') : '0';
+
+            // Заполняем форму редактирования
+            document.getElementById('habit-edit-id').value = habitId;
+            document.getElementById('habit-edit-title').value = title;
+            document.getElementById('habit-edit-notes').value = notes;
+            document.getElementById('habit-edit-streak').value = streak;
+
+            // Показываем модальное окно
+            overlay.style.display = 'block';
+            modalHabitEdit.style.display = 'flex';
+        });
+    });
+
+    // Сохранение изменений привычки
+    if (habitEditSaveBtn) habitEditSaveBtn.onclick = function () {
+        const habitId = document.getElementById('habit-edit-id').value;
+        const title = document.getElementById('habit-edit-title').value.trim();
+        const notes = document.getElementById('habit-edit-notes').value.trim();
+        const streak = document.getElementById('habit-edit-streak').value;
+
+        if (title && habitId) {
+            fetch('/update_habit_details', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    habit_id: habitId,
+                    title: title,
+                    notes: notes,
+                    streak: parseInt(streak) || 0
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) location.reload();
+                    else alert('Ошибка при сохранении привычки');
+                });
+        } else {
+            alert('Название привычки обязательно');
+        }
+    };
+
+    // Удаление привычки
+    if (habitDeleteBtn) habitDeleteBtn.onclick = function () {
+        const habitId = document.getElementById('habit-edit-id').value;
+        if (confirm('Вы уверены, что хотите удалить эту привычку?') && habitId) {
+            fetch('/delete_habit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ habit_id: habitId })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) location.reload();
+                    else alert('Ошибка при удалении привычки');
                 });
         }
     };
