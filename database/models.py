@@ -49,6 +49,10 @@ class Habit(Base):
     notes = Column(Text, nullable=True)
     difficulty = Column(String, default='easy')
     streak = Column(Integer, default=0)
+    start_date = Column(String, nullable=True)  # Дата начала (строка формата YYYY-MM-DD)
+    repeat_type = Column(String, default='weekly')  # daily, weekly, monthly, yearly
+    repeat_every = Column(Integer, default=1)  # Повторять каждые N периодов
+    repeat_days = Column(String, default='1,2,3,4,5')  # Дни недели (строка вида '0,1,2,3,4,5,6')
     user = relationship("User", back_populates="habits")
 
 

@@ -306,6 +306,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const title = document.getElementById('habit-title').value.trim();
         const notes = document.getElementById('habit-notes').value.trim();
         const difficulty = document.getElementById('habit-difficulty').value;
+        const startDate = document.getElementById('habit-start-date').value;
+        const repeatType = document.getElementById('habit-repeat-type').value;
+        const repeatEvery = parseInt(document.getElementById('habit-repeat-every').value) || 1;
+
+        // Собираем выбранные дни недели
+        const repeatDays = [];
+        document.querySelectorAll('.day-toggle.active').forEach(btn => {
+            repeatDays.push(parseInt(btn.dataset.day));
+        });
 
         if (title) {
             fetch('/add_habit', {
@@ -314,7 +323,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify({
                     title: title,
                     notes: notes,
-                    difficulty: difficulty
+                    difficulty: difficulty,
+                    start_date: startDate,
+                    repeat_type: repeatType,
+                    repeat_every: repeatEvery,
+                    repeat_days: repeatDays.join(',')
                 })
             })
                 .then(res => res.json())
@@ -326,6 +339,39 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Название привычки обязательно');
         }
     };
+
+    // Обработчики для кнопок дней недели
+    document.querySelectorAll('.day-toggle').forEach(btn => {
+        btn.addEventListener('click', function () {
+            this.classList.toggle('active');
+            // Обновляем стили
+            if (this.classList.contains('active')) {
+                this.style.background = '#7b2ff2';
+                this.style.borderColor = '#7b2ff2';
+                this.style.color = '#fff';
+            } else {
+                this.style.background = '#f8f9fa';
+                this.style.borderColor = '#d0d0ff';
+                this.style.color = '#4e4a57';
+            }
+        });
+    });
+
+    // Обновление текста периода повторения
+    const repeatTypeSelect = document.getElementById('habit-repeat-type');
+    const repeatLabel = document.getElementById('habit-repeat-label');
+    if (repeatTypeSelect && repeatLabel) {
+        repeatTypeSelect.addEventListener('change', function () {
+            const labels = {
+                'daily': 'день',
+                'weekly': 'неделю',
+                'monthly': 'месяц',
+                'yearly': 'год'
+            };
+            repeatLabel.textContent = labels[this.value] || 'неделю';
+        });
+    }
+
 
     //Фильтры
 

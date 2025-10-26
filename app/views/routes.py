@@ -233,13 +233,22 @@ def add_habit():
         title = request.json.get('title')
         notes = request.json.get('notes')
         difficulty = request.json.get('difficulty', 'easy')
+        start_date = request.json.get('start_date')
+        repeat_type = request.json.get('repeat_type', 'weekly')
+        repeat_every = request.json.get('repeat_every', 1)
+        repeat_days = request.json.get('repeat_days', '1,2,3,4,5')
+        
         if title:
             try:
                 db.add_user_habit(
                     user_id=current_user.id,
                     title=title,
                     notes=notes,
-                    difficulty=difficulty
+                    difficulty=difficulty,
+                    start_date=start_date,
+                    repeat_type=repeat_type,
+                    repeat_every=repeat_every,
+                    repeat_days=repeat_days
                 )
                 return jsonify({'success': True})
             except Exception as e:

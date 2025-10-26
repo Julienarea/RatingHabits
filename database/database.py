@@ -270,7 +270,9 @@ class Database:
 
     # ==================== HABIT METHODS ====================
     
-    def add_user_habit(self, user_id: int, title: str, notes: str = None, difficulty: str = 'easy') -> Habit:
+    def add_user_habit(self, user_id: int, title: str, notes: str = None, difficulty: str = 'easy',
+                       start_date: str = None, repeat_type: str = 'weekly', 
+                       repeat_every: int = 1, repeat_days: str = '1,2,3,4,5') -> Habit:
         """
         Добавить привычку пользователю.
         
@@ -279,6 +281,10 @@ class Database:
             title: Название привычки
             notes: Заметки к привычке (опционально)
             difficulty: Сложность привычки (trivial, easy, medium, hard)
+            start_date: Дата начала (опционально)
+            repeat_type: Тип повторения (daily, weekly, monthly, yearly)
+            repeat_every: Повторять каждые N периодов
+            repeat_days: Дни недели для повторения (строка вида '1,2,3,4,5')
             
         Returns:
             Habit: Созданная привычка
@@ -290,7 +296,11 @@ class Database:
                 title=title,
                 notes=notes,
                 difficulty=difficulty,
-                streak=0
+                streak=0,
+                start_date=start_date,
+                repeat_type=repeat_type,
+                repeat_every=repeat_every,
+                repeat_days=repeat_days
             )
             session.add(new_habit)
             session.commit()
