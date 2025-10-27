@@ -30,7 +30,7 @@
                 <div class="rating-title">
                     <span>Рейтинг</span>
                 </div>
-                <div class="rating-value">{{ user.rating }}</div>
+                <div class="rating-value profile-rating-value">{{ user.rating }}</div>
                 <div class="rating-bar">
                     <div
                         class="rating-bar-fill"
@@ -138,11 +138,11 @@
                 </div>
                 <ul class="habits-list">
                     {% for habit in user.habits %}
-                    <li class="habit-item" data-habit-id="{{ habit.id }}" data-status="{% if habit.streak > 0 %}completed{% else %}in_progress{% endif %}">
+                    <li class="habit-item" data-habit-id="{{ habit.id }}" data-status="{% if (habit.streak or 0) > 0 %}completed{% else %}in_progress{% endif %}">
                         <div class="habit-wrapper">
                             <div class="habit-left-control">
                                 <label class="checkbox-container">
-                                    <input type="checkbox" class="habit-checkbox" {% if habit.streak > 0 %}checked{% endif %}
+                                    <input type="checkbox" class="habit-checkbox" {% if (habit.streak or 0) > 0 %}checked{% endif %}
                                         data-habit-id="{{ habit.id }}"
                                         data-habit-title="{{ habit.title }}">
                                     <span class="checkmark"></span>
@@ -341,7 +341,6 @@
                     <div class="form-group" style="margin-bottom: 0;">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <label for="habit-edit-notes">Заметки</label>
-                            <small><a href="https://github.com/HabitRPG/habitica/wiki/Markdown-in-Habitica" target="_blank">Справка по форматированию</a></small>
                         </div>
                         <textarea id="habit-edit-notes" placeholder="Добавить заметку" class="form-input" rows="3"></textarea>
                     </div>
@@ -388,7 +387,7 @@
                     <!-- Повторять по (дни недели) -->
                     <div class="form-group">
                         <label>Повторять по</label>
-                        <div>
+                        <div class="days-selector">
                             <button type="button" class="day-toggle" data-day="0">Вс</button>
                             <button type="button" class="day-toggle" data-day="1">Пн</button>
                             <button type="button" class="day-toggle" data-day="2">Вт</button>
@@ -434,7 +433,6 @@
                     <div class="form-group" style="margin-bottom: 0;">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <label for="habit-notes">Заметки</label>
-                            <small><a href="https://github.com/HabitRPG/habitica/wiki/Markdown-in-Habitica" target="_blank">Справка по форматированию</a></small>
                         </div>
                         <textarea id="habit-notes" placeholder="Добавить заметку" class="form-input" rows="3"></textarea>
                     </div>
@@ -480,7 +478,7 @@
                     <!-- Повторять по (дни недели) -->
                     <div class="form-group">
                         <label>Повторять по</label>
-                        <div>
+                        <div class="days-selector">
                             <button type="button" class="day-toggle" data-day="0">Вс</button>
                             <button type="button" class="day-toggle active" data-day="1">Пн</button>
                             <button type="button" class="day-toggle active" data-day="2">Вт</button>

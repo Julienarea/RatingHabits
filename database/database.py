@@ -325,15 +325,29 @@ class Database:
         finally:
             session.close()
 
-    def update_habit_details(self, habit_id: int, title: str, notes: str = None, streak: int = 0):
-        """Обновить детали привычки (title, notes, streak)"""
+    def update_habit_details(self, habit_id: int, title: str = None, notes: str = None, difficulty: str = None, start_date: str = None,
+                            repeat_type: str = None, repeat_every: int = None, repeat_days: str = None, streak: int = None):
+        """Обновить все поля привычки (title, notes, difficulty, start_date, repeat_type, repeat_every, repeat_days, streak)"""
         session = self.get_session()
         try:
             habit = session.query(Habit).filter(Habit.id == habit_id).first()
             if habit:
-                habit.title = title
-                habit.notes = notes
-                habit.streak = streak
+                if title is not None:
+                    habit.title = title
+                if notes is not None:
+                    habit.notes = notes
+                if difficulty is not None:
+                    habit.difficulty = difficulty
+                if start_date is not None:
+                    habit.start_date = start_date
+                if repeat_type is not None:
+                    habit.repeat_type = repeat_type
+                if repeat_every is not None:
+                    habit.repeat_every = repeat_every
+                if repeat_days is not None:
+                    habit.repeat_days = repeat_days
+                if streak is not None:
+                    habit.streak = streak
                 session.commit()
         except Exception as e:
             session.rollback()

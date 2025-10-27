@@ -5,6 +5,41 @@ from app.utils.paths import avatar_url
 from database.models import User
 from database.database import db
 
+import sys
+# ...existing code...
+
+# === Вставляем роут после импортов и до остальных маршрутов ===
+@app.route('/get_habit_details')
+@login_required
+def get_habit_details():
+    habit_id = request.args.get('habit_id')
+    if not habit_id:
+        return jsonify({'success': False, 'error': 'No habit_id'}), 400
+    user_habits = db.get_user_habits(current_user.id)
+    habit = next((h for h in user_habits if str(h.id) == str(habit_id)), None)
+    if not habit:
+        return jsonify({'success': False, 'error': 'Not found'}), 404
+    return jsonify({
+        'success': True,
+        'habit': {
+            'id': habit.id,
+            'title': habit.title,
+            'notes': habit.notes,
+            'difficulty': habit.difficulty,
+            'streak': habit.streak,
+            'start_date': habit.start_date,
+            'repeat_type': habit.repeat_type,
+            'repeat_every': habit.repeat_every,
+            'repeat_days': habit.repeat_days
+        }
+    })
+from flask import render_template, request, jsonify, redirect, url_for, flash
+from flask_login import login_user, logout_user, login_required, current_user
+from app import app, login_manager
+from app.utils.paths import avatar_url
+from database.models import User
+from database.database import db
+
 # User loader для Flask-Login
 @login_manager.user_loader
 def load_user(user_id):
@@ -168,7 +203,8 @@ def add_task():
         notes = request.json.get('notes')
         difficulty = request.json.get('difficulty', 'easy')
         deadline = request.json.get('deadline')
-        
+        if deadline == '':
+            deadline = None
         if title:
             try:
                 db.add_user_task(
@@ -190,10 +226,23 @@ def update_task():
     if request.method == 'POST':
         task_id = request.json.get('task_id')
         status = request.json.get('status')
+        difficulty = request.json.get('difficulty', 'easy')
+        # Таблица баллов: 1-trivial, 2-easy, 3-medium, 4-hard
+        # 1: +10/-30, 2: +25/-25, 3: +40/-20, 4: +60/-15
+        points_table = {
+            'trivial': (10, -30),
+            'easy': (25, -25),
+            'medium': (40, -20),
+            'hard': (60, -15),
+        }
         if task_id and status:
             try:
                 db.update_task_status(task_id, status)
-                return jsonify({'success': True})
+                # Изменение рейтинга
+                pts = points_table.get(difficulty, (10, -30))
+                delta = pts[0] if status == 'completed' else pts[1]
+                db.add_user_rating(current_user.id, delta)
+                return jsonify({'success': True, 'rating_delta': delta})
             except Exception as e:
                 return jsonify({'success': False, 'error': str(e)}), 400
     return jsonify({'success': False}), 400
@@ -201,17 +250,23 @@ def update_task():
 @app.route('/update_task_details', methods=['POST'])
 @login_required
 def update_task_details():
-    """Обновление полной информации о задаче"""
+    """Обновление полной информации о задаче (все поля)"""
     if request.method == 'POST':
         task_id = request.json.get('task_id')
         title = request.json.get('title')
         notes = request.json.get('notes')
         difficulty = request.json.get('difficulty')
         deadline = request.json.get('deadline')
-        
+        # Можно добавить другие поля, если появятся
         if task_id and title:
             try:
-                db.update_task_details(task_id, title, notes, difficulty, deadline)
+                db.update_task_details(
+                    task_id=task_id,
+                    title=title,
+                    notes=notes,
+                    difficulty=difficulty,
+                    deadline=deadline
+                )
                 return jsonify({'success': True})
             except Exception as e:
                 return jsonify({'success': False, 'error': str(e)}), 400
@@ -264,20 +319,40 @@ def add_habit():
 @app.route('/update_habit_details', methods=['POST'])
 @login_required
 def update_habit_details():
-    """Обновление деталей привычки (title, notes, streak)"""
+    """Обновление всех полей привычки (title, notes, difficulty, start_date, repeat_type, repeat_every, repeat_days, streak)"""
+    
     if request.method == 'POST':
-        habit_id = request.json.get('habit_id')
-        title = request.json.get('title')
-        notes = request.json.get('notes')
-        streak = request.json.get('streak')
-        
+        data = request.json
+        print('DEBUG /update_habit_details data:', data, file=sys.stderr)
+        habit_id = data.get('habit_id')
+        title = data.get('title')
+        notes = data.get('notes')
+        difficulty = data.get('difficulty')
+        start_date = data.get('start_date')
+        repeat_type = data.get('repeat_type')
+        repeat_every = data.get('repeat_every')
+        repeat_days = data.get('repeat_days')
+        streak = data.get('streak')
         if habit_id and title:
             try:
-                db.update_habit_details(habit_id, title, notes, streak)
+                db.update_habit_details(
+                    habit_id=habit_id,
+                    title=title,
+                    notes=notes,
+                    difficulty=difficulty,
+                    start_date=start_date,
+                    repeat_type=repeat_type,
+                    repeat_every=repeat_every,
+                    repeat_days=repeat_days,
+                    streak=streak
+                )
                 return jsonify({'success': True})
             except Exception as e:
+                print('ERROR /update_habit_details:', str(e), file=sys.stderr)
                 return jsonify({'success': False, 'error': str(e)}), 400
-    return jsonify({'success': False}), 400
+        else:
+            print('ERROR /update_habit_details: habit_id or title missing', file=sys.stderr)
+        return jsonify({'success': False}), 400
 
 @app.route('/delete_habit', methods=['POST'])
 @login_required

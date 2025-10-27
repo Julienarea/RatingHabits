@@ -5,13 +5,20 @@ document.addEventListener('DOMContentLoaded', function () {
             const taskId = this.dataset.taskId;
             const status = this.checked ? 'completed' : 'in_progress';
             const taskItem = this.closest('.task-item');
-
+            // Получаем сложность задачи из DOM
+            let difficulty = 'easy';
+            const diffEl = taskItem.querySelector('[class*="task-difficulty-"]');
+            if (diffEl) {
+                const match = diffEl.className.match(/task-difficulty-([a-z]+)/);
+                if (match) difficulty = match[1];
+            }
             fetch('/update_task', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     task_id: taskId,
-                    status: status
+                    status: status,
+                    difficulty: difficulty
                 })
             })
                 .then(res => res.json())
@@ -19,6 +26,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (data.success) {
                         // Обновляем data-status элемента
                         taskItem.dataset.status = status;
+                        // Обновляем рейтинг на странице
+                        const ratingEl = document.querySelector('.profile-rating-value');
+                        if (ratingEl && typeof data.rating_delta === 'number') {
+                            let current = parseInt(ratingEl.textContent) || 0;
+                            current += data.rating_delta;
+                            ratingEl.textContent = current;
+                        }
                         // Применяем активный фильтр заново
                         const activeFilter = document.querySelector('.tasks .filter.active');
                         if (activeFilter) {
@@ -239,19 +253,44 @@ document.addEventListener('DOMContentLoaded', function () {
             const habitItem = this.closest('.habit-item');
             const habitId = habitItem.dataset.habitId;
 
-            // Получаем данные привычки из DOM
-            const title = habitItem.querySelector('.habit-title').textContent;
-            const notesEl = habitItem.querySelector('.habit-notes');
-            const notes = notesEl ? notesEl.textContent : '';
-
-            // Заполняем форму редактирования
-            document.getElementById('habit-edit-id').value = habitId;
-            document.getElementById('habit-edit-title').value = title;
-            document.getElementById('habit-edit-notes').value = notes;
-
-            // Показываем модальное окно
-            overlay.style.display = 'block';
-            modalHabitEdit.style.display = 'flex';
+            // Получаем данные привычки из БД через AJAX
+            fetch(`/get_habit_details?habit_id=${habitId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.habit) {
+                        document.getElementById('habit-edit-id').value = data.habit.id;
+                        document.getElementById('habit-edit-title').value = data.habit.title || '';
+                        document.getElementById('habit-edit-notes').value = data.habit.notes || '';
+                        document.getElementById('habit-edit-difficulty').value = data.habit.difficulty || 'easy';
+                        document.getElementById('habit-edit-start-date').value = data.habit.start_date || '';
+                        document.getElementById('habit-edit-repeat-type').value = data.habit.repeat_type || 'weekly';
+                        document.getElementById('habit-edit-repeat-every').value = data.habit.repeat_every || 1;
+                        // Сбросить все дни недели
+                        document.querySelectorAll('#modal-habit-edit .day-toggle').forEach(btn => btn.classList.remove('active'));
+                        if (data.habit.repeat_days) {
+                            const daysArr = data.habit.repeat_days.split(',').map(d => d.trim());
+                            document.querySelectorAll('#modal-habit-edit .day-toggle').forEach(btn => {
+                                if (daysArr.includes(btn.dataset.day)) btn.classList.add('active');
+                            });
+                        }
+                        // Обновить подпись периода
+                        const repeatTypeSelect = document.getElementById('habit-edit-repeat-type');
+                        const repeatLabel = document.getElementById('habit-edit-repeat-label');
+                        if (repeatTypeSelect && repeatLabel) {
+                            const labels = {
+                                'daily': 'день',
+                                'weekly': 'неделю',
+                                'monthly': 'месяц',
+                                'yearly': 'год'
+                            };
+                            repeatLabel.textContent = labels[repeatTypeSelect.value] || 'неделю';
+                        }
+                        overlay.style.display = 'block';
+                        modalHabitEdit.style.display = 'flex';
+                    } else {
+                        alert('Ошибка загрузки данных привычки');
+                    }
+                });
         });
     });
 
@@ -260,7 +299,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const habitId = document.getElementById('habit-edit-id').value;
         const title = document.getElementById('habit-edit-title').value.trim();
         const notes = document.getElementById('habit-edit-notes').value.trim();
-
+        const difficulty = document.getElementById('habit-edit-difficulty').value;
+        const startDate = document.getElementById('habit-edit-start-date').value;
+        const repeatType = document.getElementById('habit-edit-repeat-type').value;
+        const repeatEvery = parseInt(document.getElementById('habit-edit-repeat-every').value) || 1;
+        // Собираем выбранные дни недели
+        const repeatDays = [];
+        document.querySelectorAll('#modal-habit-edit .day-toggle.active').forEach(btn => {
+            repeatDays.push(parseInt(btn.dataset.day));
+        });
+        // streak (серия) можно получить из бейджа, если нужно
+        let streak = 0;
+        const streakBadge = document.querySelector('#modal-habit-edit .habit-streak-badge');
+        if (streakBadge) {
+            const match = streakBadge.textContent.match(/\d+/);
+            if (match) streak = parseInt(match[0]);
+        }
         if (title && habitId) {
             fetch('/update_habit_details', {
                 method: 'POST',
@@ -268,7 +322,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify({
                     habit_id: habitId,
                     title: title,
-                    notes: notes
+                    notes: notes,
+                    difficulty: difficulty,
+                    start_date: startDate,
+                    repeat_type: repeatType,
+                    repeat_every: repeatEvery,
+                    repeat_days: repeatDays.join(','),
+                    streak: streak
                 })
             })
                 .then(res => res.json())
@@ -337,20 +397,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // Обработчики для кнопок дней недели
+    // Обработчики для кнопок дней недели — работают через класс .active
     document.querySelectorAll('.day-toggle').forEach(btn => {
         btn.addEventListener('click', function () {
             this.classList.toggle('active');
-            // Обновляем стили
-            if (this.classList.contains('active')) {
-                this.style.background = '#7b2ff2';
-                this.style.borderColor = '#7b2ff2';
-                this.style.color = '#fff';
-            } else {
-                this.style.background = '#f8f9fa';
-                this.style.borderColor = '#d0d0ff';
-                this.style.color = '#4e4a57';
-            }
         });
     });
 
