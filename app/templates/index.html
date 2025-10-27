@@ -141,10 +141,11 @@
                     <li class="habit-item" data-habit-id="{{ habit.id }}" data-status="{% if habit.streak > 0 %}completed{% else %}in_progress{% endif %}">
                         <div class="habit-wrapper">
                             <div class="habit-left-control">
-                                <label>
-                                    <input type="checkbox" class="habit-checkbox" {% if habit.streak > 0 %}checked{% endif %} 
+                                <label class="checkbox-container">
+                                    <input type="checkbox" class="habit-checkbox" {% if habit.streak > 0 %}checked{% endif %}
                                         data-habit-id="{{ habit.id }}"
                                         data-habit-title="{{ habit.title }}">
+                                    <span class="checkmark"></span>
                                 </label>
                             </div>
                             <div class="habit-content" data-habit-id="{{ habit.id }}">
@@ -154,10 +155,23 @@
                                 {% endif %}
                                 <div class="habit-meta">
                                     <span class="habit-streak-badge">🔥 Серия: {{ habit.streak }}</span>
+                                    {% if habit.difficulty %}
+                                    <span class="habit-difficulty habit-difficulty-{{ habit.difficulty }}">
+                                        {% if habit.difficulty == 'trivial' %}⭐ Пустяк
+                                        {% elif habit.difficulty == 'easy' %}⭐⭐ Легко
+                                        {% elif habit.difficulty == 'medium' %}⭐⭐⭐ Нормально
+                                        {% elif habit.difficulty == 'hard' %}⭐⭐⭐⭐ Сложно
+                                        {% endif %}
+                                    </span>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="habit-actions">
-                                <button class="habit-menu-btn">⋮</button>
+                                <button class="habit-menu-btn" data-habit-id="{{ habit.id }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 16" width="16" height="16">
+                                        <path fill="#686274" fill-rule="evenodd" d="M2 4a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     </li>
@@ -302,55 +316,90 @@
             </div>
         </div>
 
-        <!-- Модальное окно редактирования привычки -->
+       <!-- Модальное окно редактирования привычки -->
         <div id="modal-habit-edit" class="modal" style="display: none">
             <div class="modal-content">
+                <!-- Header с градиентом -->
                 <div class="modal-header">
                     <h2>Редактировать привычку</h2>
                     <div class="modal-header-actions">
-                        <button id="habit-edit-cancel-btn" class="modal-btn-secondary cancel">
-                            Отмена
-                        </button>
-                        <button id="habit-edit-save-btn" class="modal-btn">
-                            Сохранить
-                        </button>
+                        <button id="habit-edit-cancel-btn" class="modal-btn-secondary cancel">Отмена</button>
+                        <button id="habit-edit-save-btn" class="modal-btn">Сохранить</button>
                     </div>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="padding: 24px 32px;">
+                    <!-- Hidden ID -->
                     <input type="hidden" id="habit-edit-id">
-                    
-                    <div class="form-group">
+
+                    <!-- Заголовок -->
+                    <div class="form-group" style="margin-bottom: 18px;">
                         <label for="habit-edit-title">Заголовок*</label>
-                        <input
-                            type="text"
-                            id="habit-edit-title"
-                            placeholder="Добавить название"
-                            class="form-input"
-                            required
-                        />
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="habit-edit-notes">Заметки</label>
-                        <textarea
-                            id="habit-edit-notes"
-                            placeholder="Добавить заметку"
-                            class="form-input"
-                            rows="3"
-                        ></textarea>
+                        <input type="text" id="habit-edit-title" required placeholder="Добавить название" class="form-input"/>
                     </div>
 
-                    <div class="form-group">
-                        <label for="habit-edit-streak">Серия</label>
-                        <input
-                            type="number"
-                            id="habit-edit-streak"
-                            placeholder="0"
-                            class="form-input"
-                            min="0"
-                        />
+                    <!-- Заметки -->
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <label for="habit-edit-notes">Заметки</label>
+                            <small><a href="https://github.com/HabitRPG/habitica/wiki/Markdown-in-Habitica" target="_blank">Справка по форматированию</a></small>
+                        </div>
+                        <textarea id="habit-edit-notes" placeholder="Добавить заметку" class="form-input" rows="3"></textarea>
                     </div>
-                    
+
+                    <!-- Сложность -->
+                    <div class="form-group">
+                        <div>
+                            <label for="habit-edit-difficulty">Сложность</label>
+                        </div>
+                        <select id="habit-edit-difficulty" class="form-input">
+                            <option value="trivial">⭐ Пустяк</option>
+                            <option value="easy">⭐⭐ Легко</option>
+                            <option value="medium">⭐⭐⭐ Нормально</option>
+                            <option value="hard">⭐⭐⭐⭐ Сложно</option>
+                        </select>
+                    </div>
+
+                    <!-- Дата начала -->
+                    <div class="form-group">
+                        <label for="habit-edit-start-date">Дата начала</label>
+                        <input type="date" id="habit-edit-start-date" class="form-input"/>
+                    </div>
+
+                    <!-- Повторения -->
+                    <div class="form-group">
+                        <label for="habit-edit-repeat-type">Повторения</label>
+                        <select id="habit-edit-repeat-type" class="form-input">
+                            <option value="daily">Ежедневное дело</option>
+                            <option value="weekly">Еженедельно</option>
+                            <option value="monthly">Ежемесячно</option>
+                            <option value="yearly">Ежегодно</option>
+                        </select>
+                    </div>
+
+                    <!-- Повторять каждый -->
+                    <div class="form-group">
+                        <label for="habit-edit-repeat-every">Повторять каждый</label>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <input type="number" id="habit-edit-repeat-every" min="1" max="999" value="1" class="form-input"/>
+                            <span id="habit-edit-repeat-label">неделю</span>
+                        </div>
+                    </div>
+
+                    <!-- Повторять по (дни недели) -->
+                    <div class="form-group">
+                        <label>Повторять по</label>
+                        <div>
+                            <button type="button" class="day-toggle" data-day="0">Вс</button>
+                            <button type="button" class="day-toggle" data-day="1">Пн</button>
+                            <button type="button" class="day-toggle" data-day="2">Вт</button>
+                            <button type="button" class="day-toggle" data-day="3">Ср</button>
+                            <button type="button" class="day-toggle" data-day="4">Чт</button>
+                            <button type="button" class="day-toggle" data-day="5">Пт</button>
+                            <button type="button" class="day-toggle" data-day="6">Сб</button>
+                        </div>
+                    </div>
+
+                    <!-- Кнопка удаления -->
                     <div class="form-group">
                         <button id="habit-delete-btn" class="btn-delete">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 16" width="14" height="16">
@@ -362,6 +411,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Модальное окно создания привычки  -->
         <div id="modal-habit" class="modal" style="display: none">
             <div class="modal-content">

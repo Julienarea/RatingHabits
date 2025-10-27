@@ -37,7 +37,9 @@ document.addEventListener('DOMContentLoaded', function () {
         checkbox.addEventListener('change', function () {
             const habitId = this.dataset.habitId;
             const habitItem = this.closest('.habit-item');
-            const currentStreak = parseInt(habitItem.querySelector('.habit-streak').textContent.match(/\d+/)[0]);
+
+            const streakBadge = habitItem.querySelector('.habit-streak-badge');
+            const currentStreak = streakBadge ? parseInt(streakBadge.textContent.match(/\d+/)[0]) : 0;
             const newStreak = this.checked ? currentStreak + 1 : Math.max(0, currentStreak - 1);
 
             fetch('/update_habit_streak', {
@@ -51,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        habitItem.querySelector('.habit-streak').textContent = `(Серия: ${newStreak})`;
+                        if (streakBadge) streakBadge.textContent = `🔥 Серия: ${newStreak}`;
                         // Обновляем data-status (активная привычка = streak > 0)
                         habitItem.dataset.status = newStreak > 0 ? 'completed' : 'in_progress';
                         // Применяем активный фильтр заново
@@ -241,14 +243,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const title = habitItem.querySelector('.habit-title').textContent;
             const notesEl = habitItem.querySelector('.habit-notes');
             const notes = notesEl ? notesEl.textContent : '';
-            const streakEl = habitItem.querySelector('.habit-streak-badge');
-            const streak = streakEl ? streakEl.textContent.replace('🔥 Серия: ', '') : '0';
 
             // Заполняем форму редактирования
             document.getElementById('habit-edit-id').value = habitId;
             document.getElementById('habit-edit-title').value = title;
             document.getElementById('habit-edit-notes').value = notes;
-            document.getElementById('habit-edit-streak').value = streak;
 
             // Показываем модальное окно
             overlay.style.display = 'block';
@@ -261,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const habitId = document.getElementById('habit-edit-id').value;
         const title = document.getElementById('habit-edit-title').value.trim();
         const notes = document.getElementById('habit-edit-notes').value.trim();
-        const streak = document.getElementById('habit-edit-streak').value;
 
         if (title && habitId) {
             fetch('/update_habit_details', {
@@ -270,8 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify({
                     habit_id: habitId,
                     title: title,
-                    notes: notes,
-                    streak: parseInt(streak) || 0
+                    notes: notes
                 })
             })
                 .then(res => res.json())

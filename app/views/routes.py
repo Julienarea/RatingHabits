@@ -118,7 +118,13 @@ def index():
             for task in user_tasks
         ],
         'habits': [
-            {'id': habit.id, 'title': habit.title, 'streak': habit.streak}
+            {
+                'id': habit.id,
+                'title': habit.title,
+                'streak': habit.streak,
+                'difficulty': habit.difficulty,
+                'notes': habit.notes
+            }
             for habit in user_habits
         ]
     }
