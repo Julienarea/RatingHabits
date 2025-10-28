@@ -6,6 +6,9 @@ from database.models import User
 from database.database import db
 from functions import is_habit_active
 import sys
+import pytz
+from datetime import datetime, date, timedelta
+from dateutil.relativedelta import relativedelta
 # ...existing code...
 
 # === Вставляем роут после импортов и до остальных маршрутов ===
@@ -124,14 +127,56 @@ def logout():
 @app.route('/')
 @login_required
 def index():
-    """Главная страница с профилем пользователя"""
-    # Получаем данные пользователя из БД
+    tz = pytz.timezone('Asia/Yekaterinburg')
+    today = datetime.now(tz).date()
+    yesterday = today - timedelta(days=1)
+
     user_stats = db.get_user_stats(current_user.id)
     user_tasks = db.get_user_tasks(current_user.id)
     user_habits = db.get_user_habits(current_user.id)
     user_achievements = db.get_user_achievements(current_user.id)
-    
-    # path_to_avatar теперь трактуем как «имя файла» (filename), а полный URL строим через helper
+
+    # === 1. Проверка пропусков ЗА ВЧЕРА (пока completed_today ещё за вчера) ===
+    for habit in user_habits:
+        # Пропускаем, если привычка ещё не началась
+        start_date = None
+        if habit.start_date:
+            try:
+                start_date = datetime.strptime(habit.start_date, '%Y-%m-%d').date()
+                if today < start_date:
+                    continue
+            except:
+                pass
+        if start_date is None:
+            start_date = today
+
+        # Проверяем ТОЛЬКО вчерашний день (упрощаем логику)
+        if is_habit_active(habit, yesterday):
+            # Если не была выполнена к концу вчерашнего дня
+            if not habit.completed_today:  # ← это состояние на конец 10 окт
+                points_table = {
+                    'trivial': (10, -30),
+                    'easy': (25, -25),
+                    'medium': (40, -20),
+                    'hard': (60, -15),
+                }
+                pts = points_table.get(habit.difficulty, (25, -25))
+                db.add_user_rating(current_user.id, pts[1])
+                db.update_habit_streak(habit.id, 0)
+
+        # Обновляем last_checked_date до вчера
+        db.update_habit_last_checked(habit.id, yesterday.strftime('%Y-%m-%d'))
+
+    # === 2. Сброс completed_today для СЕГОДНЯ ===
+    for habit in user_habits:
+        if is_habit_active(habit, today):
+            db.update_habit_completed_today(habit.id, False)
+
+    # === 3. Обновляем данные после изменений ===
+    user_stats = db.get_user_stats(current_user.id)
+    user_habits = db.get_user_habits(current_user.id)
+
+    # === 4. Формируем данные для шаблона ===
     user_data = {
         'nickname': current_user.nickname,
         'username': current_user.username,
@@ -159,7 +204,7 @@ def index():
                 'streak': habit.streak,
                 'difficulty': habit.difficulty,
                 'notes': habit.notes,
-                'active': is_habit_active(habit)
+                'active': is_habit_active(habit, today)
             }
             for habit in user_habits
         ]
@@ -372,17 +417,49 @@ def delete_habit_route():
 @app.route('/update_habit_streak', methods=['POST'])
 @login_required
 def update_habit_streak():
-    """Обновление счетчика привычки"""
-    if request.method == 'POST':
-        habit_id = request.json.get('habit_id')
-        new_streak = request.json.get('streak')
-        if habit_id and new_streak is not None:
-            try:
-                db.update_habit_streak(habit_id, new_streak)
-                return jsonify({'success': True})
-            except Exception as e:
-                return jsonify({'success': False, 'error': str(e)}), 400
-    return jsonify({'success': False}), 400
+    data = request.json
+    print("🔍 RAW DATA:", request.get_data(as_text=True), file=sys.stderr)
+    print("🔍 PARSED JSON:", request.json, file=sys.stderr)
+    habit_id = data.get('habit_id')
+    completed = data.get('completed')
+    difficulty = data.get('difficulty', 'easy')
+
+    if habit_id is None or completed is None:
+        print('ERROR: missing habit_id or completed', file=sys.stderr)
+        return jsonify({'success': False, 'error': 'Missing habit_id or completed'}), 400
+
+    try:
+        habit = db.get_habit_by_id(habit_id)
+        if not habit:
+            return jsonify({'success': False, 'error': 'Habit not found'}), 404
+
+        points_table = {
+            'trivial': (10, -30),
+            'easy': (25, -25),
+            'medium': (40, -20),
+            'hard': (60, -15),
+        }
+        pts = points_table.get(difficulty, (25, -25))
+
+        if completed:
+            # Выполнил: отмечаем как выполненную, +баллы, +стрик
+            db.update_habit_completed_today(habit_id, True)
+            db.update_habit_streak(habit_id, habit.streak + 1)
+            db.add_user_rating(current_user.id, pts[0])
+            delta = pts[0]
+        else:
+            # Отменил: сбрасываем выполнение, –баллы, –стрик
+            db.update_habit_completed_today(habit_id, False) 
+            new_streak = max(0, habit.streak - 1)
+            db.update_habit_streak(habit_id, new_streak)
+            db.add_user_rating(current_user.id, -pts[0])
+            delta = -pts[0]
+
+        return jsonify({'success': True, 'rating_delta': delta})
+
+    except Exception as e:
+        print('ERROR /update_habit_streak:', str(e), file=sys.stderr)
+        return jsonify({'success': False, 'error': str(e)}), 400
 
 @app.route('/update_profile', methods=['POST'])
 @login_required

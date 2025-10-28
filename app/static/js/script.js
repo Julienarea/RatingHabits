@@ -49,36 +49,76 @@ document.addEventListener('DOMContentLoaded', function () {
     // Обработка изменения статуса привычки
     document.querySelectorAll('.habit-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function () {
-            const habitId = this.dataset.habitId;
             const habitItem = this.closest('.habit-item');
+            if (!habitItem) {
+                console.error('Habit item not found for checkbox');
+                this.checked = !this.checked;
+                return;
+            }
 
-            const streakBadge = habitItem.querySelector('.habit-streak-badge');
-            const currentStreak = streakBadge ? parseInt(streakBadge.textContent.match(/\d+/)[0]) : 0;
-            const newStreak = this.checked ? currentStreak + 1 : Math.max(0, currentStreak - 1);
+            const habitId = parseInt(habitItem.dataset.habitId, 10);
+            if (isNaN(habitId)) {
+                console.error('Invalid habit ID:', habitItem.dataset.habitId);
+                this.checked = !this.checked;
+                return;
+            }
+
+            const completed = this.checked;
+
+            // Получаем сложность привычки из DOM
+            let difficulty = 'easy';
+            const diffEl = habitItem.querySelector('[class*="habit-difficulty-"]');
+            if (diffEl) {
+                const match = diffEl.className.match(/habit-difficulty-([a-z]+)/);
+                if (match) difficulty = match[1];
+            }
 
             fetch('/update_habit_streak', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     habit_id: habitId,
-                    streak: newStreak
+                    completed: completed,
+                    difficulty: difficulty
                 })
             })
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) {
+                        console.error('Server error:', res.status);
+                        return res.json().then(err => { throw new Error(err.error || 'Server error'); });
+                    }
+                    return res.json();
+                })
                 .then(data => {
                     if (data.success) {
-                        if (streakBadge) streakBadge.textContent = `🔥 Серия: ${newStreak}`;
-                        // Обновляем data-status (активная привычка = streak > 0)
-                        habitItem.dataset.status = newStreak > 0 ? 'completed' : 'in_progress';
-                        // Применяем активный фильтр заново
+                        // Обновляем серию (streak)
+                        const streakBadge = habitItem.querySelector('.habit-streak-badge');
+                        if (streakBadge) {
+                            const currentStreak = parseInt(streakBadge.textContent.match(/\d+/)?.[0] || '0', 10);
+                            const newStreak = currentStreak + (completed ? 1 : -1);
+                            streakBadge.textContent = `🔥 Серия: ${Math.max(0, newStreak)}`;
+                        }
+                        habitItem.dataset.status = completed ? 'completed' : 'in_progress';
+                        // Обновляем рейтинг
+                        const ratingEl = document.querySelector('.profile-rating-value');
+                        if (ratingEl && typeof data.rating_delta === 'number') {
+                            let current = parseInt(ratingEl.textContent) || 0;
+                            ratingEl.textContent = current + data.rating_delta;
+                        }
+                        // Применяем фильтр
                         const activeFilter = document.querySelector('.habits .filter.active');
                         if (activeFilter) {
                             applyHabitFilter(activeFilter.dataset.filter);
                         }
                     } else {
                         this.checked = !this.checked;
-                        alert('Ошибка при обновлении привычки');
+                        alert('Ошибка: ' + (data.error || 'неизвестная'));
                     }
+                })
+                .catch(err => {
+                    console.error('Fetch error:', err);
+                    this.checked = !this.checked;
+                    alert('Ошибка сети или сервера');
                 });
         });
     });

@@ -325,6 +325,20 @@ class Database:
         finally:
             session.close()
 
+    def update_habit_last_checked(self, habit_id: int, last_checked_date: str):
+        """Обновить дату последней проверки привычки"""
+        session = self.get_session()
+        try:
+            habit = session.query(Habit).filter(Habit.id == habit_id).first()
+            if habit:
+                habit.last_checked_date = last_checked_date
+                session.commit()
+        except Exception as e:
+            session.rollback()
+            raise e
+        finally:
+            session.close()
+
     def update_habit_details(self, habit_id: int, title: str = None, notes: str = None, difficulty: str = None, start_date: str = None,
                             repeat_type: str = None, repeat_every: int = None, repeat_days: str = None, streak: int = None):
         """Обновить все поля привычки (title, notes, difficulty, start_date, repeat_type, repeat_every, repeat_days, streak)"""
@@ -366,6 +380,31 @@ class Database:
         except Exception as e:
             session.rollback()
             raise e
+        finally:
+            session.close()
+
+    def update_habit_completed_today(self, habit_id: int, completed: bool):
+        """Обновить статус выполнения привычки за сегодня"""
+        session = self.get_session()
+        try:
+            habit = session.query(Habit).filter(Habit.id == habit_id).first()
+            if habit:
+                habit.completed_today = completed
+                session.commit()
+        except Exception as e:
+            session.rollback()
+            raise e
+        finally:
+            session.close()
+
+    def get_habit_by_id(self, habit_id: int) -> Habit:
+        """Получить привычку по ID"""
+        session = self.get_session()
+        try:
+            habit = session.query(Habit).filter(Habit.id == habit_id).first()
+            if habit:
+                session.expunge(habit)
+            return habit
         finally:
             session.close()
 

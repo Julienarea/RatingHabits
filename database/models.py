@@ -53,6 +53,10 @@ class Habit(Base):
     repeat_type = Column(String, default='weekly')  # daily, weekly, monthly, yearly
     repeat_every = Column(Integer, default=1)  # Повторять каждые N периодов
     repeat_days = Column(String, default='1,2,3,4,5')  # Дни недели (строка вида '0,1,2,3,4,5,6')
+
+    last_checked_date = Column(String, nullable=True)  # Последняя дата, за которую проверяли (YYYY-MM-DD)
+    completed_today = Column(Boolean, default=False)
+
     user = relationship("User", back_populates="habits")
 
 
