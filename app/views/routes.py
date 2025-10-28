@@ -150,10 +150,15 @@ def index():
         if start_date is None:
             start_date = today
 
+        # Не штрафуем за пропуск, если привычка только что создана (её start_date >= yesterday)
+        if start_date > yesterday:
+            db.update_habit_last_checked(habit.id, yesterday.strftime('%Y-%m-%d'))
+            continue
+
         # Проверяем ТОЛЬКО вчерашний день (упрощаем логику)
         if is_habit_active(habit, yesterday):
             # Если не была выполнена к концу вчерашнего дня
-            if not habit.completed_today:  # ← это состояние на конец 10 окт
+            if not habit.completed_today:  # ← это состояние на конец дня
                 points_table = {
                     'trivial': (10, -30),
                     'easy': (25, -25),
