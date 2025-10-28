@@ -4,7 +4,7 @@ from app import app, login_manager
 from app.utils.paths import avatar_url
 from database.models import User
 from database.database import db
-
+from functions import is_habit_active
 import sys
 # ...existing code...
 
@@ -135,7 +135,7 @@ def index():
     user_data = {
         'nickname': current_user.nickname,
         'username': current_user.username,
-        'avatar': avatar_url(current_user.path_to_avatar),  # возвращает полный URL к static
+        'avatar': avatar_url(current_user.path_to_avatar),
         'rating': user_stats.rating if user_stats else 0,
         'achievements': [
             {'title': ach.title, 'description': ach.description}
@@ -143,8 +143,8 @@ def index():
         ],
         'tasks': [
             {
-                'id': task.id, 
-                'title': task.title, 
+                'id': task.id,
+                'title': task.title,
                 'status': task.status,
                 'notes': task.notes,
                 'difficulty': task.difficulty,
@@ -158,7 +158,8 @@ def index():
                 'title': habit.title,
                 'streak': habit.streak,
                 'difficulty': habit.difficulty,
-                'notes': habit.notes
+                'notes': habit.notes,
+                'active': is_habit_active(habit)
             }
             for habit in user_habits
         ]

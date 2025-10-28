@@ -1,3 +1,4 @@
+
 /* #region Сброс и базовые стили */
 * {
   margin: 0;
@@ -324,6 +325,14 @@ body {
 .task-menu-btn:hover,
 .habit-menu-btn:hover {
   background: #f0f0f5;
+}
+
+/* Неактивная привычка */
+.habit-inactive {
+  background: #f3f3f3 !important;
+  color: #aaa !important;
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 /* #endregion */
 

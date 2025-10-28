@@ -138,7 +138,7 @@
                 </div>
                 <ul class="habits-list">
                     {% for habit in user.habits %}
-                    <li class="habit-item" data-habit-id="{{ habit.id }}" data-status="{% if (habit.streak or 0) > 0 %}completed{% else %}in_progress{% endif %}">
+                    <li class="habit-item{% if not habit.active %} habit-inactive{% endif %}" data-habit-id="{{ habit.id }}" data-status="{% if not habit.active %}inactive{% elif (habit.streak or 0) > 0 %}completed{% else %}in_progress{% endif %}">
                         <div class="habit-wrapper">
                             <div class="habit-left-control">
                                 <label class="checkbox-container">

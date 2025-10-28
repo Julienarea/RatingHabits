@@ -1,0 +1,3 @@
+DEBUG /update_habit_details data: {'habit_id': '2', 'title': 'Fdsf', 'notes': 'f', 'difficulty': 'medium', 'start_date': '2025-09-01', 'repeat_type': 'weekly', 'repeat_every': 1, 'repeat_days': '0,1,2,3,4,5,6', 'streak': 0}
+DEBUG /update_habit_details data: {'habit_id': '1', 'title': 'gg', 'notes': 'GGGfew', 'difficulty': 'easy', 'start_date': '2024-10-28', 'repeat_type': 'yearly', 'repeat_every': 1, 'repeat_days': '0,1,2,3,5', 'streak': 0}
+DEBUG /update_habit_details data: {'habit_id': '1', 'title': 'gg', 'notes': 'GGGfew', 'difficulty': 'easy', 'start_date': '2024-10-29', 'repeat_type': 'yearly', 'repeat_every': 1, 'repeat_days': '0,1,2,3,5', 'streak': 0}
