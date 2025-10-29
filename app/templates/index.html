@@ -15,7 +15,12 @@
     </head>
     <body>
         <header class="header">
-            <h1>ПРОФИЛЬ</h1>
+            <nav class="nav-items">
+                <ul>
+                    <li class="active-nav-item">ПРОФИЛЬ</li>
+                    <li>О НАС</li>
+                </ul>
+            </nav>
             <a href="{{ url_for('logout') }}" style="position: absolute; right: 24px; top: 24px; color: #fff; text-decoration: none; font-size: 14px; padding: 8px 16px; background: rgba(255,255,255,0.2); border-radius: 8px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">Выйти</a>
         </header>
 

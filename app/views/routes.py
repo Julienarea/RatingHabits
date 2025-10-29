@@ -146,8 +146,8 @@ def index():
                 if today < start_date:
                     continue
             except:
-                pass
-        if start_date is None:
+                start_date = today
+        else:
             start_date = today
 
         # Не штрафуем за пропуск, если привычка только что создана (её start_date >= yesterday)
