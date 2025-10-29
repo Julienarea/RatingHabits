@@ -257,6 +257,38 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         });
     });
+    // Открыть модальное окно редактирования задачи
+    document.querySelectorAll('.task-content').forEach(taskContent => {
+        taskContent.addEventListener('click', function (e) {
+            const taskItem = this.closest('.task-item');
+            const taskId = taskItem.dataset.taskId;
+
+            // Получаем данные задачи из DOM
+            const title = taskItem.querySelector('.task-title').textContent;
+            const notesEl = taskItem.querySelector('.task-notes');
+            const notes = notesEl ? notesEl.textContent : '';
+            const difficultyEl = taskItem.querySelector('[class*="task-difficulty-"]');
+            const difficulty = difficultyEl ? difficultyEl.className.split('task-difficulty-')[1].split(' ')[0] : 'easy';
+            const deadlineEl = taskItem.querySelector('.task-deadline');
+            const deadline = deadlineEl ? deadlineEl.textContent.replace('📅 ', '') : '';
+
+            // Заполняем форму редактирования
+            document.getElementById('task-edit-id').value = taskId;
+            document.getElementById('task-edit-title').value = title;
+            document.getElementById('task-edit-notes').value = notes;
+            document.getElementById('task-edit-difficulty').value = difficulty;
+            document.getElementById('task-edit-deadline').value = deadline;
+
+            // Показываем модальное окно
+            overlay.style.display = 'block';
+            modalTaskEdit.style.display = 'flex';
+        });
+    });
+    overlay.addEventListener('click', closeModals);
+    if (taskCancelBtn) taskCancelBtn.onclick = closeModals;
+    if (habitCancelBtn) habitCancelBtn.onclick = closeModals;
+
+
 
     // Создание задачи
     if (taskCreateBtn) taskCreateBtn.onclick = function () {
