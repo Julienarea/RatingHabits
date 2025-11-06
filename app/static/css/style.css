@@ -7,8 +7,10 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #060606;
-  background-image: url('../images/back.png');
+  background: url('../images/back.png'), linear-gradient(150deg, #2b2b2b, #1a1a1a, #313131, #313131);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -18,38 +20,40 @@ body {
 
 /* #region Шапка (Header) */
 .header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  background: #0f83a6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #333333;
   color: #ffffff;
   height: 48px;
 }
 
-/* Навигация в шапке */
 .nav-items {
-    display: flex;
-    width: 100%; 
-    padding-left: 34px;
-    padding-right: 34px;
+  display: flex;
+  width: 100%;
+  padding-left: 34px;
+  padding-right: 34px;
 }
 
 .nav-items ul {
-    width: 100%;
+  width: 100%;
   display: flex;
   list-style: none;
   gap: 24px;
   margin: 0;
   padding: 0;
 }
-
-.nav-items li {
+.nav-items li{
   font-size: 14px;
   cursor: pointer;
   position: relative;
   padding: 8px 12px;
   border-radius: 4px;
-  color: #aaa;
+}
+
+.nav-items li a{
+  color: #e6e6e6;
+  text-decoration: none;
 }
 
 .nav-items li.active-nav-item {
@@ -58,44 +62,41 @@ body {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 17px;
-
 }
 
 .nav-items li:hover {
   color: #fff;
 }
 
-/* Кнопка "Выйти" */
 .logout-btn {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .logout-btn a {
-    
-    color: rgb(170, 170, 170);
-    text-decoration: none;
+  color: rgb(170, 170, 170);
+  text-decoration: none;
 }
 
-.logout-btn:hover a{
-    background-color: transparent;  
-    color: #fff;
-    text-decoration: none;
+.logout-btn:hover a {
+  background-color: transparent;
+  color: #fff;
+  text-decoration: none;
 }
 /* #endregion */
 
-/* #region app-header*/
+/* #region app-header */
 .app-header {
-    background-color: rgb(29, 29, 29);
-    display: flex;
-    padding-left: 34px;
-    gap:30px
+  background-color: #262626;
+  display: flex;
+  padding-left: 34px;
+  gap: 30px;
 }
 /* #endregion */
 
 /* #region Контейнер и сетка */
 .container {
-    padding-left: 34px;
-    padding-right: 34px;
+  padding-left: 34px;
+  padding-right: 34px;
   width: 100%;
   margin: 32px auto;
   display: flex;
@@ -105,8 +106,8 @@ body {
 
 /* #region Общие стили блоков */
 .block {
-  background: #1d1d1d;
-  padding: 24px 20px;
+  background: #262626;
+  padding: 24px 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -144,24 +145,14 @@ body {
 .icon-btn:active {
   transform: scale(0.95);
 }
-
-.block.card:hover {
-  
-}
 /* #endregion */
 
 /* #region Профиль: аватар и никнейм */
-.avatar {
-  grid-area: avatar;
-  align-items: center;
-  justify-content: center;
-}
-
 .avatar-img {
   width: 96px;
   height: 96px;
   border-radius: 50%;
-  border: 2px solid #0f83a6;
+  border: 2px solid #4778eb;
   box-shadow: 0 0 0 2px #060606;
   margin-bottom: 12px;
 }
@@ -170,9 +161,7 @@ body {
   font-size: 22px;
   font-weight: 600;
   color: #fff;
-  margin-bottom: 0;
-  grid-area: nickname;
-  min-height: 50px;
+  margin-bottom: 10px;
 }
 
 .username {
@@ -182,14 +171,8 @@ body {
 /* #endregion */
 
 /* #region Рейтинг */
-.rating {
-  grid-area: rating;
-  min-height: 120px;
-  align-items: flex-start;
-}
-
 .rating-title {
-    font-size: 20px;
+  font-size: 20px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -205,7 +188,7 @@ body {
 .rating-value {
   font-size: 28px;
   font-weight: 700;
-  color: #0f83a6;
+  color: #4778eb;
   margin-bottom: 8px;
 }
 
@@ -220,25 +203,19 @@ body {
 
 .rating-bar-fill {
   height: 100%;
-  background: #0f83a6;
+  background: #4778eb;
   border-radius: 4px;
   transition: width 0.3s;
 }
 
 .rating-highlight {
-  background: #0f83a6;
+  background: #4778eb;
   color: #fff;
   font-weight: 500;
 }
 /* #endregion */
 
 /* #region Достижения */
-.achievements {
-  grid-area: achievements;
-  min-height: 300px;
-  align-items: flex-start;
-}
-
 .section-title {
   font-size: 20px;
   font-weight: 400;
@@ -262,7 +239,7 @@ body {
 
 .achievement-title {
   font-weight: 600;
-  color: #0f83a6;
+  color: #4778eb;
 }
 
 .achievement-desc {
@@ -273,12 +250,6 @@ body {
 /* #endregion */
 
 /* #region Задачи и привычки (общие стили) */
-.tasks,
-.habits {
-  min-height: 200px;
-  align-items: flex-start;
-}
-
 .tasks-list,
 .habits-list {
   list-style: none;
@@ -289,7 +260,7 @@ body {
 
 .task-item,
 .habit-item {
-  background: #1d1d1d;
+  background: #333333;
   border: 1px solid #2d2d2d;
   border-radius: 8px;
   margin-bottom: 10px;
@@ -299,7 +270,7 @@ body {
 
 .task-item:hover,
 .habit-item:hover {
-  border-color: #0f83a6;
+  border-color: #4778eb;
 }
 
 .task-wrapper,
@@ -381,7 +352,6 @@ body {
   background: #2d2d2d;
 }
 
-/* Неактивная привычка */
 .habit-inactive {
   background: #1d1d1d !important;
   color: #666 !important;
@@ -390,14 +360,22 @@ body {
 }
 /* #endregion */
 
-/* #region Специфичные стили задач */
+/* #region Специфичные стили задач и привычек */
+.tasks,
+.habits {
+  min-height: 200px;
+  align-items: flex-start;
+}
+
 .tasks {
   grid-area: tasks;
 }
 
+
 .task-difficulty,
 .habit-difficulty,
-.task-deadline {
+.task-deadline,
+.habit-streak-badge {
   font-size: 12px;
   padding: 4px 8px;
   border-radius: 4px;
@@ -406,43 +384,33 @@ body {
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: brightness(0) invert(1); /* гарантирует чисто белую иконку */
+  filter: brightness(0) invert(1);
 }
 
 .task-difficulty-trivial,
-.habit-difficulty-trivial { 
-    background: #2a5c2a;
-    color: #aaffaa; 
+.habit-difficulty-trivial {
+  background: #2a5c2a;
+  color: #aaffaa;
 }
+
 .task-difficulty-easy,
 .habit-difficulty-easy {
-    background: #2a4a5c;
-     color: #aaffff; 
+  background: #2a4a5c;
+  color: #aaffff;
 }
+
 .task-difficulty-medium,
-.habit-difficulty-medium { 
-    background: #5c4a2a; 
-    color: #ffffaa; 
+.habit-difficulty-medium {
+  background: #5c4a2a;
+  color: #ffffaa;
 }
+
 .task-difficulty-hard,
-.habit-difficulty-hard { 
-    background: #5c2a3a; 
-    color: #ffaaff; 
+.habit-difficulty-hard {
+  background: #5c2a3a;
+  color: #ffaaff;
 }
 /* #endregion */
-
-/* #region Специфичные стили привычек */
-.habits {
-  grid-area: habits;
-}
-
-.habit-streak-badge {
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  background: #2d2d2d;
-  color: #bbb;
-}
 
 /* #region Селектор дней недели */
 .days-selector {
@@ -470,21 +438,20 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .day-toggle:hover {
-  border-color: #0f83a6;
+  border-color: #4778eb;
   background: #2d2d2d;
 }
 
 .day-toggle.active {
-  background: #0f83a6;
-  border-color: #0f83a6;
+  background: #4778eb;
+  border-color: #4778eb;
   color: white;
 }
 
 .day-toggle:focus {
-  outline: 2px solid #0f83a6;
+  outline: 2px solid #4778eb;
   outline-offset: 2px;
 }
-/* #endregion */
 /* #endregion */
 
 /* #region Кнопки и элементы управления */
@@ -538,8 +505,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   left: 0;
   height: 34px;
   width: 34px;
-  background-color: #1d1d1d;
-  border: 2px solid #0f83a6;
+  background-color: #262626;
+  border: 2px solid #4778eb;
   border-radius: 6px;
   transition: all 0.2s ease;
 }
@@ -549,7 +516,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .checkbox-container input:checked ~ .checkmark {
-  background-color: #0f83a6;
+  background-color: #4778eb;
 }
 
 .checkmark:after {
@@ -594,31 +561,28 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .filter.active {
-  color: #0f83a6;
+  color: #4778eb;
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 10px;
   text-decoration-thickness: 2px;
 }
 
-
-
 .filter:focus {
-  outline: 2px solid #0f83a6;
+  outline: 2px solid #4778eb;
   outline-offset: 2px;
 }
 /* #endregion */
 
 /* #region Подвал (Footer) */
 .footer {
-    display: flex;
-    justify-content: end;
-    
+  display: flex;
+  justify-content: end;
   margin-top: auto;
-  background: #161616;
+  background: transparent;
   color: #fff;
   text-align: center;
-  padding: 14px 0;
+  padding: 7px 0;
   padding-right: 34px;
   font-size: 14px;
   letter-spacing: 1px;
@@ -634,7 +598,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   bottom: 0;
   background: rgba(36, 38, 42, 0.8);
   z-index: 1000;
-  
 }
 
 .modal {
@@ -662,7 +625,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .modal-header {
-  background: #185e73;
+  background: #3a60b8;
   color: #fff;
   padding: 24px 28px;
   border-radius: 12px 12px 0 0;
@@ -701,24 +664,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-bottom: 8px;
 }
 
-.form-input {
-  width: 100%;
-  padding: 12px 16px;
-  border-radius: 8px;
-  border: 2px solid #2d2d2d;
-  font-size: 15px;
-  font-family: 'Inter', sans-serif;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  background: #1d1d1d;
-  color: #fff;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #0f83a6;
-  box-shadow: 0 0 0 3px rgba(15, 131, 166, 0.1);
-}
-
 .form-input::placeholder {
   color: #777;
 }
@@ -739,8 +684,8 @@ select.form-input {
 
 .modal-btn {
   background: #1d1d1d;
-  color: #0f83a6;
-  border: 2px solid #0f83a6;
+  color: #4778eb;
+  border: 2px solid #4778eb;
   border-radius: 8px;
   padding: 10px 24px;
   font-size: 15px;
@@ -751,7 +696,7 @@ select.form-input {
 }
 
 .modal-btn:hover {
-  background: #0f83a6;
+  background: #4778eb;
   color: #fff;
   transform: translateY(-1px);
 }
@@ -778,100 +723,164 @@ select.form-input {
 }
 /* #endregion */
 
-
-
-
-
-
-/* region login */
+/* #region Авторизация */
 .auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 200px);
-    padding: 32px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh);
+  height: 100%;
+  width: 100%;
+  padding: 32px 0;
 }
+
 .auth-card {
-    background-color: #1d1d1d;
-    border-radius: 4px;
-    padding: 40px;
-    border: 2px solid #252525;
-    max-width: 400px;
-    width: 100%;
+  background-color: rgb(38, 38, 38);
+  border-radius: 4px;
+  padding: 40px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px 0px;
+  max-width: 400px;
+  width: 100%;
 }
+
 .auth-title {
-    font-size: 28px;
-    font-weight: 700;
-    color: #0f83a6;
-    text-align: center;
-    margin-bottom: 32px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 32px;
 }
-.form-group {
-    margin-bottom: 20px;
-}
+
 .form-label {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    color: #222;
-    margin-bottom: 8px;
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
 }
+
 .form-input {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 2px solid #fff;
-    font-size: 16px;
-    font-family: 'Inter', sans-serif;
-    transition: border-color 0.2s;
+  width: 100%;
+  height: 35px;
+  padding: 5px 16px;
+  border-radius: 5px;
+  border: 1px solid rgba(230, 230, 230, 0.2);
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s;
+  background-color: transparent;
+  color: #fff;
 }
+
+.form-input option {
+  background-color: #2a2a2a;
+  color: #ffffff;
+}
+
+.floating-input {
+  position: relative;
+}
+
+.floating-label {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #aaa;
+  font-size: 14px;
+  transition: 0.2s ease;
+  background-color: #262626;
+  padding: 2px 5px;
+}
+
+.form-input:focus + .floating-label,
+.form-input:not(:placeholder-shown) + .floating-label {
+  font-weight: normal;
+  top: -10px;
+  left: 12px;
+  transform: translateY(0);
+  font-size: 10px;
+  color: #fff;
+}
+
+.form-input:focus + .floating-label {
+  color: #4778eb;
+}
+
 .form-input:focus {
-    outline: none;
-    border-color: #0f83a6
+  outline: none;
+  border-color: #4778eb;
+  background-color: transparent;
 }
+
+.form-input:-webkit-autofill,
+.form-input:-webkit-autofill:hover,
+.form-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #2a2a2a inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 .auth-btn {
-    width: 100%;
-    background: #0f83a6;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 14px 22px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-top: 24px;
+  width: 100%;
+  background: #4778eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 22px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 24px;
 }
+
 .auth-btn:hover {
-    background: #0f83a6;
+  background: #4778eb;
 }
+
 .auth-link {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-    color: #555;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
 }
+
 .auth-link a {
-    color: #0f83a6;
-    text-decoration: none;
-    font-weight: 600;
+  color: #4778eb;
+  text-decoration: none;
+  font-weight: 600;
 }
+
 .auth-link a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
+
 .error-message {
-    background: #ffe0e0;
-    color: #d00;
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 14px;
+  background: #ffe0e0;
+  color: #d00;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
 }
 /* #endregion */
 
-/* #region Адаптивность для мобильных устройств */
+/* #region Адаптивность */
+@media (max-width: 1048px) {
+    .card-filters{
+        gap: 0;
+        justify-content: space-between;
+    }
+    .filter{
+        padding-right: 3px;
+        padding-left: 3px;
+    }
+}
+
+
 @media (max-width: 768px) {
-  /* Шапка */
   .header {
     height: auto;
     padding: 8px 0;
@@ -892,7 +901,6 @@ select.form-input {
     padding: 6px 10px;
   }
 
-  /* App Header: аватар + рейтинг в колонку */
   .app-header {
     flex-direction: column;
     gap: 20px;
@@ -925,7 +933,6 @@ select.form-input {
     margin: 0 auto 4px;
   }
 
-  /* Основной контейнер — одна колонка */
   .container {
     flex-direction: column;
     padding-left: 16px;
@@ -938,7 +945,6 @@ select.form-input {
     width: 100% !important;
   }
 
-  /* Заголовки карточек */
   .card-head {
     flex-direction: column;
     align-items: flex-start;
@@ -949,7 +955,6 @@ select.form-input {
     font-size: 18px;
   }
 
-  /* Фильтры */
   .card-filters {
     flex-wrap: wrap;
     gap: 8px;
@@ -960,7 +965,6 @@ select.form-input {
     font-size: 13px;
   }
 
-  /* Элементы задач и привычек */
   .task-wrapper,
   .habit-wrapper {
     flex-direction: column;
@@ -983,7 +987,6 @@ select.form-input {
     padding: 10px;
   }
 
-  /* Чекбоксы — увеличить зону касания */
   .checkbox-container {
     padding-left: 40px;
   }
@@ -993,7 +996,6 @@ select.form-input {
     height: 38px;
   }
 
-  /* Модальные окна — улучшения */
   .modal {
     min-width: 90%;
     max-width: 95%;
@@ -1005,14 +1007,13 @@ select.form-input {
   }
 
   .form-input {
-    font-size: 16px; /* предотвращает масштабирование на iOS */
+    font-size: 16px;
   }
 
   select.form-input {
     font-size: 16px;
   }
 
-  /* Дни недели — компактнее */
   .days-selector {
     gap: 6px;
   }
@@ -1023,14 +1024,12 @@ select.form-input {
     font-size: 12px;
   }
 
-  /* Подвал */
   .footer {
     padding-right: 16px;
     font-size: 13px;
   }
 }
 
-/* Очень маленькие экраны (до 480px) */
 @media (max-width: 480px) {
   body {
     font-size: 14px;
