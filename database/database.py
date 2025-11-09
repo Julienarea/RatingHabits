@@ -159,6 +159,21 @@ class Database:
         finally:
             session.close()
 
+    def get_all_users_with_rating(self):
+        """Получить всех пользователей с их рейтингом, отсортированных по рейтингу (от большего к меньшему)"""
+        session = self.get_session()
+        try:
+            # Джойним User и UserStats, сортируем по рейтингу
+            users = session.query(User, UserStats).join(UserStats, User.id == UserStats.user_id).order_by(UserStats.rating.desc()).all()
+            result = []
+            for user, stats in users:
+                session.expunge(user)
+                session.expunge(stats)
+                result.append((user, stats))
+            return result
+        finally:
+            session.close()
+
     # ==================== TASK METHODS ====================
     
     def add_user_task(self, user_id: int, title: str, notes: str = None, difficulty: str = 'easy', deadline=None) -> Task:

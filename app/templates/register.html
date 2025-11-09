@@ -24,7 +24,7 @@
                 <div class="error-message">{{ error }}</div>
                 {% endif %}
 
-                <form method="POST" action="{{ url_for('register') }}">
+                <form method="POST" action="{{ url_for('register') }}" id="register-form">
                 <!-- Имя пользователя -->
                 <div class="form-group">
                     <div class="floating-input">
@@ -38,10 +38,11 @@
                         autofocus
                         pattern="^[A-Za-z0-9_-]+$"
                         title="Только латинские буквы, цифры, дефис и подчёркивание"
+                        value="{{ request.form.get('username', '') }}"
                     />
                     <label for="username" class="floating-label">Имя пользователя</label>
                     </div>
-                    <div id="username-error" style="color:#d00; font-size:13px; margin-top:6px; display:none"></div>
+                    <div id="username-error" class="field-error"></div>
                 </div>
 
                 <!-- Никнейм -->
@@ -54,9 +55,11 @@
                         class="form-input"
                         placeholder=" "
                         required
+                        value="{{ request.form.get('nickname', '') }}"
                     />
                     <label for="nickname" class="floating-label">Никнейм (отображаемое имя)</label>
                     </div>
+                    <div id="nickname-error" class="field-error"></div>
                 </div>
 
                 <!-- Email -->
@@ -69,9 +72,11 @@
                         class="form-input"
                         placeholder=" "
                         required
+                        value="{{ request.form.get('email', '') }}"
                     />
                     <label for="email" class="floating-label">Email</label>
                     </div>
+                    <div id="email-error" class="field-error"></div>
                 </div>
 
                 <!-- Пароль -->
@@ -86,8 +91,9 @@
                         minlength="6"
                         required
                     />
-                    <label for="password" class="floating-label">Пароль</label>
+                    <label for="password" class="floating-label">Пароль (минимум 6 символов)</label>
                     </div>
+                    <div id="password-error" class="field-error"></div>
                 </div>
 
                 <!-- Подтверждение пароля -->
@@ -104,10 +110,205 @@
                     />
                     <label for="confirm_password" class="floating-label">Подтвердите пароль</label>
                     </div>
+                    <div id="confirm-password-error" class="field-error"></div>
                 </div>
 
                 <button type="submit" class="auth-btn">Зарегистрироваться</button>
                 </form>
+
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const form = document.getElementById('register-form');
+                    const username = document.getElementById('username');
+                    const nickname = document.getElementById('nickname');
+                    const email = document.getElementById('email');
+                    const password = document.getElementById('password');
+                    const confirmPassword = document.getElementById('confirm_password');
+
+                    // Функция для показа ошибки
+                    function showError(field, message) {
+                        const errorDiv = document.getElementById(field.id + '-error');
+                        if (errorDiv) {
+                            errorDiv.textContent = message;
+                            errorDiv.style.display = 'block';
+                            field.classList.add('input-error');
+                        }
+                    }
+
+                    // Функция для скрытия ошибки
+                    function clearError(field) {
+                        const errorDiv = document.getElementById(field.id + '-error');
+                        if (errorDiv) {
+                            errorDiv.textContent = '';
+                            errorDiv.style.display = 'none';
+                            field.classList.remove('input-error');
+                        }
+                    }
+
+                    // Валидация username
+                    username.addEventListener('blur', function() {
+                        const value = this.value.trim();
+                        if (value === '') {
+                            showError(this, 'Имя пользователя обязательно');
+                        } else if (!/^[A-Za-z0-9_-]+$/.test(value)) {
+                            showError(this, 'Только латинские буквы, цифры, дефис и подчёркивание');
+                        } else if (value.length < 3) {
+                            showError(this, 'Минимум 3 символа');
+                        } else {
+                            clearError(this);
+                        }
+                    });
+
+                    username.addEventListener('input', function() {
+                        if (this.value.trim() !== '') {
+                            clearError(this);
+                        }
+                    });
+
+                    // Валидация nickname
+                    nickname.addEventListener('blur', function() {
+                        const value = this.value.trim();
+                        if (value === '') {
+                            showError(this, 'Никнейм обязателен');
+                        } else if (value.length < 2) {
+                            showError(this, 'Минимум 2 символа');
+                        } else {
+                            clearError(this);
+                        }
+                    });
+
+                    nickname.addEventListener('input', function() {
+                        if (this.value.trim() !== '') {
+                            clearError(this);
+                        }
+                    });
+
+                    // Валидация email
+                    email.addEventListener('blur', function() {
+                        const value = this.value.trim();
+                        if (value === '') {
+                            showError(this, 'Email обязателен');
+                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                            showError(this, 'Некорректный формат email');
+                        } else {
+                            clearError(this);
+                        }
+                    });
+
+                    email.addEventListener('input', function() {
+                        if (this.value.trim() !== '') {
+                            clearError(this);
+                        }
+                    });
+
+                    // Валидация пароля
+                    password.addEventListener('blur', function() {
+                        const value = this.value;
+                        if (value === '') {
+                            showError(this, 'Пароль обязателен');
+                        } else if (value.length < 6) {
+                            showError(this, 'Минимум 6 символов');
+                        } else {
+                            clearError(this);
+                        }
+                    });
+
+                    password.addEventListener('input', function() {
+                        if (this.value !== '') {
+                            clearError(this);
+                        }
+                        // Проверяем совпадение с подтверждением
+                        if (confirmPassword.value !== '' && confirmPassword.value !== this.value) {
+                            showError(confirmPassword, 'Пароли не совпадают');
+                        } else if (confirmPassword.value === this.value) {
+                            clearError(confirmPassword);
+                        }
+                    });
+
+                    // Валидация подтверждения пароля
+                    confirmPassword.addEventListener('blur', function() {
+                        const value = this.value;
+                        if (value === '') {
+                            showError(this, 'Подтвердите пароль');
+                        } else if (value !== password.value) {
+                            showError(this, 'Пароли не совпадают');
+                        } else {
+                            clearError(this);
+                        }
+                    });
+
+                    confirmPassword.addEventListener('input', function() {
+                        if (this.value !== '' && this.value === password.value) {
+                            clearError(this);
+                        } else if (this.value !== '' && this.value !== password.value) {
+                            showError(this, 'Пароли не совпадают');
+                        }
+                    });
+
+                    // Валидация перед отправкой формы
+                    form.addEventListener('submit', function(e) {
+                        let hasErrors = false;
+
+                        // Проверяем username
+                        const usernameValue = username.value.trim();
+                        if (usernameValue === '') {
+                            showError(username, 'Имя пользователя обязательно');
+                            hasErrors = true;
+                        } else if (!/^[A-Za-z0-9_-]+$/.test(usernameValue)) {
+                            showError(username, 'Только латинские буквы, цифры, дефис и подчёркивание');
+                            hasErrors = true;
+                        } else if (usernameValue.length < 3) {
+                            showError(username, 'Минимум 3 символа');
+                            hasErrors = true;
+                        }
+
+                        // Проверяем nickname
+                        const nicknameValue = nickname.value.trim();
+                        if (nicknameValue === '') {
+                            showError(nickname, 'Никнейм обязателен');
+                            hasErrors = true;
+                        } else if (nicknameValue.length < 2) {
+                            showError(nickname, 'Минимум 2 символа');
+                            hasErrors = true;
+                        }
+
+                        // Проверяем email
+                        const emailValue = email.value.trim();
+                        if (emailValue === '') {
+                            showError(email, 'Email обязателен');
+                            hasErrors = true;
+                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+                            showError(email, 'Некорректный формат email');
+                            hasErrors = true;
+                        }
+
+                        // Проверяем пароль
+                        const passwordValue = password.value;
+                        if (passwordValue === '') {
+                            showError(password, 'Пароль обязателен');
+                            hasErrors = true;
+                        } else if (passwordValue.length < 6) {
+                            showError(password, 'Минимум 6 символов');
+                            hasErrors = true;
+                        }
+
+                        // Проверяем подтверждение пароля
+                        const confirmPasswordValue = confirmPassword.value;
+                        if (confirmPasswordValue === '') {
+                            showError(confirmPassword, 'Подтвердите пароль');
+                            hasErrors = true;
+                        } else if (confirmPasswordValue !== passwordValue) {
+                            showError(confirmPassword, 'Пароли не совпадают');
+                            hasErrors = true;
+                        }
+
+                        if (hasErrors) {
+                            e.preventDefault();
+                            return false;
+                        }
+                    });
+                });
+                </script>
 
                 <div class="auth-link">
                 Уже есть аккаунт? <a href="{{ url_for('login') }}">Войти</a>

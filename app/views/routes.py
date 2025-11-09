@@ -150,15 +150,15 @@ def register():
 
     if request.method == 'POST':
 
-        username = request.form.get('username')
+        username = request.form.get('username', '').strip()
 
-        nickname = request.form.get('nickname')
+        nickname = request.form.get('nickname', '').strip()
 
-        email = request.form.get('email')
+        email = request.form.get('email', '').strip()
 
-        password = request.form.get('password')
+        password = request.form.get('password', '')
 
-        confirm_password = request.form.get('confirm_password')
+        confirm_password = request.form.get('confirm_password', '')
         
 
         # Валидация username: только латиница, цифры, дефис, подчёркивание
@@ -406,9 +406,22 @@ def aboutus():
     return render_template('aboutus.html')
 
 @application.route('/rating')
-
 def rating():
-    return render_template('rating.html')
+    """Страница рейтинга всех пользователей"""
+    users_with_rating = db.get_all_users_with_rating()
+    
+    # Формируем данные для шаблона
+    leaderboard = []
+    for rank, (user, stats) in enumerate(users_with_rating, start=1):
+        leaderboard.append({
+            'rank': rank,
+            'avatar': avatar_url(user.path_to_avatar),
+            'nickname': user.nickname,
+            'username': user.username,
+            'rating': stats.rating
+        })
+    
+    return render_template('rating.html', leaderboard=leaderboard)
 
 
 @application.route('/update_rating', methods=['POST'])

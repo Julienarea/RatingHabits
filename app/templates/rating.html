@@ -21,9 +21,36 @@
       </ul>
     </nav>
   </header>
-  <body>
-    Рейтинг
-  </body>
+  
+  <main class="container rating-container">
+    <section class="leaderboard new_block card">
+      <div class="card-head">
+        <div class="section-title">РЕЙТИНГ ИГРОКОВ</div>
+      </div>
+      <ul class="leaderboard-list">
+        {% for player in leaderboard %}
+        <li class="leaderboard-item" {% if loop.index <= 3 %}data-top="{{ loop.index }}"{% endif %}>
+          <div class="leaderboard-rank">
+            {% if loop.index == 1 %}🥇
+            {% elif loop.index == 2 %}🥈
+            {% elif loop.index == 3 %}🥉
+            {% else %}{{ loop.index }}
+            {% endif %}
+          </div>
+          <div class="leaderboard-avatar">
+            <img src="{{ player.avatar }}" alt="Аватар {{ player.nickname }}" />
+          </div>
+          <div class="leaderboard-info">
+            <div class="leaderboard-nickname">{{ player.nickname }}</div>
+            <div class="leaderboard-username">@{{ player.username }}</div>
+          </div>
+          <div class="leaderboard-rating">{{ player.rating }}</div>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
+
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
