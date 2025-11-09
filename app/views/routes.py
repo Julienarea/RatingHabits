@@ -232,8 +232,6 @@ def add_habit():
     if request.method == 'POST':
         title = request.json.get('title')
         notes = request.json.get('notes')
-<<<<<<< HEAD
-=======
 
         difficulty = request.json.get('difficulty', 'easy')
 
@@ -258,7 +256,6 @@ def add_habit():
                 has_days = len(repeat_days) > 0
             if not has_days:
                 return jsonify({'success': False, 'error': 'Для еженедельной привычки выберите хотя бы один день недели'}), 400
->>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
         
         if title:
             try:
@@ -277,8 +274,6 @@ def add_habit():
 def update_habit_details():
     """Обновление деталей привычки (title, notes, streak)"""
     if request.method == 'POST':
-<<<<<<< HEAD
-=======
 
         data = request.json
 
@@ -361,7 +356,6 @@ def delete_habit_route():
 
     if request.method == 'POST':
 
->>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
         habit_id = request.json.get('habit_id')
         title = request.json.get('title')
         notes = request.json.get('notes')

@@ -14,9 +14,6 @@ body {
 }
 
 .header {
-<<<<<<< HEAD
-  background: #4e4eff;
-=======
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,7 +55,6 @@ body {
 }
 
 .nav-items li.active-nav-item {
->>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
   color: #fff;
   text-align: center;
   padding: 24px 0;

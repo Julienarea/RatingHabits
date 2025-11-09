@@ -126,9 +126,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (taskEditCancelBtn) taskEditCancelBtn.onclick = closeModals;
     if (habitEditCancelBtn) habitEditCancelBtn.onclick = closeModals;
 
-<<<<<<< HEAD
-    // Открыть модальное окно редактирования задачи
-=======
     // Функция для открытия модалки редактирования задачи
     function openTaskEditModal(taskItem) {
         const taskId = taskItem.dataset.taskId;
@@ -238,7 +235,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Открыть модальное окно редактирования задачи (клик по содержимому)
->>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
     document.querySelectorAll('.task-content').forEach(taskContent => {
         taskContent.addEventListener('click', function (e) {
             const taskItem = this.closest('.task-item');
@@ -334,42 +330,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-<<<<<<< HEAD
-    // Открыть модальное окно редактирования привычки
-    document.querySelectorAll('.habit-content').forEach(habitContent => {
-        habitContent.addEventListener('click', function (e) {
-            const habitItem = this.closest('.habit-item');
-            const habitId = habitItem.dataset.habitId;
-
-            // Получаем данные привычки из DOM
-            const title = habitItem.querySelector('.habit-title').textContent;
-            const notesEl = habitItem.querySelector('.habit-notes');
-            const notes = notesEl ? notesEl.textContent : '';
-            const streakEl = habitItem.querySelector('.habit-streak-badge');
-            const streak = streakEl ? streakEl.textContent.replace('🔥 Серия: ', '') : '0';
-
-            // Заполняем форму редактирования
-            document.getElementById('habit-edit-id').value = habitId;
-            document.getElementById('habit-edit-title').value = title;
-            document.getElementById('habit-edit-notes').value = notes;
-            document.getElementById('habit-edit-streak').value = streak;
-
-            // Показываем модальное окно
-            overlay.style.display = 'block';
-            modalHabitEdit.style.display = 'flex';
-        });
-    });
-
-=======
->>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
     // Сохранение изменений привычки
     if (habitEditSaveBtn) habitEditSaveBtn.onclick = function () {
         const habitId = document.getElementById('habit-edit-id').value;
         const title = document.getElementById('habit-edit-title').value.trim();
         const notes = document.getElementById('habit-edit-notes').value.trim();
-<<<<<<< HEAD
-        const streak = document.getElementById('habit-edit-streak').value;
-=======
         const difficulty = document.getElementById('habit-edit-difficulty').value;
         const startDate = document.getElementById('habit-edit-start-date').value;
         const repeatType = document.getElementById('habit-edit-repeat-type').value;
@@ -391,7 +356,6 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Для еженедельной привычки выберите хотя бы один день недели.');
             return;
         }
->>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
 
         if (title && habitId) {
             fetch('/update_habit_details', {
