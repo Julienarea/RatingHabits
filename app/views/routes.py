@@ -658,6 +658,20 @@ def add_habit():
         repeat_every = request.json.get('repeat_every', 1)
 
         repeat_days = request.json.get('repeat_days', '1,2,3,4,5')
+        # Валидация: если weekly, то обязательно указать хотя бы один день
+        if repeat_type == 'weekly':
+            has_days = False
+            if isinstance(repeat_days, str):
+                if repeat_days.strip() != '':
+                    # проверим, есть ли хоть одно число
+                    for d in repeat_days.split(','):
+                        if d.strip().isdigit():
+                            has_days = True
+                            break
+            elif isinstance(repeat_days, (list, tuple)):
+                has_days = len(repeat_days) > 0
+            if not has_days:
+                return jsonify({'success': False, 'error': 'Для еженедельной привычки выберите хотя бы один день недели'}), 400
         
         if title:
 
@@ -717,6 +731,19 @@ def update_habit_details():
         repeat_every = data.get('repeat_every')
 
         repeat_days = data.get('repeat_days')
+        # Валидация: если weekly, то обязательно указать дни
+        if repeat_type == 'weekly':
+            has_days = False
+            if isinstance(repeat_days, str):
+                if repeat_days.strip() != '':
+                    for d in repeat_days.split(','):
+                        if d.strip().isdigit():
+                            has_days = True
+                            break
+            elif isinstance(repeat_days, (list, tuple)):
+                has_days = len(repeat_days) > 0
+            if not has_days:
+                return jsonify({'success': False, 'error': 'Для еженедельной привычки выберите хотя бы один день недели'}), 400
 
         streak = data.get('streak')
 

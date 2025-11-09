@@ -60,8 +60,11 @@ body {
   text-decoration: none;
 }
 
-.nav-items li a{    
+.nav-items a{    
   text-decoration: none;
+  display: flex;
+  justify-content: center;
+  width: 100px;
 }
 
 .nav-items li.active-nav-item {

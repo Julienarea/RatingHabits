@@ -13,7 +13,7 @@
     <nav class="nav-items">
       <ul>
         <a href="{{ url_for('index') }}"><li>Главная</li></a>
-        <li class="active-nav-item">О нас</li>
+        <a href="#"><li class="active-nav-item">О нас</li></a>
         <a href="{{ url_for('rating') }}"><li>Рейтинг</li></a>
         <!-- <li>Контакты</li> -->
         <!-- <li>Поддержка</li> -->
@@ -27,3 +27,4 @@
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
+
