@@ -126,33 +126,136 @@ document.addEventListener('DOMContentLoaded', function () {
     if (taskEditCancelBtn) taskEditCancelBtn.onclick = closeModals;
     if (habitEditCancelBtn) habitEditCancelBtn.onclick = closeModals;
 
+<<<<<<< HEAD
     // Открыть модальное окно редактирования задачи
+=======
+    // Функция для открытия модалки редактирования задачи
+    function openTaskEditModal(taskItem) {
+        const taskId = taskItem.dataset.taskId;
+        const title = taskItem.querySelector('.task-title')?.textContent || '';
+        const notesEl = taskItem.querySelector('.task-notes');
+        const notes = notesEl ? notesEl.textContent : '';
+        const difficultyEl = taskItem.querySelector('[class*="task-difficulty-"]');
+        const difficulty = difficultyEl ? difficultyEl.className.split('task-difficulty-')[1].split(' ')[0] : 'easy';
+        const deadlineEl = taskItem.querySelector('.task-deadline');
+        const deadline = deadlineEl ? deadlineEl.textContent.replace('📅 ', '') : '';
+
+        document.getElementById('task-edit-id').value = taskId;
+        document.getElementById('task-edit-title').value = title;
+        document.getElementById('task-edit-notes').value = notes;
+        document.getElementById('task-edit-difficulty').value = difficulty;
+        document.getElementById('task-edit-deadline').value = deadline;
+
+        overlay.style.display = 'block';
+        modalTaskEdit.style.display = 'flex';
+    }
+
+    // Функция для открытия модалки редактирования привычки
+    function openHabitEditModal(habitId) {
+        fetch(`/get_habit_details?habit_id=${habitId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.habit) {
+                    document.getElementById('habit-edit-id').value = data.habit.id;
+                    document.getElementById('habit-edit-title').value = data.habit.title || '';
+                    document.getElementById('habit-edit-notes').value = data.habit.notes || '';
+                    document.getElementById('habit-edit-difficulty').value = data.habit.difficulty || 'easy';
+                    document.getElementById('habit-edit-start-date').value = data.habit.start_date || '';
+
+                    const repeatTypeSelect = document.getElementById('habit-edit-repeat-type');
+                    repeatTypeSelect.value = data.habit.repeat_type || 'weekly';
+                    document.getElementById('habit-edit-repeat-every').value = data.habit.repeat_every || 1;
+
+                    // Сбросить все дни недели
+                    document.querySelectorAll('#modal-habit-edit .day-toggle').forEach(btn => btn.classList.remove('active'));
+                    if (data.habit.repeat_days) {
+                        const daysArr = data.habit.repeat_days.split(',').map(d => d.trim());
+                        document.querySelectorAll('#modal-habit-edit .day-toggle').forEach(btn => {
+                            if (daysArr.includes(btn.dataset.day)) btn.classList.add('active');
+                        });
+                    }
+
+                    // Обновляем видимость блока "Повторять по"
+                    const repeatLabelEdit = document.getElementById('habit-edit-repeat-label');
+                    let repeatDaysEditBlock = null;
+                    const group = repeatTypeSelect.closest('.form-group');
+                    if (group) {
+                        let next = group.nextElementSibling;
+                        while (next) {
+                            if (next.querySelector('.days-selector')) {
+                                repeatDaysEditBlock = next;
+                                break;
+                            }
+                            next = next.nextElementSibling;
+                        }
+                    }
+
+                    function updateRepeatDaysEditBlock() {
+                        const labels = {
+                            'daily': 'день',
+                            'weekly': 'неделю',
+                            'monthly': 'месяц',
+                            'yearly': 'год'
+                        };
+                        if (repeatLabelEdit) {
+                            repeatLabelEdit.textContent = labels[repeatTypeSelect.value] || 'неделю';
+                        }
+                        if (repeatDaysEditBlock) {
+                            repeatDaysEditBlock.style.display = repeatTypeSelect.value === 'weekly' ? '' : 'none';
+                        }
+                    }
+
+                    updateRepeatDaysEditBlock();
+                    repeatTypeSelect.removeEventListener('change', updateRepeatDaysEditBlock);
+                    repeatTypeSelect.addEventListener('change', updateRepeatDaysEditBlock);
+
+                    overlay.style.display = 'block';
+                    modalHabitEdit.style.display = 'flex';
+                } else {
+                    alert('Ошибка загрузки данных привычки');
+                }
+            });
+    }
+
+    // Открыть модальное окно редактирования привычки (клик по содержимому)
+    document.querySelectorAll('.habit-content').forEach(habitContent => {
+        habitContent.addEventListener('click', function (e) {
+            const habitItem = this.closest('.habit-item');
+            const habitId = habitItem.dataset.habitId;
+            openHabitEditModal(habitId);
+        });
+    });
+
+    // Открыть модальное окно редактирования привычки (кнопка меню)
+    document.querySelectorAll('.habit-menu-btn').forEach(menuBtn => {
+        menuBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const habitItem = this.closest('.habit-item');
+            if (!habitItem) return;
+            const habitId = habitItem.dataset.habitId;
+            openHabitEditModal(habitId);
+        });
+    });
+
+    // Открыть модальное окно редактирования задачи (клик по содержимому)
+>>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
     document.querySelectorAll('.task-content').forEach(taskContent => {
         taskContent.addEventListener('click', function (e) {
             const taskItem = this.closest('.task-item');
-            const taskId = taskItem.dataset.taskId;
-
-            // Получаем данные задачи из DOM
-            const title = taskItem.querySelector('.task-title').textContent;
-            const notesEl = taskItem.querySelector('.task-notes');
-            const notes = notesEl ? notesEl.textContent : '';
-            const difficultyEl = taskItem.querySelector('[class*="task-difficulty-"]');
-            const difficulty = difficultyEl ? difficultyEl.className.split('task-difficulty-')[1].split(' ')[0] : 'easy';
-            const deadlineEl = taskItem.querySelector('.task-deadline');
-            const deadline = deadlineEl ? deadlineEl.textContent.replace('📅 ', '') : '';
-
-            // Заполняем форму редактирования
-            document.getElementById('task-edit-id').value = taskId;
-            document.getElementById('task-edit-title').value = title;
-            document.getElementById('task-edit-notes').value = notes;
-            document.getElementById('task-edit-difficulty').value = difficulty;
-            document.getElementById('task-edit-deadline').value = deadline;
-
-            // Показываем модальное окно
-            overlay.style.display = 'block';
-            modalTaskEdit.style.display = 'flex';
+            openTaskEditModal(taskItem);
         });
     });
+
+    // Открыть модальное окно редактирования задачи (кнопка меню)
+    document.querySelectorAll('.task-menu-btn').forEach(menuBtn => {
+        menuBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const taskItem = this.closest('.task-item');
+            if (!taskItem) return;
+            openTaskEditModal(taskItem);
+        });
+    });
+
     overlay.addEventListener('click', closeModals);
     if (taskCancelBtn) taskCancelBtn.onclick = closeModals;
     if (habitCancelBtn) habitCancelBtn.onclick = closeModals;
@@ -231,6 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+<<<<<<< HEAD
     // Открыть модальное окно редактирования привычки
     document.querySelectorAll('.habit-content').forEach(habitContent => {
         habitContent.addEventListener('click', function (e) {
@@ -256,12 +360,38 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+=======
+>>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
     // Сохранение изменений привычки
     if (habitEditSaveBtn) habitEditSaveBtn.onclick = function () {
         const habitId = document.getElementById('habit-edit-id').value;
         const title = document.getElementById('habit-edit-title').value.trim();
         const notes = document.getElementById('habit-edit-notes').value.trim();
+<<<<<<< HEAD
         const streak = document.getElementById('habit-edit-streak').value;
+=======
+        const difficulty = document.getElementById('habit-edit-difficulty').value;
+        const startDate = document.getElementById('habit-edit-start-date').value;
+        const repeatType = document.getElementById('habit-edit-repeat-type').value;
+        const repeatEvery = parseInt(document.getElementById('habit-edit-repeat-every').value) || 1;
+        // Собираем выбранные дни недели
+        const repeatDays = [];
+        document.querySelectorAll('#modal-habit-edit .day-toggle.active').forEach(btn => {
+            repeatDays.push(parseInt(btn.dataset.day));
+        });
+        // streak (серия) можно получить из бейджа, если нужно
+        let streak = 0;
+        const streakBadge = document.querySelector('#modal-habit-edit .habit-streak-badge');
+        if (streakBadge) {
+            const match = streakBadge.textContent.match(/\d+/);
+            if (match) streak = parseInt(match[0]);
+        }
+        // Валидация: для weekly обязательно должен быть выбран хотя бы один день
+        if (repeatType === 'weekly' && repeatDays.length === 0) {
+            alert('Для еженедельной привычки выберите хотя бы один день недели.');
+            return;
+        }
+>>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
 
         if (title && habitId) {
             fetch('/update_habit_details', {
@@ -305,6 +435,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (habitCreateBtn) habitCreateBtn.onclick = function () {
         const title = document.getElementById('habit-title').value.trim();
         const notes = document.getElementById('habit-notes').value.trim();
+
+        // Валидация: если weekly, обязательно выбрать хотя бы один день
+        if (repeatType === 'weekly' && repeatDays.length === 0) {
+            alert('Для еженедельной привычки выберите хотя бы один день недели.');
+            return;
+        }
 
         if (title) {
             fetch('/add_habit', {

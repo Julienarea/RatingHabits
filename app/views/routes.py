@@ -232,6 +232,33 @@ def add_habit():
     if request.method == 'POST':
         title = request.json.get('title')
         notes = request.json.get('notes')
+<<<<<<< HEAD
+=======
+
+        difficulty = request.json.get('difficulty', 'easy')
+
+        start_date = request.json.get('start_date')
+
+        repeat_type = request.json.get('repeat_type', 'weekly')
+
+        repeat_every = request.json.get('repeat_every', 1)
+
+        repeat_days = request.json.get('repeat_days', '1,2,3,4,5')
+        # Валидация: если weekly, то обязательно указать хотя бы один день
+        if repeat_type == 'weekly':
+            has_days = False
+            if isinstance(repeat_days, str):
+                if repeat_days.strip() != '':
+                    # проверим, есть ли хоть одно число
+                    for d in repeat_days.split(','):
+                        if d.strip().isdigit():
+                            has_days = True
+                            break
+            elif isinstance(repeat_days, (list, tuple)):
+                has_days = len(repeat_days) > 0
+            if not has_days:
+                return jsonify({'success': False, 'error': 'Для еженедельной привычки выберите хотя бы один день недели'}), 400
+>>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
         
         if title:
             try:
@@ -250,6 +277,91 @@ def add_habit():
 def update_habit_details():
     """Обновление деталей привычки (title, notes, streak)"""
     if request.method == 'POST':
+<<<<<<< HEAD
+=======
+
+        data = request.json
+
+        print('DEBUG /update_habit_details data:', data, file=sys.stderr)
+
+        habit_id = data.get('habit_id')
+
+        title = data.get('title')
+
+        notes = data.get('notes')
+
+        difficulty = data.get('difficulty')
+
+        start_date = data.get('start_date')
+
+        repeat_type = data.get('repeat_type')
+
+        repeat_every = data.get('repeat_every')
+
+        repeat_days = data.get('repeat_days')
+        # Валидация: если weekly, то обязательно указать дни
+        if repeat_type == 'weekly':
+            has_days = False
+            if isinstance(repeat_days, str):
+                if repeat_days.strip() != '':
+                    for d in repeat_days.split(','):
+                        if d.strip().isdigit():
+                            has_days = True
+                            break
+            elif isinstance(repeat_days, (list, tuple)):
+                has_days = len(repeat_days) > 0
+            if not has_days:
+                return jsonify({'success': False, 'error': 'Для еженедельной привычки выберите хотя бы один день недели'}), 400
+
+        streak = data.get('streak')
+
+        if habit_id and title:
+
+            try:
+
+                db.update_habit_details(
+
+                    habit_id=habit_id,
+                    title=title,
+                    notes=notes,
+
+                    difficulty=difficulty,
+                    start_date=start_date,
+
+                    repeat_type=repeat_type,
+
+                    repeat_every=repeat_every,
+
+                    repeat_days=repeat_days,
+
+                    streak=streak
+                )
+
+                return jsonify({'success': True})
+
+            except Exception as e:
+
+                print('ERROR /update_habit_details:', str(e), file=sys.stderr)
+
+                return jsonify({'success': False, 'error': str(e)}), 400
+        else:
+
+            print('ERROR /update_habit_details: habit_id or title missing', file=sys.stderr)
+
+        return jsonify({'success': False}), 400
+
+
+@application.route('/delete_habit', methods=['POST'])
+
+@login_required
+
+def delete_habit_route():
+
+    """Удаление привычки"""
+
+    if request.method == 'POST':
+
+>>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
         habit_id = request.json.get('habit_id')
         title = request.json.get('title')
         notes = request.json.get('notes')

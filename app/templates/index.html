@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+<<<<<<< HEAD
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -230,6 +231,38 @@
                         />
                     </div>
                 </div>
+=======
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RatingHabits</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="icon" href="../static/images/logo.png" type="image/x-icon">
+</head>
+<body>
+  <header class="header">
+    <nav class="nav-items">
+      <ul>
+        <a href="#"><li class="active-nav-item">Главная</li></a>
+        <a href="{{ url_for('aboutus') }}"><li>О нас</li></a>
+        <a href="{{ url_for('rating') }}"><li>Рейтинг</li></a>
+        <!-- <li>Контакты</li> -->
+        <!-- <li>Поддержка</li> -->
+        <li class="logout-btn"><a href="{{ url_for('logout') }}">Выйти</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div class="app-header">
+        <section class="avatar new_block card">
+            <img src="{{ user.avatar }}" alt="Аватар" class="avatar-img" />
+            <div class="nickname">{{ user.nickname }}</div>
+            <div class="username">@{{ user.username }}</div>
+        </section>
+        <section class="rating new_block card">
+            <div class="rating-title">
+                <span>РЕЙТИНГ</span>
+>>>>>>> f97885a (Пофиксил кнопку редактирования привычки)
             </div>
         </div>
         <div id="modal-habit" class="modal" style="display: none">
