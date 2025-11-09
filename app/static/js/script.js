@@ -1,4 +1,65 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Обработка загрузки аватара
+    const avatarWrapper = document.querySelector('.avatar-upload-wrapper');
+    const avatarUpload = document.getElementById('avatar-upload');
+    const avatarImage = document.getElementById('avatar-image');
+
+    if (avatarWrapper && avatarUpload && avatarImage) {
+        avatarWrapper.addEventListener('click', function () {
+            avatarUpload.click();
+        });
+
+        avatarUpload.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Проверка типа файла
+                if (!file.type.startsWith('image/')) {
+                    alert('Пожалуйста, выберите изображение');
+                    return;
+                }
+
+                // Проверка размера файла (макс 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Размер файла не должен превышать 5MB');
+                    return;
+                }
+
+                // Предпросмотр изображения
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    avatarImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                // Загрузка на сервер
+                const formData = new FormData();
+                formData.append('avatar', file);
+
+                fetch('/update_profile', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log('Аватар успешно обновлен');
+                            // Обновляем src, чтобы избежать кеширования
+                            avatarImage.src = data.avatar_url + '?t=' + new Date().getTime();
+                        } else {
+                            alert('Ошибка при загрузке аватара: ' + (data.error || 'Неизвестная ошибка'));
+                            // Возвращаем предыдущий аватар
+                            location.reload();
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Ошибка:', err);
+                        alert('Ошибка при загрузке аватара');
+                        location.reload();
+                    });
+            }
+        });
+    }
+
     // Обработка изменения статуса задачи
     document.querySelectorAll('.task-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function () {

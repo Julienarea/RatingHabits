@@ -174,6 +174,19 @@ class Database:
         finally:
             session.close()
 
+    def update_user_avatar(self, user_id: int, avatar_filename: str):
+        """Обновить аватар пользователя"""
+        session = self.get_session()
+        try:
+            user = session.query(User).filter(User.id == user_id).first()
+            if user:
+                user.path_to_avatar = avatar_filename
+                session.commit()
+                return True
+            return False
+        finally:
+            session.close()
+
     # ==================== TASK METHODS ====================
     
     def add_user_task(self, user_id: int, title: str, notes: str = None, difficulty: str = 'easy', deadline=None) -> Task:

@@ -859,17 +859,57 @@ def update_habit_streak():
 @login_required
 def update_profile():
 
-    """Обновление профиля пользователя"""
+    """Обновление профиля пользователя (аватар)"""
 
-    if request.method == 'POST':
-
-        nickname = request.json.get('nickname')
-
-        if nickname:
-
-            # TODO: Добавить метод update_user_profile в database.py
-
-            return jsonify({'success': True})
-
-    return jsonify({'success': False}), 400
+    if 'avatar' in request.files:
+        avatar_file = request.files['avatar']
+        
+        if avatar_file and avatar_file.filename:
+            # Проверка расширения файла
+            import os
+            from werkzeug.utils import secure_filename
+            
+            allowed_extensions = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+            filename = secure_filename(avatar_file.filename)
+            
+            if '.' not in filename:
+                return jsonify({'success': False, 'error': 'Неверный формат файла'}), 400
+                
+            ext = filename.rsplit('.', 1)[1].lower()
+            if ext not in allowed_extensions:
+                return jsonify({'success': False, 'error': 'Разрешены только изображения (png, jpg, jpeg, gif, webp)'}), 400
+            
+            # Генерация уникального имени файла
+            import uuid
+            unique_filename = f"{current_user.id}_{uuid.uuid4().hex[:8]}.{ext}"
+            
+            # Путь для сохранения
+            from app.utils.paths import avatar_storage_path
+            avatar_path = avatar_storage_path(application.static_folder, unique_filename)
+            
+            # Создание папки avatars, если её нет
+            os.makedirs(os.path.dirname(avatar_path), exist_ok=True)
+            
+            # Удаление старого аватара (если не default)
+            if current_user.path_to_avatar and current_user.path_to_avatar != 'default_avatar.png':
+                old_avatar_path = avatar_storage_path(application.static_folder, current_user.path_to_avatar)
+                if os.path.exists(old_avatar_path):
+                    try:
+                        os.remove(old_avatar_path)
+                    except:
+                        pass
+            
+            # Сохранение нового файла
+            avatar_file.save(avatar_path)
+            
+            # Обновление в базе данных
+            db.update_user_avatar(current_user.id, unique_filename)
+            
+            # Возвращаем URL нового аватара
+            from app.utils.paths import avatar_url
+            new_avatar_url = avatar_url(unique_filename)
+            
+            return jsonify({'success': True, 'avatar_url': new_avatar_url})
+    
+    return jsonify({'success': False, 'error': 'Файл не найден'}), 400
 
