@@ -16,6 +16,13 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+
+.new_back {
+    background: url('../images/back2.png'), linear-gradient(150deg, #2b2b2b, #1a1a1a, #313131, #313131);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
 /* #endregion */
 
 /* #region Шапка (Header) */
@@ -49,10 +56,11 @@ body {
   position: relative;
   padding: 8px 12px;
   border-radius: 4px;
+  color: #e6e6e6;
+  text-decoration: none;
 }
 
-.nav-items li a{
-  color: #e6e6e6;
+.nav-items li a{    
   text-decoration: none;
 }
 
@@ -86,6 +94,9 @@ body {
 
 /* #region app-header */
 .app-header {
+    margin: 34px;
+    margin-bottom: 0;
+    border-radius: 10px;
   background-color: #262626;
   display: flex;
   padding-left: 34px;
@@ -105,15 +116,31 @@ body {
 /* #endregion */
 
 /* #region Общие стили блоков */
+.new_block {    
+    background-color: #262626;
+    width: 33%;
+    padding: 24px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+    border-radius: 4px;
+    font-size: 17px;
+    min-height: 100px;
+    box-shadow: none;
+    transition: box-shadow 0.2s;
+}
+
 .block {
-  background: #262626;
+  background-color: rgba(200, 200, 200, 0.2);
   padding: 24px 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   text-align: left;
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 17px;
   min-height: 100px;
   box-shadow: none;
@@ -157,6 +184,10 @@ body {
   margin-bottom: 12px;
 }
 
+.avatar {
+    padding-left: 50px;
+}
+
 .nickname {
   font-size: 22px;
   font-weight: 600;
@@ -177,6 +208,11 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.rating {
+    display: flex;
+    justify-content: center;
 }
 
 .icon {
@@ -736,7 +772,7 @@ select.form-input {
 
 .auth-card {
   background-color: rgb(38, 38, 38);
-  border-radius: 4px;
+  border-radius: 10px;
   padding: 40px;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px 0px;
   max-width: 400px;

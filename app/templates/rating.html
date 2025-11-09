@@ -13,8 +13,8 @@
     <nav class="nav-items">
       <ul>
         <a href="{{ url_for('index') }}"><li>Главная</li></a>
-        <li class="active-nav-item">О нас</li>
-        <a href="{{ url_for('rating') }}"><li>Рейтинг</li></a>
+        <a href="{{ url_for('aboutus') }}"><li>О нас</li></a>
+        <li class="active-nav-item">Рейтинг</li>
         <!-- <li>Контакты</li> -->
         <!-- <li>Поддержка</li> -->
         <li class="logout-btn"><a href="{{ url_for('logout') }}">Выйти</a></li>
@@ -22,7 +22,7 @@
     </nav>
   </header>
   <body>
-    О нас
+    Рейтинг
   </body>
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>

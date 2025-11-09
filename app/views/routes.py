@@ -405,6 +405,10 @@ def index():
 def aboutus():
     return render_template('aboutus.html')
 
+@application.route('/rating')
+
+def rating():
+    return render_template('rating.html')
 
 
 @application.route('/update_rating', methods=['POST'])

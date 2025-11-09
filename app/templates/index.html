@@ -12,8 +12,9 @@
   <header class="header">
     <nav class="nav-items">
       <ul>
-        <li class="active-nav-item">Задачи</li>
-        <li> <a href="{{ url_for('aboutus') }}">О нас</a></li>
+        <li class="active-nav-item">Главная</li>
+        <a href="{{ url_for('aboutus') }}"><li>О нас</li></a>
+        <a href="{{ url_for('rating') }}"><li>Рейтинг</li></a>
         <!-- <li>Контакты</li> -->
         <!-- <li>Поддержка</li> -->
         <li class="logout-btn"><a href="{{ url_for('logout') }}">Выйти</a></li>
@@ -21,12 +22,12 @@
     </nav>
   </header>
   <div class="app-header">
-        <section class="avatar card block">
+        <section class="avatar new_block card">
             <img src="{{ user.avatar }}" alt="Аватар" class="avatar-img" />
             <div class="nickname">{{ user.nickname }}</div>
             <div class="username">@{{ user.username }}</div>
         </section>
-        <section class="rating card block">
+        <section class="rating new_block card">
             <div class="rating-title">
                 <span>РЕЙТИНГ</span>
             </div>
