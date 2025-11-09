@@ -657,7 +657,18 @@ def add_habit():
     """Добавление новой привычки"""
 
     if request.method == 'POST':
-
+        
+        difficulty = request.json.get('difficulty', 'easy')
+        start_date = request.json.get('start_date')
+        repeat_type = request.json.get('repeat_type', 'weekly')
+        repeat_every = request.json.get('repeat_every', 1)
+        repeat_days = request.json.get('repeat_days', '1,2,3,4,5')
+        
+        # Валидация для еженедельных привычек
+        if repeat_type == 'weekly':
+            if not repeat_days or repeat_days.strip() == '':
+                return jsonify({'success': False, 'error': 'Для еженедельной привычки необходимо выбрать хотя бы один день недели'}), 400
+        
         title = request.json.get('title')
 
         notes = request.json.get('notes')
@@ -704,6 +715,17 @@ def update_habit_details():
         title = request.json.get('title')
         notes = request.json.get('notes')
         streak = request.json.get('streak')
+        
+        difficulty = request.json.get('difficulty', 'easy')
+        start_date = request.json.get('start_date')
+        repeat_type = request.json.get('repeat_type', 'weekly')
+        repeat_every = request.json.get('repeat_every', 1)
+        repeat_days = request.json.get('repeat_days', '1,2,3,4,5')
+        
+        # Валидация для еженедельных привычек
+        if repeat_type == 'weekly':
+            if not repeat_days or repeat_days.strip() == '':
+                return jsonify({'success': False, 'error': 'Для еженедельной привычки необходимо выбрать хотя бы один день недели'}), 400
         
         if habit_id and title:
 
