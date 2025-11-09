@@ -747,6 +747,60 @@ def update_habit_details():
 
         streak = data.get('streak')
 
+<<<<<<< HEAD
+=======
+        if habit_id and title:
+
+            try:
+
+                db.update_habit_details(
+
+                    habit_id=habit_id,
+                    title=title,
+                    notes=notes,
+
+                    difficulty=difficulty,
+                    start_date=start_date,
+
+                    repeat_type=repeat_type,
+
+                    repeat_every=repeat_every,
+
+                    repeat_days=repeat_days,
+
+                    streak=streak
+                )
+
+                return jsonify({'success': True})
+
+            except Exception as e:
+
+                print('ERROR /update_habit_details:', str(e), file=sys.stderr)
+
+                return jsonify({'success': False, 'error': str(e)}), 400
+        else:
+
+            print('ERROR /update_habit_details: habit_id or title missing', file=sys.stderr)
+
+        return jsonify({'success': False}), 400
+
+
+@application.route('/delete_habit', methods=['POST'])
+
+@login_required
+
+def delete_habit_route():
+
+    """Удаление привычки"""
+
+    if request.method == 'POST':
+
+        habit_id = request.json.get('habit_id')
+        title = request.json.get('title')
+        notes = request.json.get('notes')
+        streak = request.json.get('streak')
+        
+>>>>>>> ed3e973bff2d71056b50776f17a778add75c4d4b
         if habit_id and title:
 
             try:

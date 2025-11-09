@@ -479,6 +479,12 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        // Валидация: если weekly, обязательно выбрать хотя бы один день
+        if (repeatType === 'weekly' && repeatDays.length === 0) {
+            alert('Для еженедельной привычки выберите хотя бы один день недели.');
+            return;
+        }
+
         if (title) {
             fetch('/add_habit', {
                 method: 'POST',
