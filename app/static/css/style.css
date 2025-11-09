@@ -276,6 +276,49 @@ body {
   font-size: 16px;
   color: #aaa;
 }
+
+.editable-field {
+  position: relative;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editable-field:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.field-edit-icon {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  width: 16px;
+  height: 16px;
+  color: #aaa;
+}
+
+.editable-field:hover .field-edit-icon {
+  opacity: 1;
+}
+
+.confirm-editing {
+    padding: 20px;
+}
+
+.edit-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.edit-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
 /* #endregion */
 
 /* #region Рейтинг */

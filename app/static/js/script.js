@@ -60,6 +60,156 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Overlay и модальные окна
+    const overlay = document.getElementById('modal-overlay');
+
+    // Обработка редактирования никнейма и username
+    const modalEditProfile = document.getElementById('modal-edit-profile');
+    const editFieldInput = document.getElementById('edit-field-input');
+    const editFieldLabelText = document.getElementById('edit-field-label-text');
+    const editFieldError = document.getElementById('edit-field-error');
+    const profileEditSaveBtn = document.getElementById('profile-edit-save-btn');
+    const profileEditCancelBtn = document.getElementById('profile-edit-cancel-btn');
+
+    let currentEditingField = null;
+    let currentEditingElement = null;
+
+    // Открытие модального окна редактирования
+    document.querySelectorAll('.editable-field').forEach(field => {
+        field.addEventListener('click', function () {
+            currentEditingField = this.dataset.field;
+            currentEditingElement = this;
+
+            const currentValue = this.textContent.trim().replace('@', '').replace(/\s*$/, '');
+            editFieldInput.value = currentValue;
+
+            if (currentEditingField === 'nickname') {
+                editFieldLabelText.textContent = 'Никнейм';
+                editFieldInput.placeholder = 'Введите никнейм';
+            } else if (currentEditingField === 'username') {
+                editFieldLabelText.textContent = 'Имя пользователя';
+                editFieldInput.placeholder = 'Только латиница, цифры, дефис и подчёркивание';
+            }
+
+            editFieldError.textContent = '';
+            editFieldError.style.display = 'none';
+
+            overlay.style.display = 'block';
+            modalEditProfile.style.display = 'block';
+            editFieldInput.focus();
+            editFieldInput.select();
+        });
+    });
+
+    // Закрытие модального окна редактирования
+    function closeEditModal() {
+        overlay.style.display = 'none';
+        modalEditProfile.style.display = 'none';
+        currentEditingField = null;
+        currentEditingElement = null;
+    }
+
+    if (profileEditCancelBtn) {
+        profileEditCancelBtn.addEventListener('click', closeEditModal);
+    }
+
+    // Сохранение изменений
+    if (profileEditSaveBtn) {
+        profileEditSaveBtn.addEventListener('click', function () {
+            const newValue = editFieldInput.value.trim();
+
+            if (!newValue) {
+                editFieldError.textContent = 'Поле не может быть пустым';
+                editFieldError.style.display = 'block';
+                return;
+            }
+
+            // Валидация username
+            if (currentEditingField === 'username') {
+                if (!/^[A-Za-z0-9_-]+$/.test(newValue)) {
+                    editFieldError.textContent = 'Только латинские буквы, цифры, дефис и подчёркивание';
+                    editFieldError.style.display = 'block';
+                    return;
+                }
+                if (newValue.length < 3) {
+                    editFieldError.textContent = 'Минимум 3 символа';
+                    editFieldError.style.display = 'block';
+                    return;
+                }
+            }
+
+            // Валидация nickname
+            if (currentEditingField === 'nickname') {
+                if (newValue.length < 2) {
+                    editFieldError.textContent = 'Минимум 2 символа';
+                    editFieldError.style.display = 'block';
+                    return;
+                }
+            }
+
+            // Проверка уникальности и сохранение
+            fetch('/check_username_unique', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    field: currentEditingField,
+                    value: newValue
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.unique) {
+                        editFieldError.textContent = currentEditingField === 'username'
+                            ? 'Это имя пользователя уже занято'
+                            : 'Этот никнейм уже занят';
+                        editFieldError.style.display = 'block';
+                        return;
+                    }
+
+                    // Запрос подтверждения
+                    const fieldName = currentEditingField === 'nickname' ? 'никнейм' : 'имя пользователя';
+                    if (!confirm(`Вы уверены, что хотите изменить ${fieldName} на "${newValue}"?`)) {
+                        return;
+                    }
+
+                    // Сохранение изменений
+                    fetch('/update_profile_field', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            field: currentEditingField,
+                            value: newValue
+                        })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Обновляем отображение
+                                if (currentEditingField === 'nickname') {
+                                    currentEditingElement.childNodes[0].textContent = newValue + ' ';
+                                } else if (currentEditingField === 'username') {
+                                    currentEditingElement.childNodes[0].textContent = '@' + newValue + ' ';
+                                }
+                                closeEditModal();
+                            } else {
+                                editFieldError.textContent = data.error || 'Ошибка при сохранении';
+                                editFieldError.style.display = 'block';
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Ошибка:', err);
+                            editFieldError.textContent = 'Ошибка при сохранении';
+                            editFieldError.style.display = 'block';
+                        });
+                })
+                .catch(err => {
+                    console.error('Ошибка:', err);
+                    editFieldError.textContent = 'Ошибка при проверке уникальности';
+                    editFieldError.style.display = 'block';
+                });
+        });
+    }
+
     // Обработка изменения статуса задачи
     document.querySelectorAll('.task-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function () {
@@ -184,8 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Overlay и модальные
-    const overlay = document.getElementById('modal-overlay');
+    // Модальные окна для задач и привычек
     const modalTask = document.getElementById('modal-task');
     const modalHabit = document.getElementById('modal-habit');
     const modalTaskEdit = document.getElementById('modal-task-edit');

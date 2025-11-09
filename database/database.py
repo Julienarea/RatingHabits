@@ -105,6 +105,17 @@ class Database:
         finally:
             session.close()
 
+    def get_user_by_nickname(self, nickname: str) -> User:
+        """Получить пользователя по nickname"""
+        session = self.get_session()
+        try:
+            user = session.query(User).filter(User.nickname == nickname).first()
+            if user:
+                session.expunge(user)
+            return user
+        finally:
+            session.close()
+
     def verify_user_password(self, user: User, password: str) -> bool:
         """
         Проверить пароль пользователя.
@@ -181,6 +192,32 @@ class Database:
             user = session.query(User).filter(User.id == user_id).first()
             if user:
                 user.path_to_avatar = avatar_filename
+                session.commit()
+                return True
+            return False
+        finally:
+            session.close()
+
+    def update_user_username(self, user_id: int, username: str):
+        """Обновить username пользователя"""
+        session = self.get_session()
+        try:
+            user = session.query(User).filter(User.id == user_id).first()
+            if user:
+                user.username = username
+                session.commit()
+                return True
+            return False
+        finally:
+            session.close()
+
+    def update_user_nickname(self, user_id: int, nickname: str):
+        """Обновить nickname пользователя"""
+        session = self.get_session()
+        try:
+            user = session.query(User).filter(User.id == user_id).first()
+            if user:
+                user.nickname = nickname
                 session.commit()
                 return True
             return False

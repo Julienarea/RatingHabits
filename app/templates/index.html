@@ -33,8 +33,20 @@
                 </div>
                 <input type="file" id="avatar-upload" accept="image/*" style="display: none;" />
             </div>
-            <div class="nickname">{{ user.nickname }}</div>
-            <div class="username">@{{ user.username }}</div>
+            <div class="nickname editable-field" id="nickname-display" data-field="nickname">
+                {{ user.nickname }}
+                <svg class="field-edit-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+            </div>
+            <div class="username editable-field" id="username-display" data-field="username">
+                @{{ user.username }}
+                <svg class="field-edit-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+            </div>
         </section>
         <section class="rating new_block card">
             <div class="rating-title">
@@ -401,6 +413,22 @@
             <button type="button" class="day-toggle" data-day="6">Сб</button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно редактирования профиля -->
+  <div id="modal-edit-profile" class="modal confirm-editing" style="display: none">
+    <div class="edit-content">
+      <h3 class="edit-title">Редактирование профиля</h3>
+      <div class="form-group">
+        <label for="edit-field-label" id="edit-field-label-text">Поле</label>
+        <input type="text" id="edit-field-input" class="form-input" />
+        <div id="edit-field-error" class="field-error"></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="profile-edit-save-btn" class="modal-btn modal-btn-primary">Сохранить</button>
+        <button type="button" id="profile-edit-cancel-btn" class="modal-btn modal-btn-secondary">Отмена</button>
       </div>
     </div>
   </div>

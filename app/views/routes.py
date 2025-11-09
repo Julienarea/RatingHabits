@@ -913,3 +913,87 @@ def update_profile():
     
     return jsonify({'success': False, 'error': 'Файл не найден'}), 400
 
+
+@application.route('/check_username_unique', methods=['POST'])
+@login_required
+def check_username_unique():
+    """Проверка уникальности username или nickname"""
+    data = request.get_json()
+    field = data.get('field')
+    value = data.get('value', '').strip()
+    
+    if not value:
+        return jsonify({'unique': False, 'error': 'Значение не может быть пустым'})
+    
+    if field == 'username':
+        # Проверка формата
+        import re
+        if not re.match(r'^[A-Za-z0-9_-]+$', value):
+            return jsonify({'unique': False, 'error': 'Неверный формат'})
+        
+        # Проверка уникальности (исключая текущего пользователя)
+        existing_user = db.get_user_by_username(value)
+        if existing_user and existing_user.id != current_user.id:
+            return jsonify({'unique': False})
+        
+        return jsonify({'unique': True})
+    
+    elif field == 'nickname':
+        # Проверка уникальности (исключая текущего пользователя)
+        existing_user = db.get_user_by_nickname(value)
+        if existing_user and existing_user.id != current_user.id:
+            return jsonify({'unique': False})
+        
+        return jsonify({'unique': True})
+    
+    return jsonify({'unique': False, 'error': 'Неверное поле'}), 400
+
+
+@application.route('/update_profile_field', methods=['POST'])
+@login_required
+def update_profile_field():
+    """Обновление nickname или username"""
+    data = request.get_json()
+    field = data.get('field')
+    value = data.get('value', '').strip()
+    
+    if not value:
+        return jsonify({'success': False, 'error': 'Значение не может быть пустым'})
+    
+    if field == 'username':
+        # Проверка формата
+        import re
+        if not re.match(r'^[A-Za-z0-9_-]+$', value):
+            return jsonify({'success': False, 'error': 'Неверный формат username'})
+        
+        if len(value) < 3:
+            return jsonify({'success': False, 'error': 'Минимум 3 символа'})
+        
+        # Проверка уникальности
+        existing_user = db.get_user_by_username(value)
+        if existing_user and existing_user.id != current_user.id:
+            return jsonify({'success': False, 'error': 'Это имя пользователя уже занято'})
+        
+        # Обновление
+        if db.update_user_username(current_user.id, value):
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'error': 'Ошибка при обновлении'})
+    
+    elif field == 'nickname':
+        if len(value) < 2:
+            return jsonify({'success': False, 'error': 'Минимум 2 символа'})
+        
+        # Проверка уникальности
+        existing_user = db.get_user_by_nickname(value)
+        if existing_user and existing_user.id != current_user.id:
+            return jsonify({'success': False, 'error': 'Этот никнейм уже занят'})
+        
+        # Обновление
+        if db.update_user_nickname(current_user.id, value):
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'error': 'Ошибка при обновлении'})
+    
+    return jsonify({'success': False, 'error': 'Неверное поле'}), 400
+
