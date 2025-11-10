@@ -77,8 +77,6 @@ body {
 .nav-items li.active-nav-item {
   color: #fff;
   text-align: center;
-  padding: 24px 0;
-  box-shadow: 0 2px 8px rgba(78,78,255,0.08);
 }
 
 .nav-items {
