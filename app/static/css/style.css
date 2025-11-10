@@ -1298,6 +1298,69 @@ select.form-input {
   font-size: 14px;
   line-height: 1.7;
   color: #bbb;
+  margin-bottom: 16px;
+}
+
+.member-contacts {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.contact-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-badge svg {
+  flex-shrink: 0;
+}
+
+.contact-badge.tg {
+  background: linear-gradient(135deg, rgba(42, 171, 238, 0.1) 0%, rgba(42, 171, 238, 0.05) 100%);
+  color: #2aabee;
+  border-color: rgba(42, 171, 238, 0.2);
+}
+
+.contact-badge.tg:hover {
+  background: linear-gradient(135deg, rgba(42, 171, 238, 0.2) 0%, rgba(42, 171, 238, 0.1) 100%);
+  border-color: rgba(42, 171, 238, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(42, 171, 238, 0.2);
+}
+
+.contact-badge.vk {
+  background: linear-gradient(135deg, rgba(0, 119, 255, 0.1) 0%, rgba(0, 119, 255, 0.05) 100%);
+  color: #0077ff;
+  border-color: rgba(0, 119, 255, 0.2);
+}
+
+.contact-badge.vk:hover {
+  background: linear-gradient(135deg, rgba(0, 119, 255, 0.2) 0%, rgba(0, 119, 255, 0.1) 100%);
+  border-color: rgba(0, 119, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 119, 255, 0.2);
+}
+
+.contact-badge.github {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.contact-badge.github:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 /* #endregion */
 
