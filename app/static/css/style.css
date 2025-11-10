@@ -1165,6 +1165,7 @@ select.form-input {
 
 .tech-stack {
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 32px;
   margin-top: 32px;
@@ -1267,6 +1268,26 @@ select.form-input {
   transform: scaleX(1);
 }
 
+.member-photo {
+  width: 100%;
+  height: 280px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(71, 120, 235, 0.1) 0%, rgba(139, 69, 255, 0.1) 100%);
+}
+
+.member-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.team-member:hover .member-photo img {
+  transform: scale(1.05);
+}
+
 .member-role {
   display: inline-block;
   font-size: 12px;
@@ -1357,6 +1378,19 @@ select.form-input {
 }
 
 .contact-badge.github:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.contact-badge.portfolio {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.contact-badge.portfolio:hover {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
   border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-2px);
@@ -1662,6 +1696,11 @@ select.form-input {
     padding: 20px;
   }
 
+  .member-photo {
+    height: 220px;
+    margin-bottom: 16px;
+  }
+
   .member-role {
     font-size: 11px;
     padding: 5px 10px;
@@ -1678,6 +1717,18 @@ select.form-input {
   .member-description {
     font-size: 13px;
     line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .contact-badge {
+    font-size: 12px;
+    padding: 6px 10px;
+    gap: 5px;
+  }
+
+  .contact-badge svg {
+    width: 14px;
+    height: 14px;
   }
 }
   .modal-header h2 {

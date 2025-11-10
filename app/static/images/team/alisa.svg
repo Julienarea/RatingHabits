@@ -1,0 +1,12 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff5757;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff7878;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#grad3)"/>
+  <circle cx="200" cy="150" r="60" fill="rgba(255,255,255,0.3)"/>
+  <path d="M 100 320 Q 200 280, 300 320 L 300 400 L 100 400 Z" fill="rgba(255,255,255,0.3)"/>
+  <text x="200" y="375" font-family="Arial, sans-serif" font-size="24" fill="#fff" text-anchor="middle" font-weight="bold">Алиса</text>
+</svg>
