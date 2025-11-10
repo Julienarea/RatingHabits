@@ -23,6 +23,13 @@ body {
     background-position: center;
     background-size: cover;
 }
+
+.slim-back {
+    background: url('../images/back.png'), linear-gradient(150deg, #313131, #1a1a1a, #313131, #313131);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
 /* #endregion */
 
 /* #region Шапка (Header) */
@@ -1060,6 +1067,7 @@ select.form-input {
 .about-hero {
   text-align: center;
   padding: 60px 40px;
+  margin-bottom: 32px;
 }
 
 .about-logo {
@@ -1070,7 +1078,8 @@ select.form-input {
   width: 120px;
   height: 120px;
   border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(71, 120, 235, 0.3);
+  border: 4px solid #4778eb;
+  box-shadow: 0 0 24px rgba(71, 120, 235, 0.3);
 }
 
 .about-title {
@@ -1215,6 +1224,80 @@ select.form-input {
 .contact-link:hover {
   color: #6b9fff;
   text-decoration: underline;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.team-member {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 28px;
+  border-radius: 12px;
+  border: 1px solid rgba(71, 120, 235, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+/* 
+.team-member::before {
+  content: '';
+  position: absolute;
+  top: 0;https://i.imgur.com/7G9dF0B.png
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4778eb, #6b9fff);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+} */
+
+.team-member:hover {
+  border-color: rgba(71, 120, 235, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(71, 120, 235, 0.15);
+}
+
+.team-member:hover::before {
+  transform: scaleX(1);
+}
+
+.member-role {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #4778eb;
+  background: rgba(71, 120, 235, 0.15);
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.member-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.member-username {
+  font-size: 15px;
+  color: #4778eb;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.member-description {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #bbb;
 }
 /* #endregion */
 
@@ -1394,6 +1477,7 @@ select.form-input {
 
   .about-hero {
     padding: 40px 24px;
+    margin-bottom: 32px;
   }
 
   .about-logo img {
@@ -1421,6 +1505,29 @@ select.form-input {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
   }
+
+  .tech-stack {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Команда - адаптив для планшетов */
+  .team-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .team-member {
+    padding: 24px;
+  }
+
+  .member-name {
+    font-size: 20px;
+  }
+
+  .member-description {
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1440,6 +1547,7 @@ select.form-input {
 
   .about-hero {
     padding: 32px 20px;
+    margin-bottom: 32px;
   }
 
   .about-logo img {
@@ -1479,6 +1587,34 @@ select.form-input {
 
   .contact-info {
     font-size: 14px;
+  }
+
+  /* Команда - адаптив для мобильных */
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .team-member {
+    padding: 20px;
+  }
+
+  .member-role {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .member-name {
+    font-size: 18px;
+  }
+
+  .member-username {
+    font-size: 14px;
+  }
+
+  .member-description {
+    font-size: 13px;
+    line-height: 1.6;
   }
 }
   .modal-header h2 {
@@ -1535,7 +1671,7 @@ select.form-input {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 24px 10px;
+    padding: 34px;
 }
 
 .leaderboard-list {

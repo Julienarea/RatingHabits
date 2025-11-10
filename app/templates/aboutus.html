@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="icon" href="../static/images/logo.png" type="image/x-icon">
 </head>
-<body>
+<body class="slim-back">
   <header class="header">
     <nav class="nav-items">
       <ul>
@@ -28,7 +28,7 @@
         <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RatingHabits Logo" />
       </div>
       <h1 class="about-title">RatingHabits</h1>
-      <p class="about-subtitle">Трекер привычек с системой рейтинга в стиле Habitica</p>
+      <p class="about-subtitle">Трекер привычек с системой рейтинга</p>
     </section>
 
     <section class="about-section wide-block new_block card">
@@ -122,7 +122,40 @@
         Проект разработан студентами <strong>ЮНИТ.УРФУ</strong> в рамках изучения веб-разработки 
         и создания полноценных веб-приложений.
       </p>
-      <p class="about-text">
+      
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="member-role">Full-Stack разработчик</div>
+          <div class="member-name">Дмитрий Разбежкин</div>
+          <div class="member-username">@area_ufa</div>
+          <div class="member-description">
+            Студент 2 курса. Реализовал весь основной функционал приложения: систему рейтинга, 
+            авторизацию пользователей, механику оценивания задач и привычек, backend и базу данных.
+          </div>
+        </div>
+
+        <div class="team-member">
+          <div class="member-role">Frontend & Верстка</div>
+          <div class="member-name">Виктория Киреева</div>
+          <div class="member-username">@Wiki_cc</div>
+          <div class="member-description">
+            Занималась frontend-разработкой и адаптивной версткой. Создала страницы "О нас" и "Рейтинг", 
+            реализовала интерактивные элементы интерфейса.
+          </div>
+        </div>
+
+        <div class="team-member">
+          <div class="member-role">UI/UX Дизайнер</div>
+          <div class="member-name">Алиса Трапп</div>
+          <div class="member-username">@FiJuShh</div>
+          <div class="member-description">
+            Разработала визуальную концепцию и дизайн всех страниц приложения. Создала современный 
+            и интуитивно понятный интерфейс в темной цветовой гамме.
+          </div>
+        </div>
+      </div>
+
+      <p class="about-text" style="margin-top: 32px;">
         Мы верим, что правильно выстроенная система мотивации и геймификация могут помочь людям 
         достигать своих целей и формировать полезные привычки.
       </p>
