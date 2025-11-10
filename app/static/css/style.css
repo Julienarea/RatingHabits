@@ -8,7 +8,7 @@
 body {
   font-family: 'Inter', sans-serif;
   background: url('../images/back.png'), linear-gradient(150deg, #313131, #1a1a1a, #313131, #313131);
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-position: center;
   background-size: cover;
   color: #ffffff;
@@ -19,14 +19,14 @@ body {
 
 .new_back {
     background: url('../images/back2.png'), linear-gradient(150deg, #2b2b2b, #1a1a1a, #313131, #313131);
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-position: center;
     background-size: cover;
 }
 
 .slim-back {
     background: url('../images/back.png'), linear-gradient(150deg, #313131, #1a1a1a, #313131, #313131);
-    background-repeat: no-repeat;
+    background-repeat: repeat-x;
     background-position: center;
     background-size: contain;
 }
@@ -1861,6 +1861,7 @@ select.form-input {
   font-weight: 600;
   color: #ffffff;
   margin-bottom: 4px;
+  word-break: break-all;
 }
 
 .leaderboard-username {
@@ -1884,6 +1885,10 @@ select.form-input {
   .leaderboard-rank {
     font-size: 20px;
     min-width: 50px;
+  }
+
+  .leaderboard-avatar {
+    margin: 0 6px;
   }
 
   .leaderboard-avatar img {
