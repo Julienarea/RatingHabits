@@ -21,9 +21,129 @@
       </ul>
     </nav>
   </header>
-  <body>
-    О нас
-  </body>
+
+  <main class="about-container">
+    <section class="about-hero new_block wide-block card">
+      <div class="about-logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RatingHabits Logo" />
+      </div>
+      <h1 class="about-title">RatingHabits</h1>
+      <p class="about-subtitle">Трекер привычек с системой рейтинга в стиле Habitica</p>
+    </section>
+
+    <section class="about-section wide-block new_block card">
+      <h2 class="section-heading">О проекте</h2>
+      <p class="about-text">
+        <strong>RatingHabits</strong> — это современное веб-приложение для отслеживания привычек и задач 
+        с встроенной системой мотивации через рейтинг. Проект вдохновлён популярным сервисом Habitica, 
+        но с фокусом на простоту и эффективность.
+      </p>
+      <p class="about-text">
+        Наша цель — помочь пользователям формировать полезные привычки и достигать целей через 
+        геймификацию и соревновательный элемент. Каждое выполненное задание повышает ваш рейтинг, 
+        а пропущенные привычки его снижают, создавая дополнительную мотивацию к действию.
+      </p>
+    </section>
+
+    <section class="about-section wide-block new_block card">
+      <h2 class="section-heading">Основные возможности</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon">✅</div>
+          <h3 class="feature-title">Задачи</h3>
+          <p class="feature-desc">Создавайте разовые задачи с возможностью установки дедлайна и уровня сложности</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🔄</div>
+          <h3 class="feature-title">Привычки</h3>
+          <p class="feature-desc">Настраивайте повторяющиеся привычки с гибким расписанием (ежедневно, еженедельно, ежемесячно, ежегодно)</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">⭐</div>
+          <h3 class="feature-title">Система рейтинга</h3>
+          <p class="feature-desc">Зарабатывайте очки за выполнение задач и привычек, стройте стрики</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🏆</div>
+          <h3 class="feature-title">Таблица лидеров</h3>
+          <p class="feature-desc">Соревнуйтесь с другими пользователями и поднимайтесь в рейтинге</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Уровни сложности</h3>
+          <p class="feature-desc">Три уровня сложности задач: легкие (+5), средние (+10) и сложные (+15)</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">👤</div>
+          <h3 class="feature-title">Профиль</h3>
+          <p class="feature-desc">Настраивайте аватар, никнейм и имя пользователя</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section wide-block new_block card">
+      <h2 class="section-heading">Технологии</h2>
+      <div class="tech-stack">
+        <div class="tech-category">
+          <h3 class="tech-category-title">Backend</h3>
+          <ul class="tech-list">
+            <li>Python 3</li>
+            <li>Flask (веб-фреймворк)</li>
+            <li>SQLAlchemy (ORM)</li>
+            <li>PostgreSQL (база данных)</li>
+            <li>Flask-Login (аутентификация)</li>
+            <li>bcrypt (хеширование паролей)</li>
+          </ul>
+        </div>
+        <div class="tech-category">
+          <h3 class="tech-category-title">Frontend</h3>
+          <ul class="tech-list">
+            <li>HTML5 / CSS3</li>
+            <li>JavaScript (Vanilla)</li>
+            <li>Jinja2 (шаблонизатор)</li>
+            <li>AJAX для динамических обновлений</li>
+            <li>Адаптивный дизайн</li>
+          </ul>
+        </div>
+        <div class="tech-category">
+          <h3 class="tech-category-title">Дополнительно</h3>
+          <ul class="tech-list">
+            <li>pytz (работа с часовыми поясами)</li>
+            <li>python-dateutil (работа с датами)</li>
+            <li>python-dotenv (переменные окружения)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section wide-block new_block card">
+      <h2 class="section-heading">Команда разработки</h2>
+      <p class="about-text">
+        Проект разработан студентами <strong>ЮНИТ.УРФУ</strong> в рамках изучения веб-разработки 
+        и создания полноценных веб-приложений.
+      </p>
+      <p class="about-text">
+        Мы верим, что правильно выстроенная система мотивации и геймификация могут помочь людям 
+        достигать своих целей и формировать полезные привычки.
+      </p>
+    </section>
+
+    <section class="about-section wide-block new_block card">
+      <h2 class="section-heading">Контакты</h2>
+      <p class="about-text">
+        По вопросам и предложениям:
+      </p>
+      <div class="contact-info">
+        <p>📧 Email: <a href="mailto:support@ratinghabits.ru" class="contact-link">support@ratinghabits.ru</a></p>
+        <p>🌐 GitHub: <a href="https://github.com/Julienarea/RatingHabits" class="contact-link" target="_blank">github.com/Julienarea/RatingHabits</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>ЮНИТ.УРФУ</span>
+  </footer>
+
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

@@ -1050,6 +1050,174 @@ select.form-input {
 }
 /* #endregion */
 
+/* #region Страница "О нас" */
+.about-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.about-hero {
+  text-align: center;
+  padding: 60px 40px;
+}
+
+.about-logo {
+  margin-bottom: 24px;
+}
+
+.about-logo img {
+  width: 120px;
+  height: 120px;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(71, 120, 235, 0.3);
+}
+
+.about-title {
+  font-size: 48px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #4778eb, #6b9fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-subtitle {
+  font-size: 20px;
+  color: #aaa;
+  font-weight: 400;
+}
+
+.about-section {
+  padding: 40px;
+  margin-bottom: 24px;
+}
+
+.section-heading {
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #4778eb;
+}
+
+.about-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #ccc;
+  margin-bottom: 16px;
+}
+
+.about-text strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.feature-item {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 24px;
+  border-radius: 12px;
+  transition: transform 0.2s ease, background 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.feature-item:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.feature-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.feature-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.feature-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #aaa;
+}
+
+.tech-stack {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  margin-top: 32px;
+}
+
+.tech-category {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tech-category-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #4778eb;
+  margin-bottom: 16px;
+}
+
+.tech-list {
+  list-style: none;
+  padding: 0;
+}
+
+.tech-list li {
+  font-size: 15px;
+  color: #ccc;
+  padding: 8px 0;
+  padding-left: 24px;
+  position: relative;
+}
+
+.tech-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #4778eb;
+  font-weight: bold;
+}
+
+.contact-info {
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 2;
+}
+
+.contact-info p {
+  color: #ccc;
+}
+
+.contact-link {
+  color: #4778eb;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contact-link:hover {
+  color: #6b9fff;
+  text-decoration: underline;
+}
+/* #endregion */
+
 /* #region Адаптивность */
 @media (max-width: 1048px) {
     .card-filters{
@@ -1217,6 +1385,42 @@ select.form-input {
     padding-right: 16px;
     font-size: 13px;
   }
+
+  /* Страница "О нас" - адаптив для планшетов */
+  .about-container {
+    margin: 24px auto;
+    padding: 0 16px;
+  }
+
+  .about-hero {
+    padding: 40px 24px;
+  }
+
+  .about-logo img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .about-title {
+    font-size: 36px;
+  }
+
+  .about-subtitle {
+    font-size: 18px;
+  }
+
+  .about-section {
+    padding: 24px;
+  }
+
+  .section-heading {
+    font-size: 24px;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1228,6 +1432,55 @@ select.form-input {
     padding: 24px 16px;
   }
 
+  /* Страница "О нас" - адаптив для мобильных */
+  .about-container {
+    margin: 16px auto;
+    padding: 0 12px;
+  }
+
+  .about-hero {
+    padding: 32px 20px;
+  }
+
+  .about-logo img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .about-title {
+    font-size: 28px;
+  }
+
+  .about-subtitle {
+    font-size: 16px;
+  }
+
+  .about-section {
+    padding: 20px;
+  }
+
+  .section-heading {
+    font-size: 20px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .tech-stack {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .feature-item {
+    padding: 20px;
+  }
+
+  .contact-info {
+    font-size: 14px;
+  }
+}
   .modal-header h2 {
     font-size: 20px;
   }
@@ -1249,12 +1502,8 @@ select.form-input {
   }
 
   .rating-value {
-    font-size: 24px;
-  }
-
-  .avatar-img {
-    width: 70px;
-    height: 70px;
+  .contact-info {
+    font-size: 14px;
   }
 }
 /* #endregion */
@@ -1270,6 +1519,16 @@ select.form-input {
 }
 
 .leaderboard {
+    width: 100%;
+    background-color: #262626;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 10px;
+}
+
+.wide-block {
     width: 100%;
     background-color: #262626;
     border-radius: 10px;
