@@ -1,46 +1,31 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Регистрация - RatingHabits</title>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
-            rel="stylesheet"
-        />
-        <link
-            rel="stylesheet"
-            href="{{ url_for('static', filename='css/style.css') }}"
-        />
-        <link rel="icon" href="../static/images/logo.png" type="image/x-icon">
-    </head>
-    <body class="new_back">
 
-        <div class="auth-container">
-            <div class="auth-card">
-                <h2 class="auth-title">Регистрация</h2>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Регистрация - RatingHabits</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="icon" href="../static/images/logo.png" type="image/x-icon">
+</head>
 
-                {% if error %}
-                <div class="error-message">{{ error }}</div>
-                {% endif %}
+<body class="new_back">
 
-                <form method="POST" action="{{ url_for('register') }}" id="register-form">
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2 class="auth-title">Регистрация</h2>
+
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('register') }}" id="register-form">
                 <!-- Имя пользователя -->
                 <div class="form-group">
                     <div class="floating-input">
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        class="form-input"
-                        placeholder=" "
-                        required
-                        autofocus
-                        pattern="^[A-Za-z0-9_-]+$"
-                        title="Только латинские буквы, цифры, дефис и подчёркивание"
-                        value="{{ request.form.get('username', '') }}"
-                    />
-                    <label for="username" class="floating-label">Имя пользователя</label>
+                        <input type="text" id="username" name="username" class="form-input" placeholder=" " required autofocus pattern="^[A-Za-z0-9_-]+$" title="Только латинские буквы, цифры, дефис и подчёркивание" value="{{ request.form.get('username', '') }}" />
+                        <label for="username" class="floating-label">Имя пользователя</label>
                     </div>
                     <div id="username-error" class="field-error"></div>
                 </div>
@@ -48,16 +33,8 @@
                 <!-- Никнейм -->
                 <div class="form-group">
                     <div class="floating-input">
-                    <input
-                        type="text"
-                        id="nickname"
-                        name="nickname"
-                        class="form-input"
-                        placeholder=" "
-                        required
-                        value="{{ request.form.get('nickname', '') }}"
-                    />
-                    <label for="nickname" class="floating-label">Никнейм (отображаемое имя)</label>
+                        <input type="text" id="nickname" name="nickname" class="form-input" placeholder=" " required value="{{ request.form.get('nickname', '') }}" />
+                        <label for="nickname" class="floating-label">Никнейм (отображаемое имя)</label>
                     </div>
                     <div id="nickname-error" class="field-error"></div>
                 </div>
@@ -65,16 +42,8 @@
                 <!-- Email -->
                 <div class="form-group">
                     <div class="floating-input">
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        class="form-input"
-                        placeholder=" "
-                        required
-                        value="{{ request.form.get('email', '') }}"
-                    />
-                    <label for="email" class="floating-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder=" " required value="{{ request.form.get('email', '') }}" />
+                        <label for="email" class="floating-label">Email</label>
                     </div>
                     <div id="email-error" class="field-error"></div>
                 </div>
@@ -82,16 +51,8 @@
                 <!-- Пароль -->
                 <div class="form-group">
                     <div class="floating-input">
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        class="form-input"
-                        placeholder=" "
-                        minlength="6"
-                        required
-                    />
-                    <label for="password" class="floating-label">Пароль (минимум 6 символов)</label>
+                        <input type="password" id="password" name="password" class="form-input" placeholder=" " minlength="6" required />
+                        <label for="password" class="floating-label">Пароль (минимум 6 символов)</label>
                     </div>
                     <div id="password-error" class="field-error"></div>
                 </div>
@@ -99,24 +60,16 @@
                 <!-- Подтверждение пароля -->
                 <div class="form-group">
                     <div class="floating-input">
-                    <input
-                        type="password"
-                        id="confirm_password"
-                        name="confirm_password"
-                        class="form-input"
-                        placeholder=" "
-                        minlength="6"
-                        required
-                    />
-                    <label for="confirm_password" class="floating-label">Подтвердите пароль</label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-input" placeholder=" " minlength="6" required />
+                        <label for="confirm_password" class="floating-label">Подтвердите пароль</label>
                     </div>
                     <div id="confirm-password-error" class="field-error"></div>
                 </div>
 
                 <button type="submit" class="auth-btn">Зарегистрироваться</button>
-                </form>
+            </form>
 
-                <script>
+            <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     const form = document.getElementById('register-form');
                     const username = document.getElementById('username');
@@ -308,18 +261,19 @@
                         }
                     });
                 });
-                </script>
+            </script>
 
-                <div class="auth-link">
+            <div class="auth-link">
                 Уже есть аккаунт? <a href="{{ url_for('login') }}">Войти</a>
-                </div>
             </div>
         </div>
+    </div>
 
-                    
 
-        <footer class="footer">
-            <span>ЮНИТ.УРФУ</span>
-        </footer>
-    </body>
+
+    <footer class="footer">
+        <span>ЮНИТ.УРФУ</span>
+    </footer>
+</body>
+
 </html>

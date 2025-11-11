@@ -1,56 +1,61 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RatingHabits</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RatingHabits</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="icon" href="../static/images/logo.png" type="image/x-icon">
 </head>
-<body>
-  <header class="header">
-    <nav class="nav-items">
-      <ul>
-        <a href="{{ url_for('index') }}"><li>Главная</li></a>
-        <a href="{{ url_for('aboutus') }}"><li>О нас</li></a>
-        <a href="#"><li class="active-nav-item">Рейтинг</li></a>
-        <!-- <li>Контакты</li> -->
-        <!-- <li>Поддержка</li> -->
-        <li class="logout-btn"><a href="{{ url_for('logout') }}">Выйти</a></li>
-      </ul>
-    </nav>
-  </header>
-  
-  <main class="container rating-container">
-    <section class="leaderboard wide-block new_block card">
-      <div class="card-head">
-        <div class="section-title">РЕЙТИНГ ИГРОКОВ</div>
-      </div>
-      <ul class="leaderboard-list">
-        {% for player in leaderboard %}
-        <li class="leaderboard-item" {% if loop.index <= 3 %}data-top="{{ loop.index }}"{% endif %}>
-          <div class="leaderboard-rank">
-            {% if loop.index == 1 %}🥇
-            {% elif loop.index == 2 %}🥈
-            {% elif loop.index == 3 %}🥉
-            {% else %}{{ loop.index }}
-            {% endif %}
-          </div>
-          <div class="leaderboard-avatar">
-            <img src="{{ player.avatar }}" alt="Аватар {{ player.nickname }}" />
-          </div>
-          <div class="leaderboard-info">
-            <div class="leaderboard-nickname">{{ player.nickname }}</div>
-            <div class="leaderboard-username">@{{ player.username }}</div>
-          </div>
-          <div class="leaderboard-rating">{{ player.rating }}</div>
-        </li>
-        {% endfor %}
-      </ul>
-    </section>
-  </main>
 
-  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<body>
+    <header class="header">
+        <nav class="nav-items">
+            <ul>
+                <a href="{{ url_for('index') }}">
+                    <li>Главная</li>
+                </a>
+                <a href="{{ url_for('aboutus') }}">
+                    <li>О нас</li>
+                </a>
+                <a href="#">
+                    <li class="active-nav-item">Рейтинг</li>
+                </a>
+                <!-- <li>Контакты</li> -->
+                <!-- <li>Поддержка</li> -->
+                <li class="logout-btn"><a href="{{ url_for('logout') }}">Выйти</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container rating-container">
+        <section class="leaderboard wide-block new_block card">
+            <div class="card-head">
+                <div class="section-title">РЕЙТИНГ ИГРОКОВ</div>
+            </div>
+            <ul class="leaderboard-list">
+                {% for player in leaderboard %}
+                <li class="leaderboard-item" {% if loop.index <=3 %}data-top="{{ loop.index }}" {% endif %}>
+                    <div class="leaderboard-rank">
+                        {% if loop.index == 1 %}🥇 {% elif loop.index == 2 %}🥈 {% elif loop.index == 3 %}🥉 {% else %}{{ loop.index }} {% endif %}
+                    </div>
+                    <div class="leaderboard-avatar">
+                        <img src="{{ player.avatar }}" alt="Аватар {{ player.nickname }}" />
+                    </div>
+                    <div class="leaderboard-info">
+                        <div class="leaderboard-nickname">{{ player.nickname }}</div>
+                        <div class="leaderboard-username">@{{ player.username }}</div>
+                    </div>
+                    <div class="leaderboard-rating">{{ player.rating }}</div>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
+
 </html>

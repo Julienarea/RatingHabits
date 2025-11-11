@@ -1,71 +1,53 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Вход - RatingHabits</title>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
-            rel="stylesheet"
-        />
-        <link
-            rel="stylesheet"
-            href="{{ url_for('static', filename='css/style.css') }}"
-        />
-        <link rel="icon" href="../static/images/logo.png" type="image/x-icon">
-    </head>
-    <body class="new_back">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Вход - RatingHabits</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="icon" href="../static/images/logo.png" type="image/x-icon">
+</head>
+
+<body class="new_back">
 
 
-        <div class="auth-container">
-            <div class="auth-card">
-                <h2 class="auth-title">Вход в аккаунт</h2>
-                
-                {% if error %}
-                <div class="error-message">{{ error }}</div>
-                {% endif %}
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2 class="auth-title">Вход в аккаунт</h2>
 
-                <form method="POST" action="{{ url_for('login') }}">
-                    <div class="form-group">
-                        <div class="floating-input">
-                            <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            class="form-input"
-                            placeholder=" "
-                            required
-                            autofocus
-                            />
-                            <label for="username" class="floating-label">Имя пользователя или Email</label>
-                        </div>
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('login') }}">
+                <div class="form-group">
+                    <div class="floating-input">
+                        <input type="text" id="username" name="username" class="form-input" placeholder=" " required autofocus />
+                        <label for="username" class="floating-label">Имя пользователя или Email</label>
                     </div>
-
-                    <div class="form-group">
-                        <div class="floating-input">
-                            <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            class="form-input"
-                            placeholder=" "
-                            required
-                            />
-                            <label for="password" class="floating-label">Пароль</label>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="auth-btn">Войти</button>
-                </form>
-
-                <div class="auth-link">
-                    Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрироваться</a>
                 </div>
+
+                <div class="form-group">
+                    <div class="floating-input">
+                        <input type="password" id="password" name="password" class="form-input" placeholder=" " required />
+                        <label for="password" class="floating-label">Пароль</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-btn">Войти</button>
+            </form>
+
+            <div class="auth-link">
+                Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрироваться</a>
             </div>
         </div>
+    </div>
 
-        <footer class="footer">
-            <span>ЮНИТ.УРФУ</span>
-        </footer>
-    </body>
+    <footer class="footer">
+        <span>ЮНИТ.УРФУ</span>
+    </footer>
+</body>
+
 </html>
