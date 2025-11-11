@@ -1311,19 +1311,19 @@ select.form-input {
     }
 }
 
-
-}
 .custom-features-grid {
     display: flex;
     gap: 32px;
     justify-content: center;
 }
+
 .features-col {
     display: flex;
     flex-direction: column;
     gap: 24px;
     flex: 1 1 0;
 }
+
 .feature-item {
     background-color: rgba(150, 150, 150, 0.25);
     border: 2px solid rgba(150, 150, 150, 0.3);
@@ -1336,18 +1336,22 @@ select.form-input {
     align-items: flex-start;
     justify-content: flex-start;
 }
+
 .feature-item:hover {
     transform: translateY(-4px);
     background: rgba(150, 150, 150, 0.3);
 }
+
 .feature-header {
     display: flex;
     width: 100%;
 }
+
 .feature-icon {
     font-size: 48px;
     margin-bottom: 16px;
 }
+
 .feature-title {
     word-break: normal;
     font-size: 30px;
@@ -1361,11 +1365,13 @@ select.form-input {
     color: #fff;
     margin-bottom: 12px;
 }
+
 .feature-desc {
     font-size: 20px;
     line-height: 1.6;
     color: #cecece;
 }
+
 .tech-stack {
     display: grid;
     width: 100%;
@@ -1373,6 +1379,7 @@ select.form-input {
     gap: 32px;
     margin-top: 32px;
 }
+
 .tech-category {
     background-color: rgba(150, 150, 150, 0.25);
     border: 2px solid rgba(150, 150, 150, 0.3);
@@ -1380,20 +1387,24 @@ select.form-input {
     border-radius: 12px;
     transition: transform 0.2s ease, background 0.2s ease;
 }
+
 .tech-category:hover {
     transform: translateY(-4px);
     background: rgba(150, 150, 150, 0.3);
 }
+
 .tech-category-title {
     font-size: 30px;
     font-weight: 600;
     color: #4778eb;
     margin-bottom: 16px;
 }
+
 .tech-list {
     list-style: none;
     padding: 0;
 }
+
 .tech-list li {
     font-size: 20px;
     color: #ccc;
@@ -1401,6 +1412,7 @@ select.form-input {
     padding-left: 24px;
     position: relative;
 }
+
 .tech-list li::before {
     content: "▸";
     position: absolute;
@@ -1408,29 +1420,35 @@ select.form-input {
     color: #4778eb;
     font-weight: bold;
 }
+
 .contact-info {
     margin-top: 20px;
     font-size: 16px;
     line-height: 2;
 }
+
 .contact-info p {
     color: #ccc;
 }
+
 .contact-link {
     color: #4778eb;
     text-decoration: none;
     transition: color 0.2s ease;
 }
+
 .contact-link:hover {
     color: #6b9fff;
     text-decoration: underline;
 }
+
 .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
     margin-top: 32px;
 }
+
 .team-member {
     background: rgba(255, 255, 255, 0.03);
     padding: 28px;
@@ -1440,6 +1458,7 @@ select.form-input {
     position: relative;
     overflow: hidden;
 }
+
 
 /* 
 .team-member::before {
@@ -1454,15 +1473,18 @@ select.form-input {
   transform-origin: left;
   transition: transform 0.3s ease;
 } */
+
 .team-member:hover {
     border-color: rgba(71, 120, 235, 0.5);
     background: rgba(255, 255, 255, 0.05);
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(71, 120, 235, 0.15);
 }
+
 .team-member:hover::before {
     transform: scaleX(1);
 }
+
 .member-photo {
     width: 100%;
     height: 280px;
@@ -1471,15 +1493,18 @@ select.form-input {
     overflow: hidden;
     background: linear-gradient(135deg, rgba(71, 120, 235, 0.1) 0%, rgba(139, 69, 255, 0.1) 100%);
 }
+
 .member-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
 }
+
 .team-member:hover .member-photo img {
     transform: scale(1.05);
 }
+
 .member-role {
     display: inline-block;
     font-size: 16px;
@@ -1492,29 +1517,34 @@ select.form-input {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+
 .member-name {
     font-size: 30px;
     font-weight: 700;
     color: #fff;
     margin-bottom: 6px;
 }
+
 .member-username {
     font-size: 23px;
     color: #4778eb;
     margin-bottom: 16px;
     font-weight: 500;
 }
+
 .member-description {
     font-size: 20px;
     line-height: 1.7;
     color: #bbb;
     margin-bottom: 16px;
 }
+
 .member-contacts {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
 }
+
 .contact-badge {
     display: inline-flex;
     align-items: center;
@@ -1527,47 +1557,56 @@ select.form-input {
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .contact-badge svg {
     flex-shrink: 0;
 }
+
 .contact-badge.tg {
     background: linear-gradient(135deg, rgba(42, 171, 238, 0.1) 0%, rgba(42, 171, 238, 0.05) 100%);
     color: #2aabee;
     border-color: rgba(42, 171, 238, 0.2);
 }
+
 .contact-badge.tg:hover {
     background: linear-gradient(135deg, rgba(42, 171, 238, 0.2) 0%, rgba(42, 171, 238, 0.1) 100%);
     border-color: rgba(42, 171, 238, 0.4);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(42, 171, 238, 0.2);
 }
+
 .contact-badge.vk {
     background: linear-gradient(135deg, rgba(0, 119, 255, 0.1) 0%, rgba(0, 119, 255, 0.05) 100%);
     color: #0077ff;
     border-color: rgba(0, 119, 255, 0.2);
 }
+
 .contact-badge.vk:hover {
     background: linear-gradient(135deg, rgba(0, 119, 255, 0.2) 0%, rgba(0, 119, 255, 0.1) 100%);
     border-color: rgba(0, 119, 255, 0.4);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 119, 255, 0.2);
 }
+
 .contact-badge.github {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
     color: #fff;
     border-color: rgba(255, 255, 255, 0.2);
 }
+
 .contact-badge.github:hover {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
     border-color: rgba(255, 255, 255, 0.4);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
+
 .contact-badge.portfolio {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
     color: #fff;
     border-color: rgba(255, 255, 255, 0.2);
 }
+
 .contact-badge.portfolio:hover {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
     border-color: rgba(255, 255, 255, 0.4);
@@ -1575,44 +1614,44 @@ select.form-input {
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
+
 /* #endregion */
+
 .dark-borders {
     border: 2px solid #282828;
 }
 
+
 /* #region Адаптивность */
+
 @media (max-width: 1048px) {
     .card-filters {
         gap: 0;
         justify-content: space-between;
     }
-    
     .filter {
         padding-right: 3px;
         padding-left: 3px;
     }
 }
+
 @media (max-width: 768px) {
     .header {
         height: auto;
         padding: 8px 0;
     }
-    
     .nav-items {
         padding-left: 16px;
         padding-right: 16px;
     }
-    
     .nav-items ul {
         gap: 16px;
     }
-    
     .nav-items li,
     .logout-btn a {
         font-size: 13px;
         padding: 6px 10px;
     }
-    
     .app-header {
         margin: 16px;
         flex-direction: column;
@@ -1620,38 +1659,31 @@ select.form-input {
         padding-left: 16px;
         padding-right: 16px;
     }
-    
     .avatar.card,
     .rating.card {
         width: 100% !important;
         padding: 20px;
         text-align: center;
     }
-    
     .avatar-upload-wrapper {
         width: 80px;
         height: 80px;
         margin: 0 auto 12px;
     }
-    
     .avatar-img {
         width: 80px;
         height: 80px;
     }
-    
     .nickname {
         font-size: 20px;
     }
-    
     .rating-title {
         justify-content: center;
     }
-    
     .rating-bar {
         max-width: 200px;
         margin: 0 auto 4px;
     }
-    
     .container {
         flex-direction: column;
         padding-left: 16px;
@@ -1659,302 +1691,255 @@ select.form-input {
         gap: 16px;
         margin: 16px auto;
     }
-    
     .block.card {
         width: 100% !important;
     }
-    
     .card-head {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
     }
-    
     .section-title {
         font-size: 18px;
     }
-    
     .card-filters {
         flex-wrap: wrap;
         gap: 8px;
     }
-    
     .filter {
         padding: 6px 12px;
         font-size: 13px;
     }
-    
     .task-wrapper,
     .habit-wrapper {
         flex-direction: column;
         gap: 12px;
     }
-    
     .task-left-control,
     .habit-left-control {
         align-self: flex-start;
     }
-    
     .task-actions,
     .habit-actions {
         opacity: 1;
         margin-top: 8px;
     }
-    
     .task-menu-btn,
     .habit-menu-btn {
         padding: 10px;
     }
-    
     .checkbox-container {
         padding-left: 40px;
     }
-    
     .checkmark {
         width: 38px;
         height: 38px;
     }
-    
     .modal {
         min-width: 90%;
         max-width: 95%;
         padding: 0;
     }
-    
     .modal-body {
         padding: 20px 24px;
     }
-    
     .form-input {
         font-size: 16px;
     }
-    
     select.form-input {
         font-size: 16px;
     }
-    
     .days-selector {
         gap: 6px;
     }
-    
     .day-toggle {
         width: 36px;
         height: 36px;
         font-size: 12px;
     }
-    
     .footer {
         padding-right: 16px;
         font-size: 13px;
     }
     /* Страница "О нас" - адаптив для планшетов */
-    
     .about-container {
         margin: 24px auto;
         padding: 0 16px;
     }
-    
     .about-hero {
         display: flex;
         padding: 40px 24px;
         margin-bottom: 32px;
     }
-    
     .about-logo img {
         width: 100px;
         height: 100px;
     }
-    
     .about-title {
         font-size: 36px;
     }
-    
     .about-subtitle {
         font-size: 18px;
     }
-    
     .about-section {
         padding: 24px;
     }
-    
     .section-heading {
         font-size: 24px;
     }
-    
     .features-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 16px;
         row-gap: 24px;
     }
-    
     .tech-stack {
         grid-template-columns: 1fr;
         gap: 20px;
     }
     /* Команда - адаптив для планшетов */
-    
     .team-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 20px;
     }
-    
     .team-member {
         padding: 24px;
     }
-    
     .member-name {
         font-size: 20px;
     }
-    
     .member-description {
         font-size: 13px;
     }
 }
+
 @media (max-width: 480px) {
     body {
         font-size: 14px;
     }
-    
     .auth-card {
         padding: 24px 16px;
     }
     /* Страница "О нас" - адаптив для мобильных */
-    
     .about-container {
         margin: 16px auto;
         padding: 0 12px;
     }
-    
     .about-hero {
         padding: 32px 20px;
         margin-bottom: 32px;
     }
-    
     .about-logo img {
         width: 80px;
         height: 80px;
     }
-    
     .about-title {
         font-size: 28px;
     }
-    
     .about-subtitle {
         font-size: 16px;
     }
-    
     .about-section {
         padding: 20px;
     }
-    
     .section-heading {
         font-size: 20px;
     }
-    
     .features-grid {
         grid-template-columns: 1fr;
         gap: 24px;
     }
-    
     .feature-title {
         font-size: 20px;
     }
-    
     .feature-desc {
         font-size: 14px;
     }
-    
     .tech-category-title {
         font-size: 20px;
     }
-    
     .tech-list li {
         font-size: 16px;
     }
-    
     .tech-stack {
         grid-template-columns: 1fr;
         gap: 16px;
     }
-    
     .feature-item {
         padding: 20px;
     }
-    
     .contact-info {
         font-size: 14px;
     }
     /* Команда - адаптив для мобильных */
-    
     .team-grid {
         grid-template-columns: 1fr;
         gap: 16px;
     }
-    
     .team-member {
         padding: 20px;
     }
-    
     .member-photo {
         height: 220px;
         margin-bottom: 16px;
     }
-    
     .member-role {
         font-size: 11px;
         padding: 5px 10px;
     }
-    
     .member-name {
         font-size: 18px;
     }
-    
     .member-username {
         font-size: 14px;
     }
-    
     .member-description {
         font-size: 13px;
         line-height: 1.6;
         margin-bottom: 14px;
     }
-    
     .contact-badge {
         font-size: 12px;
         padding: 6px 10px;
         gap: 5px;
     }
-    
     .contact-badge svg {
         width: 14px;
         height: 14px;
     }
 }
+
 .modal-header h2 {
     font-size: 20px;
 }
+
 .btn-delete,
 .modal-btn {
     font-size: 14px;
     padding: 8px 16px;
 }
+
 .task-title,
 .habit-title {
     font-size: 14px;
 }
+
 .task-notes,
 .habit-notes {
     font-size: 12px;
 }
+
 .rating-value {
     .contact-info {
         font-size: 14px;
     }
 }
 
+
 /* #endregion */
 
+
 /* #region Страница рейтинга */
+
 .rating-container {
     padding-top: 34px;
     display: flex;
@@ -1963,6 +1948,7 @@ select.form-input {
     max-width: 800px;
     margin: 0 auto;
 }
+
 .leaderboard {
     width: 100%;
     background-color: #262626;
@@ -1972,6 +1958,7 @@ select.form-input {
     align-items: center;
     padding: 24px 10px;
 }
+
 .wide-block {
     width: 100%;
     background-color: #262626;
@@ -1981,6 +1968,7 @@ select.form-input {
     align-items: center;
     padding: 34px;
 }
+
 .about-hero {
     display: flex;
     flex-direction: row;
@@ -1990,20 +1978,24 @@ select.form-input {
     margin-bottom: 100px;
     background-color: transparent;
 }
+
 .about-section {
     padding: 50px;
     margin-bottom: 24px;
 }
+
 .transperant-block {
     background-color: transparent;
     box-shadow: none;
     border: none;
 }
+
 .leaderboard-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
+
 .leaderboard-item {
     display: flex;
     align-items: center;
@@ -2014,27 +2006,33 @@ select.form-input {
     transition: all 0.2s;
     border: 2px solid transparent;
 }
+
 .leaderboard .card-head {
     margin-bottom: 16px;
     display: flex;
     justify-content: center;
 }
+
 .leaderboard-item:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(78, 78, 255, 0.3);
 }
+
 .leaderboard-item[data-top="1"] {
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
     border-color: rgba(255, 215, 0, 0.4);
 }
+
 .leaderboard-item[data-top="2"] {
     background: linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(192, 192, 192, 0.05));
     border-color: rgba(192, 192, 192, 0.4);
 }
+
 .leaderboard-item[data-top="3"] {
     background: linear-gradient(135deg, rgba(205, 127, 50, 0.15), rgba(205, 127, 50, 0.05));
     border-color: rgba(205, 127, 50, 0.4);
 }
+
 .leaderboard-rank {
     font-size: 24px;
     font-weight: 700;
@@ -2042,9 +2040,11 @@ select.form-input {
     text-align: center;
     color: #a0a0ff;
 }
+
 .leaderboard-avatar {
     margin: 0 16px;
 }
+
 .leaderboard-avatar img {
     width: 50px;
     height: 50px;
@@ -2052,9 +2052,11 @@ select.form-input {
     object-fit: cover;
     border: 2px solid rgba(78, 78, 255, 0.3);
 }
+
 .leaderboard-info {
     flex: 1;
 }
+
 .leaderboard-nickname {
     font-size: 18px;
     font-weight: 600;
@@ -2062,10 +2064,12 @@ select.form-input {
     margin-bottom: 4px;
     word-break: break-all;
 }
+
 .leaderboard-username {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.6);
 }
+
 .leaderboard-rating {
     font-size: 24px;
     font-weight: 700;
@@ -2073,87 +2077,76 @@ select.form-input {
     min-width: 80px;
     text-align: right;
 }
+
 @media (max-width: 1200px) {
     .about-title {
         font-size: 72px;
     }
-    
     .about-subtitle {
         font-size: 30px;
     }
 }
+
 @media (max-width: 768px) {
     .leaderboard-item {
         padding: 12px 16px;
     }
-    
     .leaderboard-rank {
         font-size: 20px;
         min-width: 50px;
     }
-    
     .leaderboard-avatar {
         margin: 0 6px;
     }
-    
     .leaderboard-avatar img {
         width: 40px;
         height: 40px;
     }
-    
     .leaderboard-nickname {
         font-size: 16px;
     }
-    
     .leaderboard-username {
         font-size: 12px;
     }
-    
     .leaderboard-rating {
         font-size: 20px;
         min-width: 70px;
     }
-    
     .about-title {
         font-size: 40px;
     }
-    
     .about-subtitle {
         font-size: 20px;
     }
-    
     .nav-items a {
         min-width: 50px;
     }
-    
     .nav-items li {
         font-size: 12px;
         padding: 5px 8px;
     }
 }
+
 @media (max-width: 480px) {
     .about-title {
         font-size: 32px;
     }
-    
     .about-subtitle {
         font-size: 16px;
     }
-    
     .about-hero {
         flex-direction: column;
         padding: 32px 20px;
         gap: 20px;
     }
-    
     .about-hero img {
         width: 80px;
         height: auto;
     }
-    
     #about-logo-2 {
         display: none;
     }
 }
+
 
 /* #endregion */
